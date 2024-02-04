@@ -9,21 +9,10 @@ import {
 import { useMap } from '@context'
 
 export const LocationSelect = () => {
-  const { mapRef, locationPresets } = useMap()
-
-  const navigateTo = useCallback(({ latitude, longitude }) => {
-    if (!mapRef.current){
-      return
-    }
-    mapRef.current.flyTo({
-      center: [longitude, latitude],
-      zoom: 12,
-      duration: 2000,
-    })
-  }, [mapRef.current])
+  const { flyTo, locationPresets, mapRef } = useMap()
 
   const handleSelect = useCallback(({ longitude, latitude }) => () => {
-    navigateTo({ longitude, latitude })
+    flyTo({ longitude, latitude })
   }, [mapRef.current])
 
   const handleClickMyLocation = () => {
@@ -33,7 +22,7 @@ export const LocationSelect = () => {
         // save the geolocation coordinates in two variables
         position => {
           const { latitude, longitude } = position.coords
-          navigateTo({ latitude, longitude })
+          flyTo({ latitude, longitude })
         },
         // if there was an error getting the user's location
         error => {

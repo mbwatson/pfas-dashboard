@@ -1,4 +1,3 @@
-import { Fragment } from 'react'
 import { Layer, Source } from 'react-map-gl'
 import congressional from '@content/us-congressional.geojson'
 
@@ -30,15 +29,13 @@ export const congressionalLineLayer = {
 
 export const CongressionalLayer = () => {
   return (
-    <Fragment>
-      <Source
-        id="congressional"
-        type="geojson"
-        data={ congressional }
-      >
-        <Layer { ...congressionalFillLayer } />
-        <Layer { ...congressionalLineLayer } />
-      </Source>
-    </Fragment>
+    <Source
+      id="congressional"
+      type="geojson"
+      data={ congressional }
+    >
+      <Layer { ...congressionalFillLayer } />
+      <Layer { ...congressionalLineLayer } />
+    </Source>
   )
 }

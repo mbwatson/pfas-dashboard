@@ -2,7 +2,11 @@ import { createContext, useCallback, useContext, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useLocalStorage } from '@hooks'
 import ncCityData from '@content/cities/nc.json'
-import { ClusterLayer, CongressionalLayer, CountiesLayer } from '@components/map'
+import {
+  ClusterLayer,
+  CongressionalLayer,
+  CountiesLayer,
+} from '@components/map'
 
 const MapContext = createContext({ })
 export const useMap = () => useContext(MapContext)
@@ -20,7 +24,7 @@ export const MapProvider = ({ children }) => {
     'counties': CountiesLayer,
     'congressional': CongressionalLayer,
   }
-  const [activeLayerIds, setActiveLayerIds] = useState(new Set())
+  const [activeLayerIds, setActiveLayerIds] = useState(new Set(['samples-cluster']))
   const showLayer = layerId => {
     const newIds = new Set([...activeLayerIds])
     newIds.add(layerId)
@@ -63,6 +67,19 @@ export const MapProvider = ({ children }) => {
     return options[mapStyle]
   }, [mapStyle])
 
+  //
+  const flyTo = useCallback(({ latitude, longitude }) => {
+    if (!mapRef.current){
+      return
+    }
+    mapRef.current.flyTo({
+      center: [longitude, latitude],
+      zoom: 12,
+      duration: 2000,
+    })
+  }, [mapRef.current])
+
+
   return (
     <MapContext.Provider value={{
       mapRef,
@@ -88,6 +105,7 @@ export const MapProvider = ({ children }) => {
         show: showLayer,
         hide: hideLayer,
       },
+      flyTo,
     }}>
       { children }
     </MapContext.Provider>

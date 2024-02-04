@@ -26,11 +26,9 @@ export const ControlPanel = () => {
       '.MuiButton-root': { gap: 1 },
     }}>
       <List orientation="horizontal" size="sm" sx={{ flex: 1 }}>
-        <Tooltip placement="bottom" title="Layers">
-          <ListItem role="none">
-            <LayerSelect />
-          </ListItem>
-        </Tooltip>
+        <ListItem role="none">
+          <LayerSelect />
+        </ListItem>
 
         <ListDivider />
 

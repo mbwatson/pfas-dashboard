@@ -1,4 +1,3 @@
-import { Fragment } from 'react'
 import { Layer, Source } from 'react-map-gl'
 import counties from '@content/us-counties.geojson'
 
@@ -25,15 +24,13 @@ const countiesLineLayer = {
 
 export const CountiesLayer = () => {
   return (
-    <Fragment>
-      <Source
-        id="counties"
-        type="geojson"
-        data={ counties }
-      >
-        <Layer { ...countiesLineLayer } />
-        <Layer { ...countiesFillLayer } />
-      </Source>
-    </Fragment>
+    <Source
+      id="counties"
+      type="geojson"
+      data={ counties }
+    >
+      <Layer { ...countiesLineLayer } />
+      <Layer { ...countiesFillLayer } />
+    </Source>
   )
 }

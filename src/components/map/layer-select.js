@@ -23,28 +23,27 @@ export const LayerSelect = () => {
         startDecorator={ <LayersIcon /> }
       >Layers</MenuButton>
       <Menu placement="top-start" offset={ 10 }>
-        
         <MenuItem onClick={ handleSelect('samples-cluster') }>
           <ListItemDecorator>
             <DatasetLayerIcon color={ layers.active.includes('samples-cluster') ? 'primary' : 'default' } />
           </ListItemDecorator>
-          Samples: Clustered
+          Clustered Samples
         </MenuItem>
-        
+
         <ListDivider />
-        
+
         <MenuItem onClick={ handleSelect('counties') }>
           <ListItemDecorator>
             <BoundaryIcon color={ layers.active.includes('counties') ? 'primary' : 'default' } />
           </ListItemDecorator>
-          Boundary: County
+          County Boundaries
         </MenuItem>
 
         <MenuItem onClick={ handleSelect('congressional') }>
           <ListItemDecorator>
             <BoundaryIcon color={ layers.active.includes('congressional') ? 'primary' : 'default' } />
           </ListItemDecorator>
-          Boundary: Congressional Districts
+          Congressional District Boundaries
         </MenuItem>
       </Menu>
     </Dropdown>

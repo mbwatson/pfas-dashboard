@@ -1,6 +1,8 @@
 import { useCallback, useState } from 'react'
+import PropTypes from 'prop-types'
+import { useNavigate } from 'react-router-dom'
 import { Box, Button, ButtonGroup, Checkbox, Dropdown, Input, Menu, List, ListItem, MenuButton, Option, Select, Sheet } from '@mui/joy'
-import { useAppContext } from '@context'
+import { useAppContext, useMap } from '@context'
 import { FullscreenPage } from '@components/layout'
 import {
   createColumnHelper,
@@ -14,6 +16,29 @@ import { InlineMath } from 'react-katex'
 import 'katex/dist/katex.min.css'
 
 const columnHelper = createColumnHelper()
+
+const MapButton = ({ latitude, longitude }) => {
+  const navigate = useNavigate()
+  const { flyTo } = useMap()
+
+  const handleClick = useCallback(() => {
+    navigate(`/map/?lat=${ latitude }&long=${ longitude }`, { replace: true })
+    setTimeout(() => flyTo({ latitude, longitude }), 250)
+  }, [])
+
+  return (
+    <Button
+      variant="soft"
+      size="small"
+      onClick={ handleClick }
+    >Map</Button>
+  )
+}
+
+MapButton.propTypes = {
+  latitude: PropTypes.number.isRequired,
+  longitude: PropTypes.number.isRequired,
+}
 
 const columns = [
   columnHelper.group({
@@ -81,6 +106,16 @@ const columns = [
         cell: info => info.getValue(),
         header: () => <span>Longitude</span>,
         footer: () => <span>Longitude</span>,
+      },
+      {
+        id: 'map-it',
+        accessorKey: 'location',
+        cell: info => {
+          const { lat, long } = info.getValue()
+          return <MapButton latitude={ lat } longitude={ long } />
+        },
+        header: () => <span>Map</span>,
+        footer: () => <span>Map</span>,
       },
     ],
   }),
