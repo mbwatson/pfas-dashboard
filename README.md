@@ -24,5 +24,5 @@ and run an NGINX container that serves only the application bundle on port 80.
 
 ```bash
 docker build -t pfas-dashboard/client:1.0.4 . \
-docker run --rm -p 80:8080 pfas-dashboard/client:1.0.4
+docker run --rm -p 80:80 pfas-dashboard/client:1.0.4
 ```

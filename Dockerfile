@@ -1,26 +1,33 @@
-# Build environment
-###################
-FROM node:18-alpine3.17 AS builder
+#############
+#  builder  #
+#############
 
-# Create and set working directory
-RUN mkdir /src
-WORKDIR /src
+FROM node:18-alpine3.18 AS builder
 
-# Add `/usr/src/app/node_modules/.bin` to $PATH
-ENV PATH /src/node_modules/.bin:$PATH
+# create and set working directory
+RUN mkdir /app
+WORKDIR /app
 
-# Install and cache app dependencies
+# env vars
+ENV PATH /app/node_modules/.bin:$PATH
 
-COPY package*.json /src/
-RUN npm ci
-# Copy in source files
-COPY . /src
+# install deps
+COPY package*.json ./
+RUN npm ci \
+  --loglevel silly
 
-# Build app
+# copy in source files
+COPY . /app
+
+# build app
 RUN npm run build
 
-# Production environment
-########################
-FROM bitnami/nginx:latest
-COPY --from=builder /src/dist /opt/bitnami/nginx/html/
+############
+#  server  #
+############
+
+FROM nginx:latest
+EXPOSE 80
+COPY --from=builder /app/dist /usr/share/nginx/html/
+COPY ./server.conf /usr/local/nginx/default.conf
 CMD ["nginx", "-g", "daemon off;"]
