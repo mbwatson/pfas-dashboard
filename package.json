@@ -1,5 +1,6 @@
 {
-  "private": "true",
+  "name": "pfas-dashboard",
+  "version": "0.1.0",
   "scripts": {
     "start": "SERVE=true webpack serve",
     "watch": "webpack --watch",

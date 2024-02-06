@@ -1,6 +1,7 @@
 import {
   Dashboard as DashboardIcon,
   QueryStats as AnalysisIcon,
+  Search as QueryIcon,
   Map as MapIcon,
   Info as AboutIcon,
   HeadsetMic as ContactIcon,
@@ -11,6 +12,7 @@ import {
   ContactView,
   HomeView,
   MapView,
+  QueryView,
 } from '../views'
 
 // this array is used to define both
@@ -23,6 +25,13 @@ export const routes = [
     icon: <DashboardIcon />,
     requiresAuth: false,
     element: <HomeView />,
+  },
+  {
+    path: '/query',
+    label: 'Query',
+    icon: <QueryIcon />,
+    requiresAuth: true,
+    element: <QueryView />,
   },
   {
     path: '/analysis',
