@@ -26,11 +26,17 @@ export const MapProvider = ({ children }) => {
   }
   const [activeLayerIds, setActiveLayerIds] = useState(new Set(['samples-cluster']))
   const showLayer = layerId => {
+    if (activeLayerIds.has(layerId)) {
+      return
+    }
     const newIds = new Set([...activeLayerIds])
     newIds.add(layerId)
     setActiveLayerIds(newIds)
   }
   const hideLayer = layerId => {
+    if (!activeLayerIds.has(layerId)) {
+      return
+    }
     const newIds = new Set([...activeLayerIds])
     newIds.delete(layerId)
     setActiveLayerIds(newIds)
