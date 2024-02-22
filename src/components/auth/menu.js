@@ -62,7 +62,6 @@ export const AuthMenu = () => {
   return (
     <Dropdown>
       <MenuButton
-        component={ IconButton }
         slots={{ root: IconButton }}
         slotProps={{ root: { size: 'lg', color: 'primary' } }}
       ><Avatar>{ initials }</Avatar></MenuButton>

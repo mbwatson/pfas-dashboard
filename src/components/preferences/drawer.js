@@ -1,5 +1,6 @@
 import { Fragment } from 'react'
 import {
+  Button,
   DialogContent,
   DialogTitle,
   Divider,
@@ -10,12 +11,16 @@ import {
   Stack,
   Typography,
 } from '@mui/joy'
-import { Tune as MenuIcon } from '@mui/icons-material'
+import {
+  Logout as LogoutIcon,
+  Tune as MenuIcon,
+} from '@mui/icons-material'
+import TimeAgo from 'react-timeago'
 import { useAppContext } from '@context'
 import { ColorModeToggle } from './color-mode-toggle'
 
 export const PreferencesDrawer = () => {
-  const { preferences } = useAppContext()
+  const { auth, preferences } = useAppContext()
 
   return (
     <Drawer
@@ -45,10 +50,30 @@ export const PreferencesDrawer = () => {
           alignItems="stretch"
           gap={ 2 }
         >
-          <DialogTitle>Preferences</DialogTitle>
           <ModalClose size="lg" />
-          
+
+          {
+            auth.isAuthenticated && (
+              <Fragment>
+                <DialogTitle>Profile</DialogTitle>
+                <Stack>
+                  <Typography level="title-lg">{ auth.user.name }</Typography>
+                  <Typography>Logged in: <TimeAgo date={ auth.user.updated_at } /></Typography>
+                </Stack>
+                <Stack direction="row" justifyContent="center">
+                  <Button
+                    variant="soft"
+                    onClick={ () => auth.logout() }
+                    startDecorator={ <LogoutIcon /> }
+                  >LOGOUT</Button>
+                </Stack>
+              </Fragment>
+            )
+          }
+
           <Divider />
+
+          <DialogTitle>Preferences</DialogTitle>
 
           <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             <Typography level="title-lg">Color mode:</Typography>

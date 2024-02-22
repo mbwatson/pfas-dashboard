@@ -37,7 +37,13 @@ export const App = () => {
         actions={ headerActions }
       />
       
-      <Sheet component="main" ref={ pageRef } className={ preferences.colorMode.dark ? 'dark-mode' : 'light-mode' }>
+      <Sheet
+        component="main"
+        ref={ pageRef }
+        className={
+          preferences.colorMode.dark ? 'dark-mode' : 'light-mode'
+        }
+      >
         <Router />
       </Sheet>
 

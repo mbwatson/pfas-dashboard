@@ -64,6 +64,7 @@
     "react-markdown": "^9.0.1",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.19.0",
+    "react-timeago": "^7.2.0",
     "regenerator-runtime": "^0.14.0",
     "remark-gfm": "^4.0.0",
     "uuid": "^9.0.1",
