@@ -1,4 +1,6 @@
+import { useMemo } from 'react'
 import {
+  Avatar,
   Button,
   Dropdown,
   IconButton,
@@ -35,7 +37,17 @@ export const AuthMenu = () => {
     preferences.show()
   }
 
-  if (!auth.user) {
+  const initials = useMemo(() => {
+    try {
+      if (auth.isAuthenticated) {
+        return auth.user.given_name[0] + auth.user.family_name[0]
+      }
+    } catch (error) {
+      return '?'
+    }
+  }, [auth.isAuthenticated])
+
+  if (!auth.isAuthenticated) {
     return (
       <Button
         loading={ loading }
@@ -50,9 +62,10 @@ export const AuthMenu = () => {
   return (
     <Dropdown>
       <MenuButton
+        component={ IconButton }
         slots={{ root: IconButton }}
         slotProps={{ root: { size: 'lg', color: 'primary' } }}
-      ><ProfileIcon /></MenuButton>
+      ><Avatar>{ initials }</Avatar></MenuButton>
 
       <Menu placement="bottom-end">
         <MenuItem>
@@ -61,7 +74,7 @@ export const AuthMenu = () => {
           </ListItemDecorator>
           <ListItemContent>
             <Typography level="body-sm">Logged in as</Typography>
-            <Typography level="body-md">{ auth.user.username }</Typography>
+            <Typography level="body-md">{ auth.user.name }</Typography>
           </ListItemContent>
         </MenuItem>
 

@@ -9,8 +9,9 @@ const AppContext = createContext({ })
 export const useAppContext = () => useContext(AppContext)
 
 export const AppContextProvider = ({ children }) => {
-  const windowSize = useWindowSize()
   const auth = useAuth()
+  const windowSize = useWindowSize()
+
   const { mode, setMode } = useColorScheme()
   const [drawerVisibility, setDrawerVisibility] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -23,19 +24,6 @@ export const AppContextProvider = ({ children }) => {
   const inDarkMode = useMemo(() => mode === 'dark', [mode])
   const otherColorMode = useMemo(() => inDarkMode ? 'light' : 'dark', [mode])
   const toggleColorMode = useCallback(() => setMode(otherColorMode), [mode])
-
-  // interface with the `useAuth` hook via these functions.
-  // these are simply wrappers around the auth functions,
-  // allowing injection of custom app-related logic here,
-  // while not cluttering the isolated authentiation logic.
-  const userLogin = (/*creds*/) => {
-    loadSomething() // pretend to hit API
-      .then(auth.login)
-  }
-  const userLogout = (/*creds*/) => {
-    loadSomething() // pretend to hit API
-      .then(auth.logout)
-  }
 
   // this function lets us simulate async functionality.
   const loadSomething = () => {
@@ -50,11 +38,7 @@ export const AppContextProvider = ({ children }) => {
 
   return (
     <AppContext.Provider value={{
-      auth: {
-        user: auth.user,
-        login: userLogin,
-        logout: userLogout,
-      },
+      auth,
       loading, setLoading, loadSomething,
       preferences: {
         visibility: drawerVisibility,
