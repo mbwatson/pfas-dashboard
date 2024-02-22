@@ -1,26 +1,31 @@
 import { createContext, useContext, useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { useNavigate } from 'react-router-dom'
-import { useLocalStorage } from '@hooks'
+import { useAuth0 } from '@auth0/auth0-react'
 
 const AuthContext = createContext({ })
 
 export const useAuth = () => useContext(AuthContext)
 
 export const AuthProvider = ({ children }) => {
-  const navigate = useNavigate()
-  const [user, setUser] = useLocalStorage('user', null)
+  const {
+    isAuthenticated, user,
+    loginWithRedirect, logout: auth0Logout,
+  } = useAuth0()
 
+  // these are simply wrappers around the Auth0 functions,
+  // allowing injection of custom app-related logic.
   const login = () => {
-    setUser({ username: 'fake_user' })
+    loginWithRedirect()
   }
-
   const logout = () => {
-    setUser(null)
-    navigate("/", { replace: true })
+    auth0Logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      }
+    })
   }
 
-  const value = useMemo(() => ({ user, login, logout }), [user])
+  const value = useMemo(() => ({ user, login, logout, isAuthenticated }), [user])
 
   return (
     <AuthContext.Provider value={ value }>

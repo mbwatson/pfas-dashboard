@@ -2,7 +2,7 @@ import { Fragment, useMemo } from 'react'
 import { Sheet } from '@mui/joy'
 import { AuthMenu } from '@components/auth'
 import { useAppContext } from '@context'
-import { routes, Router } from './router'
+import { menuItems, Router } from './router'
 import { Header } from './components/layout'
 
 import { ColorModeToggle, PreferencesDrawer } from '@components/preferences'
@@ -23,17 +23,17 @@ export const App = () => {
     return actions
   }, [auth.user])
 
-  const menuItems = useMemo(() => {
+  const availableMenuItems = useMemo(() => {
     if (!auth.user) {
-      return routes.filter(r => !r.requiresAuth)
+      return menuItems.filter(r => !r.requiresAuth)
     }
-    return routes 
+    return menuItems 
   }, [auth.user])
 
   return (
     <Fragment>
       <Header
-        menuLinks={ menuItems }
+        menuLinks={ availableMenuItems }
         actions={ headerActions }
       />
       
