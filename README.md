@@ -2,13 +2,33 @@
 
 ## Development
 
+### Environment Variables
+
+Create `.env` from `sample.env` and fill in the missing values.
+
+### Development Server
+
 This application is developed with Node 18.18.2.
 Install dependencies with `npm i`, and spin up the development server with `npm start`.
 The app should be running at [http://localhost:8080/](http://localhost:8080/).
 
-### Environment Variables
+### Generating Data
 
-Create `.env` from `sample.env` and fill in the missing values.
+Use `npm run generate -- [OPTIONS]` to generate synthetic data.
+
+- generate and write 100 records: `npm run generate -- --number 100`
+- generate and write 100 records across 3 datasets: `npm run generate -- --number 100 --datasets 3`
+- generate and do not write 100 records across 3 datasets: `npm run generate -- --pretend --number 100 --datasets 3`
+
+There are aliases:
+- '-v': '--verbose'
+- '-p': '--pretend'
+- '-n': '--number'
+- '-d': '--datasets'
+
+Thus the last command can be shortened to `npm run generate -- -p -n 100 -d 3`.
+
+```
 
 ## Building for Production
 
