@@ -2,13 +2,14 @@
 
 ## Development
 
+This is a React app developed with Node 20.11.1.
+
 ### Environment Variables
 
 Create `.env` from `sample.env` and fill in the missing values.
 
 ### Development Server
 
-This application is developed with Node 18.18.2.
 Install dependencies with `npm i`, and spin up the development server with `npm start`.
 The app should be running at [http://localhost:8080/](http://localhost:8080/).
 
@@ -27,8 +28,6 @@ There are aliases:
 - '-d': '--datasets'
 
 Thus the last command can be shortened to `npm run generate -- -p -n 100 -d 3`.
-
-```
 
 ## Building for Production
 

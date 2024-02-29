@@ -2,7 +2,7 @@
 #  builder  #
 #############
 
-FROM node:18-alpine3.18 AS builder
+FROM node:20.11.1-alpine3.18 AS builder
 
 # create and set working directory
 RUN mkdir /app
@@ -14,7 +14,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 # install deps
 COPY package*.json ./
 RUN npm ci \
-  --loglevel silly
+  --loglevel verbose
 
 # copy in source files
 COPY . /app
