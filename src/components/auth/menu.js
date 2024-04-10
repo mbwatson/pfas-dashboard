@@ -10,10 +10,10 @@ import {
   MenuButton,
   MenuItem,
   ListItemContent,
+  Stack,
   Typography,
 } from '@mui/joy'
 import {
-  AccountCircle as ProfileIcon,
   Login as LoginIcon,
   Logout as LogoutIcon,
   Tune as PreferencesIcon,
@@ -66,16 +66,14 @@ export const AuthMenu = () => {
         slotProps={{ root: { size: 'lg', color: 'primary' } }}
       ><Avatar>{ initials }</Avatar></MenuButton>
 
-      <Menu placement="bottom-end">
-        <MenuItem>
-          <ListItemDecorator>
-            <ProfileIcon />
-          </ListItemDecorator>
+      <Menu placement="bottom-end" sx={{ width: '250px' }}>
+        <Stack flexDirection="row" justifyContent="center" alignItems="center" p={ 2 } gap={ 2 }>
+          <Avatar>{ initials }</Avatar>
           <ListItemContent>
             <Typography level="body-sm">Logged in as</Typography>
             <Typography level="body-md">{ auth.user.name }</Typography>
           </ListItemContent>
-        </MenuItem>
+        </Stack>
 
         <ListDivider />
 
@@ -83,7 +81,9 @@ export const AuthMenu = () => {
           <ListItemDecorator>
             <PreferencesIcon />
           </ListItemDecorator>
-          Preferences
+          <ListItemContent>
+            Preferences
+          </ListItemContent>
         </MenuItem>
         
         <ListDivider />
@@ -92,7 +92,9 @@ export const AuthMenu = () => {
           <ListItemDecorator>
             <LogoutIcon />
           </ListItemDecorator>
-          Logout
+          <ListItemContent>
+            Logout
+          </ListItemContent>
         </MenuItem>
       </Menu>
     </Dropdown>

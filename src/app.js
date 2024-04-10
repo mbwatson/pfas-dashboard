@@ -5,7 +5,7 @@ import { useAppContext } from '@context'
 import { menuItems, Router } from './router'
 import { Header } from './components/layout'
 
-import { ColorModeToggle, PreferencesDrawer } from '@components/preferences'
+import { PreferencesDrawer } from '@components/preferences'
 
 //
 
@@ -16,7 +16,6 @@ export const App = () => {
     let actions = [<AuthMenu key="auth-action-button" />]
     if (auth.user) {
       actions = [
-        <ColorModeToggle key="color-mode-action-button" />,
         ...actions,
       ]
     }

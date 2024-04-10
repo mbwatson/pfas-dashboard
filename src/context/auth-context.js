@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo } from 'react'
+import { createContext, useContext, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useAuth0 } from '@auth0/auth0-react'
 
@@ -7,9 +7,12 @@ const AuthContext = createContext({ })
 export const useAuth = () => useContext(AuthContext)
 
 const useDevelopmentAuth0 = () => {
-  return {
-    isAuthenticated: true,
-    user: {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const user = useMemo(() => {
+    if (!isAuthenticated) {
+      return undefined
+    }
+    return {
       email: "email@ddre.ss",
       email_verified: true,
       family_name: "Doe",
@@ -20,20 +23,32 @@ const useDevelopmentAuth0 = () => {
       picture: null,
       sub: "google-oauth2|XXXXXXXXXXXXXXXXXXXXX",
       updated_at: new Date().toISOString(),
-    },
-    loginWithRedirect: console.log(),
-    logout: console.log(),
+    }
+  }, [isAuthenticated])
+
+  const loginWithRedirect = () => {
+    setIsAuthenticated(true)
+  }
+  const logout = () => {
+    setIsAuthenticated(false)
+  }
+  return {
+    isAuthenticated,
+    user,
+    loginWithRedirect,
+    logout,
   }
 }
 
 export const AuthProvider = ({ children }) => {
   const {
-    isAuthenticated, user,
-    loginWithRedirect, logout: auth0Logout,
+    isAuthenticated,
+    user,
+    loginWithRedirect,
+    logout: auth0Logout,
   } = process.env.NODE_ENV !== 'production'
     ? useDevelopmentAuth0()
     : useAuth0()
-  console.log(user)
 
   // these are simply wrappers around the Auth0 functions,
   // allowing injection of custom app-related logic.

@@ -7,7 +7,6 @@ import {
   AppContextProvider,
   AuthProvider,
   DataProvider,
-  MapProvider,
 } from '@context'
 import theme from './theme'
 import './index.css'
@@ -33,9 +32,7 @@ const ProvisionedApp = () => (
           <AuthProvider>
             <DataProvider>
               <AppContextProvider>
-                <MapProvider>
-                  <App />
-                </MapProvider>
+                <App />
               </AppContextProvider>
             </DataProvider>
           </AuthProvider>

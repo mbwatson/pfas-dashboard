@@ -1,13 +1,12 @@
 import { createContext, useContext, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
-import sampleData from '@content/test-data-v2.json'
 
 const DataContext = createContext({ })
 
 export const useData = () => useContext(DataContext)
 
 export const DataProvider = ({ children }) => {
-  const [data, ] = useState(sampleData)
+  const [data, ] = useState([])
 
   const datasets = useMemo(() => [...new Set(data.map(d => d.study.dataset))], [data])
 

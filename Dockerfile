@@ -28,6 +28,7 @@ RUN npm run build
 
 FROM nginx:latest
 EXPOSE 80
-COPY --from=builder /app/dist /usr/share/nginx/html/
-COPY ./server.conf /usr/local/nginx/default.conf
+EXPOSE 443
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY ./server.conf /etc/nginx/conf.d/default.conf
 CMD ["nginx", "-g", "daemon off;"]
