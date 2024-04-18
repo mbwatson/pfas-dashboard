@@ -9,33 +9,46 @@
 */
 import { createContext, useContext } from 'react'
 import PropTypes from 'prop-types'
+import axios from 'axios'
 
-import { useAppContext } from '@context'
-
-import { QueryClient, useQuery } from '@tanstack/react-query'
+import {
+  QueryClient,
+  useQuery,
+} from '@tanstack/react-query'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 
 import { compress, decompress } from 'lz-string'
 
+//
+
 const DataContext = createContext({ })
 export const useData = () => useContext(DataContext)
 
+const apiRoot = `http://pfas-db-dev.renci.unc.edu/drf/api`
+
 export const DataWrangler = ({ children }) => {
-  const samplesQuery = useQuery({
-    queryKey: ['get-samples'],
-    queryFn: () => {
-      console.info('fetching samples...')
-      return []
+  const dustSamplesQuery = useQuery({
+    queryKey: ['dust-samples'],
+    queryFn: async () => {
+      console.log(`fetching dust samples from ${ apiRoot }...`)
+      return axios.get(apiRoot)
+        .then(response => {
+          if (!response.data) {
+            throw new Error('no data in response')
+          }
+          return response.data
+        })
+        .catch(error => {
+          console.error(error.message)
+        })
     },
   })
 
-  const data = {
-    samples: samplesQuery,
-  }
-
   return (
-    <DataContext.Provider value={ data }>
+    <DataContext.Provider value={{
+      dustSamples: dustSamplesQuery,
+    }}>
       { children }
     </DataContext.Provider>
   )
@@ -62,7 +75,7 @@ const persister = createSyncStoragePersister({
 })
 const queryClient = new QueryClient({
   defaultOptions: { queries: {
-    staleTime: Infinity,
+    staleTime: 1000 * 5,
   }, },
 })
 
