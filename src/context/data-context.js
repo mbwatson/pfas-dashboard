@@ -11,10 +11,7 @@ import { createContext, useContext } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 
-import {
-  QueryClient,
-  useQuery,
-} from '@tanstack/react-query'
+import { QueryClient, useQuery } from '@tanstack/react-query'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 
@@ -22,28 +19,44 @@ import { compress, decompress } from 'lz-string'
 
 //
 
+const apiRoot = `https://pfas-db-dev.renci.unc.edu/drf/api`
+const createSampleQuerier = endpoint => async () => {
+  console.log(`fetching data from ${ apiRoot }/${ endpoint }...`)
+  return await axios.get(`${ apiRoot }/${ endpoint }/?format=json`)
+    .then(response => {
+      if (!response.data) {
+        throw new Error('no data in response')
+      }
+      return response.data
+    })
+    .catch(error => {
+      console.error(error.message)
+    })
+}
+
+//
+
 const DataContext = createContext({ })
 export const useData = () => useContext(DataContext)
 
-const apiRoot = `http://pfas-db-dev.renci.unc.edu/drf/api`
 
 export const DataWrangler = ({ children }) => {
   const dustSamplesQuery = useQuery({
-    queryKey: ['dust-samples'],
-    queryFn: async () => {
-      console.log(`fetching dust samples from ${ apiRoot }...`)
-      return axios.get(apiRoot)
-        .then(response => {
-          if (!response.data) {
-            throw new Error('no data in response')
-          }
-          return response.data
-        })
-        .catch(error => {
-          console.error(error.message)
-        })
-    },
+    queryKey: ['ahhs_dust_data'],
+    queryFn: createSampleQuerier('ahhs_dust_data'),
   })
+  // const waterSamplesQuery = useQuery({
+  //   queryKey: ['ahhs_water_data'],
+  //   queryFn: createSampleQuerier('ahhs_water_data'),
+  // })
+  // const serumSamplesQuery = useQuery({
+  //   queryKey: ['ncserum'],
+  //   queryFn: createSampleQuerier('ncserum'),
+  // })
+  // const tapwaterSamplesQuery = useQuery({
+  //   queryKey: ['pfas_in_tapwater_usgs'],
+  //   queryFn: createSampleQuerier('pfas_in_tapwater_usgs'),
+  // })
 
   return (
     <DataContext.Provider value={{
