@@ -19,19 +19,41 @@ import { compress, decompress } from 'lz-string'
 
 //
 
-const apiRoot = `https://pfas-db-dev.renci.unc.edu/drf/api`
+// const apiRoot = `https://pfas-db-dev.renci.unc.edu/drf/api`
+const apiRoot = `http://localhost:8000/podm/api`
+
+
 const createSampleQuerier = endpoint => async () => {
   console.log(`fetching data from ${ apiRoot }/${ endpoint }...`)
-  return await axios.get(`${ apiRoot }/${ endpoint }/?format=json`)
-    .then(response => {
-      if (!response.data) {
-        throw new Error('no data in response')
-      }
-      return response.data
-    })
-    .catch(error => {
-      console.error(error.message)
-    })
+
+ const getFirstPage = async () => {
+    const { data } = await axios.get(`${ apiRoot }/${ endpoint }?page=1`)
+    if (!data) {
+      return 0
+    }
+    return data
+  }
+
+  // first, let's see how many pages there are.
+  const data = await getFirstPage()
+
+  if (!data.count) {
+    return []
+  }
+
+  // if we're here, we have a non-zero number of pages,
+  // so we make the neccssary number of requests.
+  const promises = [...Array(Math.ceil(data.count / 10)).keys()]
+    .map(p => axios(`${ apiRoot }/${ endpoint }?page=${ p + 1 }`))
+
+  // return all features stitched together.
+  return Promise.all(promises)
+    .then(responses => responses.map(r => r.data.results))
+    .then(data => data.reduce((allData, d) => {
+      allData.push(...d)
+      return allData
+    }, []))
+    .catch(console.error)
 }
 
 //
