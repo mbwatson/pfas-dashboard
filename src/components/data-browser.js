@@ -36,7 +36,24 @@ export const DataBrowser = () => {
           Object.keys(data).map((key, i) => (
             <TabPanel key={ `${ key }-json` } value={ i }>
               {
-                data[key]?.data && !data[key].isPending ? (
+                data[key].isError && (
+                  <Typography>An error occurred while fetching data.</Typography>
+                )
+              }
+              {
+                data[key].isPending && (
+                  <Fragment>
+                    <Typography>
+                      <Skeleton>#### samples</Skeleton>
+                    </Typography>
+                    <AspectRatio ratio="3/2">
+                      <Skeleton />
+                    </AspectRatio>
+                  </Fragment>
+                )
+              }
+              {
+                data[key]?.data && (
                   <Fragment>
                     <Typography>
                       { data[keys[i]]?.data?.length } samples
@@ -51,20 +68,6 @@ export const DataBrowser = () => {
                       }}
                     />
                   </Fragment>
-                ) : (
-                  <Fragment>
-                    <Typography>
-                      <Skeleton>#### samples</Skeleton>
-                    </Typography>
-                    <AspectRatio ratio="3/2">
-                      <Skeleton />
-                    </AspectRatio>
-                  </Fragment>
-                )
-              }
-              {
-                !data[key].data && !data[key].isPending && (
-                  <Typography>Could not fetch data.</Typography>
                 )
               }
             </TabPanel>
