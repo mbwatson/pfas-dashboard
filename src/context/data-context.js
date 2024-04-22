@@ -34,7 +34,6 @@ const createSampleQuerier = endpoint => async () => {
     if (!data) {
       return
     }
-    console.log({ endpoint, data })
     return data
   }
 
