@@ -36,7 +36,7 @@ export const DataBrowser = () => {
           Object.keys(data).map((key, i) => (
             <TabPanel key={ `${ key }-json` } value={ i }>
               {
-                data[keys[i]]?.data ? (
+                data[key]?.data && !data[key].isPending ? (
                   <Fragment>
                     <Typography>
                       { data[keys[i]]?.data?.length } samples
@@ -45,7 +45,8 @@ export const DataBrowser = () => {
                       data={ data[keys[i]].data }
                       shouldExpandNode={ collapseAllNested }
                       style={{
-                        ...(preferences.colorMode.current === 'dark' ? darkStyles : defaultStyles),
+                        ...(preferences.colorMode.current === 'dark'
+                            ? darkStyles : defaultStyles),
                         borderRadius: '0.25rem',
                       }}
                     />
@@ -53,12 +54,17 @@ export const DataBrowser = () => {
                 ) : (
                   <Fragment>
                     <Typography>
-                      <Skeleton>samples samples</Skeleton>
+                      <Skeleton>#### samples</Skeleton>
                     </Typography>
-                    <AspectRatio ratio="21/9">
+                    <AspectRatio ratio="3/2">
                       <Skeleton />
                     </AspectRatio>
                   </Fragment>
+                )
+              }
+              {
+                !data[key].data && !data[key].isPending && (
+                  <Typography>Could not fetch data.</Typography>
                 )
               }
             </TabPanel>
