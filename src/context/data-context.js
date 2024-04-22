@@ -25,7 +25,7 @@ const apiRoot = process.env.NODE_ENV === 'production'
 
 
 const createSampleQuerier = endpoint => async () => {
-  console.log(`fetching data from ${ apiRoot }/${ endpoint }...`)
+  console.info(`fetching data from ${ apiRoot }/${ endpoint }...`)
 
   const getFirstPage = async () => {
     const { data } = await axios.get(`${ apiRoot }/${ endpoint }?page=1`, {
@@ -38,15 +38,15 @@ const createSampleQuerier = endpoint => async () => {
   }
 
   // first, let's get the first page and how many pages there are in total.
-  const { count } = await getFirstPage()
+  const data = await getFirstPage()
 
-  if (!count) {
+  if (!data.count) {
     return []
   }
 
   // if we're here, we have a non-zero number of pages,
   // so we make the neccssary number of requests.
-  const promises = [...Array(Math.ceil(count / 10)).keys()]
+  const promises = [...Array(Math.ceil(data.count / 10)).keys()]
     .map(p => axios(`${ apiRoot }/${ endpoint }?page=${ p + 1 }`))
 
   // return all features stitched together.
@@ -63,14 +63,13 @@ const createSampleQuerier = endpoint => async () => {
 }
 
 const createGeoJsonQuerier = endpoint => async () => {
-  console.log(`fetching geojson data from ${ apiRoot }/${ endpoint }...`)
+  console.info(`fetching data from ${ apiRoot }/${ endpoint }...`)
 
   const getFirstPage = async () => {
     const { data } = await axios.get(`${ apiRoot }/${ endpoint }?page=1`)
     if (!data) {
       return
     }
-    console.log({ endpoint, data })
     return data
   }
 
@@ -88,7 +87,7 @@ const createGeoJsonQuerier = endpoint => async () => {
 
   // return all features stitched together.
   return Promise.all(promises)
-    .then(responses => responses.map(r => r.data.results))
+    .then(responses => responses.map(r => r.data))
     .then(data => data.reduce((geojson, d) => {
         geojson.features.push(...d.features)
         return geojson

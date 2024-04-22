@@ -1,4 +1,4 @@
-import { Fragment, useCallback } from 'react'
+import { Fragment } from 'react'
 import {
   AspectRatio, Box, CircularProgress, ListItemDecorator, Skeleton,
   Tab, TabPanel, TabList, Tabs, Typography,
