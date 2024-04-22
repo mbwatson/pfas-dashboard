@@ -55,7 +55,10 @@ const createSampleQuerier = endpoint => async () => {
       allData.push(...d)
       return allData
     }, []))
-    .catch(console.error)
+    .catch(error => {
+      console.error(error.message)
+      return []
+    })
 }
 
 //
