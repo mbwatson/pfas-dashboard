@@ -20,11 +20,13 @@ import { compress, decompress } from 'lz-string'
 //
 
 // const apiRoot = `https://pfas-db-dev.renci.unc.edu/drf/api`
-const apiRoot = `http://localhost:8000/podm/api`
+const apiRoot = process.env.NODE_ENV === 'production'
+  ? `http://pfas-db-dev.mdc.renci.unc.edu`
+  : `http://localhost:8000/podm/api`
 
 
 const createSampleQuerier = endpoint => async () => {
-  console.log(`fetching data from ${ apiRoot }/${ endpoint }...`)
+  console.log(`fetching sample data from ${ apiRoot }/${ endpoint }...`)
 
  const getFirstPage = async () => {
     const { data } = await axios.get(`${ apiRoot }/${ endpoint }?page=1`)
@@ -34,7 +36,7 @@ const createSampleQuerier = endpoint => async () => {
     return data
   }
 
-  // first, let's see how many pages there are.
+  // first, let's get the first page and how many pages there are in total.
   const data = await getFirstPage()
 
   if (!data.count) {
@@ -67,22 +69,30 @@ export const DataWrangler = ({ children }) => {
     queryKey: ['ahhs_dust_data'],
     queryFn: createSampleQuerier('ahhs_dust_data'),
   })
-  // const waterSamplesQuery = useQuery({
-  //   queryKey: ['ahhs_water_data'],
-  //   queryFn: createSampleQuerier('ahhs_water_data'),
-  // })
-  // const serumSamplesQuery = useQuery({
-  //   queryKey: ['ncserum'],
-  //   queryFn: createSampleQuerier('ncserum'),
-  // })
-  // const tapwaterSamplesQuery = useQuery({
-  //   queryKey: ['pfas_in_tapwater_usgs'],
-  //   queryFn: createSampleQuerier('pfas_in_tapwater_usgs'),
-  // })
+  const waterSamplesQuery = useQuery({
+    queryKey: ['ahhs_water_data'],
+    queryFn: createSampleQuerier('ahhs_water_data'),
+  })
+  const serumSamplesQuery = useQuery({
+    queryKey: ['ncserum'],
+    queryFn: createSampleQuerier('ncserum'),
+  })
+  const tapwaterSamplesQuery = useQuery({
+    queryKey: ['pfas_in_tapwater_usgs'],
+    queryFn: createSampleQuerier('pfas_in_tapwater_usgs'),
+  })
+  const pfasDataQuery = useQuery({
+    queryKey: ['pfas_sample_data'],
+    queryFn: createSampleQuerier('pfas_sample_data'),
+  })
 
   return (
     <DataContext.Provider value={{
-      dustSamples: dustSamplesQuery,
+      dust: dustSamplesQuery,
+      water: waterSamplesQuery,
+      serum: serumSamplesQuery,
+      tapwater: tapwaterSamplesQuery,
+      pfasData: pfasDataQuery,
     }}>
       { children }
     </DataContext.Provider>

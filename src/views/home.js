@@ -1,17 +1,48 @@
 import { Fragment, useCallback } from 'react'
-import { Typography } from '@mui/joy'
+import { Box, Tab, TabPanel, TabList, Tabs, Typography } from '@mui/joy'
 import { ContentPage } from '@components/layout'
 import { useAppContext, useAuth } from '@context'
+import { darkStyles, defaultStyles, JsonView } from 'react-json-view-lite'
+import 'react-json-view-lite/dist/index.css'
 
 export const HomeView = () => {
-  const { data } = useAppContext()
+  const { data, preferences } = useAppContext()
+  const keys = Object.keys(data)
+
   console.log(data)
+
   const { user } = useAuth()
 
   const RawData = useCallback(() => (
-    <pre>
-      { JSON.stringify(data.dustSamples, null, 2) }
-    </pre>
+    <Box>
+      <Tabs defaultValue={ 0 }>
+        <TabList>
+        {
+          Object.keys(data).map(key => (
+            <Tab key={ `${ key }-tab` }>
+              { key }
+            </Tab>
+          ))
+        }
+        </TabList>
+        {
+          Object.keys(data).map((key, i) => (
+            <TabPanel
+              key={ `${ key }-json` }
+              value={ i }
+            >
+              <JsonView
+                data={ data[keys[i]].data }
+                style={{
+                  ...(preferences.colorMode.current === 'dark' ? darkStyles : defaultStyles),
+                  borderRadius: '0.25rem',
+                }}
+              />
+            </TabPanel>
+          ))
+        }
+      </Tabs>
+    </Box>
   ), [data])
 
   return (
@@ -19,7 +50,6 @@ export const HomeView = () => {
       {
         user ? (
           <Fragment>
-            <Typography>Welcome, { user.name }!</Typography>
             <RawData />
           </Fragment>
         ) : (
