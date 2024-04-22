@@ -25,7 +25,7 @@ const apiRoot = process.env.NODE_ENV === 'production'
 
 
 const createSampleQuerier = endpoint => async () => {
-  console.log(`fetching sample data from ${ apiRoot }/${ endpoint }...`)
+  console.log(`fetching data from ${ apiRoot }/${ endpoint }...`)
 
   const getFirstPage = async () => {
     const { data } = await axios.get(`${ apiRoot }/${ endpoint }?page=1`, {
