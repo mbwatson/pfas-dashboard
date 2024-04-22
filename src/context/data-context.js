@@ -20,7 +20,7 @@ import { compress, decompress } from 'lz-string'
 //
 
 const apiRoot = process.env.NODE_ENV === 'production'
-  ? `https://pfas-db-dev.mdc.renci.unc.edu`
+  ? `https://pfas-db-dev.mdc.renci.unc.edu/podm/api`
   : `http://localhost:8000/podm/api`
 
 
@@ -119,7 +119,7 @@ export const DataWrangler = ({ children }) => {
   })
   const tapwaterSamplesQuery = useQuery({
     queryKey: ['pfas_in_tapwater_usgs'],
-    queryFn: createGeoJsonQuerier('pfas_intapwater_usgs'),
+    queryFn: createGeoJsonQuerier('pfas_in_tapwater_usgs'),
   })
   const pfasDataQuery = useQuery({
     queryKey: ['pfas_sample_data'],
