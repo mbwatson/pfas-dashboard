@@ -19,33 +19,33 @@ import { compress, decompress } from 'lz-string'
 
 //
 
-// const apiRoot = `https://pfas-db-dev.renci.unc.edu/drf/api`
 const apiRoot = process.env.NODE_ENV === 'production'
-  ? `http://pfas-db-dev.mdc.renci.unc.edu`
+  ? `https://pfas-db-dev.mdc.renci.unc.edu`
   : `http://localhost:8000/podm/api`
 
 
 const createSampleQuerier = endpoint => async () => {
   console.log(`fetching sample data from ${ apiRoot }/${ endpoint }...`)
 
- const getFirstPage = async () => {
+  const getFirstPage = async () => {
     const { data } = await axios.get(`${ apiRoot }/${ endpoint }?page=1`)
     if (!data) {
-      return 0
+      return
     }
+    console.log({ endpoint, data })
     return data
   }
 
   // first, let's get the first page and how many pages there are in total.
-  const data = await getFirstPage()
+  const { count } = await getFirstPage()
 
-  if (!data.count) {
+  if (!count) {
     return []
   }
 
   // if we're here, we have a non-zero number of pages,
   // so we make the neccssary number of requests.
-  const promises = [...Array(Math.ceil(data.count / 10)).keys()]
+  const promises = [...Array(Math.ceil(count / 10)).keys()]
     .map(p => axios(`${ apiRoot }/${ endpoint }?page=${ p + 1 }`))
 
   // return all features stitched together.
@@ -55,6 +55,43 @@ const createSampleQuerier = endpoint => async () => {
       allData.push(...d)
       return allData
     }, []))
+    .catch(error => {
+      console.error(error.message)
+      return []
+    })
+}
+
+const createGeoJsonQuerier = endpoint => async () => {
+  console.log(`fetching geojson data from ${ apiRoot }/${ endpoint }...`)
+
+  const getFirstPage = async () => {
+    const { data } = await axios.get(`${ apiRoot }/${ endpoint }?page=1`)
+    if (!data) {
+      return
+    }
+    console.log({ endpoint, data })
+    return data
+  }
+
+  // first, let's get the first page and how many pages there are in total.
+  const { count } = await getFirstPage()
+
+  if (!count) {
+    return []
+  }
+
+  // if we're here, we have a non-zero number of pages,
+  // so we make the neccssary number of requests.
+  const promises = [...Array(Math.ceil(count / 10)).keys()]
+    .map(p => axios(`${ apiRoot }/${ endpoint }?page=${ p + 1 }`))
+
+  // return all features stitched together.
+  return Promise.all(promises)
+    .then(responses => responses.map(r => r.data.results))
+    .then(data => data.reduce((geojson, d) => {
+        geojson.features.push(...d.features)
+        return geojson
+      }, { type: 'FeatureCollection', features: [] }))
     .catch(error => {
       console.error(error.message)
       return []
@@ -82,7 +119,7 @@ export const DataWrangler = ({ children }) => {
   })
   const tapwaterSamplesQuery = useQuery({
     queryKey: ['pfas_in_tapwater_usgs'],
-    queryFn: createSampleQuerier('pfas_in_tapwater_usgs'),
+    queryFn: createGeoJsonQuerier('pfas_in_tapwater_usgs'),
   })
   const pfasDataQuery = useQuery({
     queryKey: ['pfas_sample_data'],
