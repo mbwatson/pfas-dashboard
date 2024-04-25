@@ -9,7 +9,6 @@ const AppContext = createContext({ })
 export const useAppContext = () => useContext(AppContext)
 
 export const AppContextProvider = ({ children }) => {
-  const auth = useAuth()
   const windowSize = useWindowSize()
 
   const { mode, setMode } = useColorScheme()
@@ -25,21 +24,11 @@ export const AppContextProvider = ({ children }) => {
   const otherColorMode = useMemo(() => inDarkMode ? 'light' : 'dark', [mode])
   const toggleColorMode = useCallback(() => setMode(otherColorMode), [mode])
 
-  // this function lets us simulate async functionality.
-  const loadSomething = () => {
-    setLoading(true)
-    return new Promise(resolve => {
-      setTimeout(() => {
-        setLoading(false)
-        resolve(1)
-      }, 2000)
-    })
-  }
-
   return (
     <AppContext.Provider value={{
-      auth,
-      loading, setLoading, loadSomething,
+      auth: useAuth(),
+      data: useData(),
+      loading, setLoading,
       preferences: {
         visibility: drawerVisibility,
         hide: closePreferences,
@@ -54,7 +43,6 @@ export const AppContextProvider = ({ children }) => {
         },
       },
       windowSize,
-      data: useData(),
     }}>
       { children }
     </AppContext.Provider>

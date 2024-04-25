@@ -26,8 +26,8 @@ Commands similar to the following should suffice to build an image
 and run an NGINX container that serves only the application bundle on port 80.
 
 ```bash
-docker build -t pfas-dashboard/client:1.0.4 . \
-docker run --rm -p 80:80 pfas-dashboard/client:1.0.4
+docker build -t pfas-dashboard:1.0.4 . \
+docker run --rm -p 80:80 pfas-dashboard:1.0.4
 ```
 
 ## 🚢 Deployment
@@ -47,7 +47,7 @@ ssh <ONYEN>@pfas-app-dev.mdc.renci.unc.edu
 ```
 
 > [!NOTE]
-> Note the `mdc` in this address.
+> Note the `mdc` appearing in this address.
 
 You will be prompted to authenticate with your ONYEN unless you've configured key-based authentication.
 
@@ -63,7 +63,7 @@ The entire command to bring up the application, say `v0.1.10`, looks like:
 ```
 docker run --rm -d \
   -p 80:80 -p 443:443
-  -v /data/certs/pfas-app-dev_renci_unc_edu.key:/ssl.key
-  -v /data/certs/pfas-app-dev_renci_unc_edu.cer:/ssl.cer
-  --name pfas-ui mvvatson/pfas-dashboard:0.1.10
+  -v <PATH_TO_CERT>:/ssl.cer
+  -v <PATH_TO_KEY>:/ssl.key
+  --name pfas-ui pfas-dashboard:0.1.10
 ```
