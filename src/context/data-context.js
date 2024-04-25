@@ -12,6 +12,8 @@ import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persist
 
 import { compress, decompress } from 'lz-string'
 
+import { useAppContext } from '@context'
+
 //
 
 const apiRoot = `${ process.env.API_HOST }/podm/api`
@@ -161,14 +163,16 @@ const queryClient = new QueryClient({
 })
 
 export const DataProvider = ({ children }) => {
+  const { preferences } = useAppContext()
+
   return (
     <PersistQueryClientProvider
       client={ queryClient }
       persistOptions={{
         persister,
         dehydrateOptions: {
-          shouldDehydrateQuery: true,
-        }
+          shouldDehydrateQuery: () => preferences.cache.enabled,
+        },
       }}
     >
       <DataWrangler>

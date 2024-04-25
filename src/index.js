@@ -11,9 +11,6 @@ import {
 import theme from './theme'
 import './index.css'
 import '@fontsource/inter'
-import { QueryClient, QueryClientProvider } from 'react-query'
-
-const queryClient = new QueryClient()
 
 const container = document.getElementById('root')
 const root = createRoot(container)
@@ -26,19 +23,17 @@ const ProvisionedApp = () => (
       redirect_uri: window.location.origin
     }}
   >
-    <QueryClientProvider client={ queryClient }>
-      <CssVarsProvider theme={ theme } defaultMode="light">
-        <HashRouter>
-          <AuthProvider>
+    <CssVarsProvider theme={ theme } defaultMode="light">
+      <HashRouter>
+        <AuthProvider>
+          <AppContextProvider>
             <DataProvider>
-              <AppContextProvider>
-                <App />
-              </AppContextProvider>
+              <App />
             </DataProvider>
-          </AuthProvider>
-        </HashRouter>
-      </CssVarsProvider>
-    </QueryClientProvider>
+          </AppContextProvider>
+        </AuthProvider>
+      </HashRouter>
+    </CssVarsProvider>
   </Auth0Provider>
 )
 

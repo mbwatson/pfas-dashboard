@@ -13,10 +13,11 @@ import {
   Error as ErrorIcon,
 } from '@mui/icons-material'
 import { collapseAllNested, darkStyles, defaultStyles, JsonView } from 'react-json-view-lite'
-import { useAppContext } from '@context'
+import { useAppContext, useData } from '@context'
 
 const DataTabStatusIndicator = ({ dataKey }) => {
-  const { data } = useAppContext(); console.log(data)
+  const data = useData()
+
   const errorIcon = <ErrorIcon fontSize="small" color="error" />
 
   if (!dataKey || !data || !(dataKey in data) || data[dataKey].isError) {
@@ -66,7 +67,9 @@ const DataTabContentSkeleton = () => {
 //
 
 const DataTabContent = ({ dataKey }) => {
-  const { data, preferences } = useAppContext()
+  const { preferences } = useAppContext()
+  const data = useData()
+
   const _data = data[dataKey].data
 
   const style = useMemo(() => preferences.colorMode.current === 'dark'
@@ -91,7 +94,7 @@ DataTabContent.propTypes = {
 //
 
 export const DataBrowser = () => {
-  const { data } = useAppContext()
+  const data = useData()
   const keys = Object.keys(data)
   const [tabIndex, setTabIndex] = useState(0)
 

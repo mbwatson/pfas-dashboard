@@ -15,6 +15,7 @@ import {
 } from '@mui/icons-material'
 import { useAppContext } from '@context'
 import {
+  CacheSelect,
   ColorModeSelect,
 } from './settings'
 
@@ -61,6 +62,13 @@ export const PreferencesDrawer = () => {
             <ColorModeSelect />
           </DialogContent>
 
+          <Divider />
+
+          <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Typography level="title-md">Behavior</Typography>
+
+            <CacheSelect />
+          </DialogContent>
           <Divider />
           
         </Stack>

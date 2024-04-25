@@ -1,8 +1,11 @@
 import { createContext, useCallback, useContext, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useColorScheme } from '@mui/joy/styles'
-import { useAuth, useData } from '@context'
-import { useWindowSize } from '@hooks'
+import { useAuth } from '@context'
+import {
+  useToggleLocalStorage,
+  useWindowSize,
+} from '@hooks'
 
 const AppContext = createContext({ })
 
@@ -24,10 +27,11 @@ export const AppContextProvider = ({ children }) => {
   const otherColorMode = useMemo(() => inDarkMode ? 'light' : 'dark', [mode])
   const toggleColorMode = useCallback(() => setMode(otherColorMode), [mode])
 
+  const cache = useToggleLocalStorage('use-cache')
+
   return (
     <AppContext.Provider value={{
       auth: useAuth(),
-      data: useData(),
       loading, setLoading,
       preferences: {
         visibility: drawerVisibility,
@@ -41,6 +45,7 @@ export const AppContextProvider = ({ children }) => {
           light: inLightMode,
           dark: inDarkMode,
         },
+        cache,
       },
       windowSize,
     }}>
