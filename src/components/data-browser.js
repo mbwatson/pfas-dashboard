@@ -13,6 +13,7 @@ import {
   Error as ErrorIcon,
 } from '@mui/icons-material'
 import { collapseAllNested, darkStyles, defaultStyles, JsonView } from 'react-json-view-lite'
+import 'react-json-view-lite/dist/index.css'
 import { useAppContext, useData } from '@context'
 
 const DataTabStatusIndicator = ({ dataKey }) => {

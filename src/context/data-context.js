@@ -23,7 +23,7 @@ const createSampleQuerier = endpoint => async () => {
 
   const getFirstPage = async () => {
     try {
-      const { data } = await axios.get(`${ apiRoot }/${ endpoint }?page=1&format=json`, {
+      const { data } = await axios.get(`${ apiRoot }/${ endpoint }?page=1`, {
         timeout: 1000 * 60 * 60, // 1 hr
       })
       return data

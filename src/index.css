@@ -20,7 +20,7 @@ body {
 }
 
 main {
-  width: 100%;
+  min-width: 100vw;
   margin: auto;
   padding: 0;
   flex: 1;
