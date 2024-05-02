@@ -40,7 +40,7 @@ This application is deployed in ACIS-managed UNC virtual machines at [pfas-app-d
 
 Being in the RENCI group on the [UNC VPN](https://vpn.unc.edu) is required to view the dev deployment of the application in your browser. The prod instance, on `pfas-app-prod` is accessible to the public Internet.
 
-VPN access is required for SSH, though, for both machines. SSH
+VPN access (specifically the RENCI group on the UNC VPN) is required for SSH, though, for both machines. 
 
 ```
 ssh <ONYEN>@pfas-app-dev.mdc.renci.unc.edu
