@@ -23,10 +23,11 @@ export const App = () => {
   }, [auth.user])
 
   const availableMenuItems = useMemo(() => {
+    let items = [...menuItems]
     if (!auth.user) {
-      return menuItems.filter(r => !r.requiresAuth)
+      items = items.filter(r => !r.requiresAuth)
     }
-    return menuItems 
+    return items.filter(r => !r.hidden)
   }, [auth.user])
 
   return (

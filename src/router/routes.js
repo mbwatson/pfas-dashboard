@@ -6,30 +6,33 @@ import {
 import {
   HomeView,
   RawDataView,
-  // TableView,
+  TableView,
 } from '../views'
 
 // this array is used to define both
 // routes (for react-router)
 export const routes = [
   {
-    id: 'home',
-    path: '/',
-    requiresAuth: false,
-    element: <HomeView />,
+    id: 'home', // just for uniqueness
+    path: '/', // url
+    hidden: false, // whether it has a menu item
+    requiresAuth: false, // whether requires a logged-in user to access
+    element: <HomeView />, // what to render--the page content component
   },
   {
     id: 'raw-data',
-    path: '/data',
+    path: '/raw',
+    hidden: false,
     requiresAuth: true,
     element: <RawDataView />,
   },
-  // {
-  //   id: 'table',
-  //   path: '/table',
-  //   requiresAuth: true,
-  //   element: <TableView />,
-  // },
+  {
+    id: 'table',
+    path: '/table',
+    hidden: false,
+    requiresAuth: true,
+    element: <TableView />,
+  },
 ]
 
 // here, we construct the main menu options

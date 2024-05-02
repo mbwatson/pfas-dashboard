@@ -1,5 +1,23 @@
-import { useCallback, useMemo, useState } from 'react'
-import { Box, Button, ButtonGroup, Checkbox, Dropdown, Input, Menu, List, ListItem, MenuButton, Option, Select, Sheet } from '@mui/joy'
+import { useMemo, useState } from 'react'
+import PropTypes from 'prop-types'
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Checkbox,
+  Dropdown,
+  Input,
+  Menu,
+  ListItem,
+  MenuButton,
+  MenuList,
+  Option,
+  Select,
+  Sheet,
+} from '@mui/joy'
+import {
+  KeyboardArrowDown as ChevronDownIcon,
+} from '@mui/icons-material'
 import {
   createColumnHelper,
   flexRender,
@@ -13,117 +31,12 @@ import { useData } from '@context'
 
 const columnHelper = createColumnHelper()
 
-const sampleProperties = [
-  'id',
-  'pfba_concentration',
-  'pfba_dl',
-  'pfba_flags',
-  'pfba_mrl',
-  'pfbs_concentration',
-  'pfbs_dl',
-  'pfbs_flags',
-  'pfbs_mrl',
-  'pfda_concentration',
-  'pfda_dl',
-  'pfda_flags',
-  'pfda_mrl',
-  'pfdoa_concentration',
-  'pfdoa_dl',
-  'pfdoa_flags',
-  'pfdoa_mrl',
-  'pfds_concentration',
-  'pfds_dl',
-  'pfds_flags',
-  'pfds_mrl',
-  'pfhpa_concentration',
-  'pfhpa_dl',
-  'pfhpa_flags',
-  'pfhpa_mrl',
-  'pfhps_concentration',
-  'pfhps_dl',
-  'pfhps_flags',
-  'pfhps_mrl',
-  'pfhxa_concentration',
-  'pfhxa_dl',
-  'pfhxa_flags',
-  'pfhxa_mrl',
-  'pfhxs_concentration',
-  'pfhxs_dl',
-  'pfhxs_flags',
-  'pfhxs_mrl',
-  'pfna_concentration',
-  'pfna_dl',
-  'pfna_flags',
-  'pfna_mrl',
-  'pfns_concentration',
-  'pfns_dl',
-  'pfns_flags',
-  'pfns_mrl',
-  'pfoa_concentration',
-  'pfoa_dl',
-  'pfoa_flags',
-  'pfoa_mrl',
-  'pfos_concentration',
-  'pfos_dl',
-  'pfos_flags',
-  'pfos_mrl',
-  'pfpea_concentration',
-  'pfpea_dl',
-  'pfpea_flags',
-  'pfpea_mrl',
-  'pfpes_concentration',
-  'pfpes_dl',
-  'pfpes_flags',
-  'pfpes_mrl',
-  'pfunda_concentration',
-  'pfunda_dl',
-  'pfunda_flags',
-  'pfunda_mrl',
-  'sample',
-]
-
-const columns = sampleProperties.map(
-  property => columnHelper.accessor(property, {
-    cell: info => info.getValue(),
-  })
-)
-
-export const TableView = () => {
-  const data = useData()
-  const [sorting, setSorting] = useState([])
-  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 25 })
-
-  const tableData = useMemo(() => {
-    if (!data) {
-      return []
-    }
-    return ['dust', 'water', 'serum',/* 'pfasData'*/]
-      .reduce((everything, key) => {
-        everything.push(...data[key].data)
-        return everything
-      }, [])
-  }, [data])
-
+const Pagination = ({ table }) => {
   const handleChangePageSize = (event, newPageSize) => {
     table.setPageSize(newPageSize)    
   }
 
-  const table = useReactTable({
-    data: tableData,
-    columns,
-    debugTable: true,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
-    onPaginationChange: setPagination,
-    state: {
-      pagination,
-      sorting,
-    },
-  })
-
-  const Pagination = useCallback(() => (
+  return (
     <Box sx={{
       display: 'flex',
       justifyContent: 'flex-start',
@@ -192,9 +105,16 @@ export const TableView = () => {
 
       {/* column visibility select */}
       <Dropdown>
-        <MenuButton variant="soft">COLUMNS</MenuButton>
-        <Menu>
-          <List>
+        <MenuButton
+          variant="soft"
+          endDecorator={ <ChevronDownIcon /> }
+        >COLUMNS</MenuButton>
+        <Menu aria-labelledby="column-select" size="sm">
+          <MenuList sx={{
+            maxWidth: '800px',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+          }}>
             {
               table.getAllLeafColumns().map(column => {
                 return (
@@ -204,16 +124,55 @@ export const TableView = () => {
                       checked={ column.getIsVisible() }
                       onChange={ column.getToggleVisibilityHandler() }
                       variant="soft"
+                      size="sm"
                     />
                   </ListItem>
                 )
               })
             }
-          </List>
+          </MenuList>
         </Menu>
       </Dropdown>
     </Box>
-  ), [pagination])
+  )
+}
+
+Pagination.propTypes = {
+  table: PropTypes.object.isRequired,
+}
+
+export const TableView = () => {
+  const { pfasData } = useData()
+  const [sorting, setSorting] = useState([])
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 25 })
+
+  const sampleProperties = useMemo(() => {
+    if (!pfasData?.data?.length) {
+      return []
+    }
+    return Object.keys(pfasData.data[0])
+  }, [pfasData.data])
+
+  const columns = sampleProperties.map(
+    property => columnHelper.accessor(property, {
+      cell: info => info.getValue(),
+    })
+  )
+
+  const table = useReactTable({
+    data: pfasData.data,
+    columns,
+    debugTable: true,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
+    onPaginationChange: setPagination,
+    state: {
+      pagination,
+      sorting,
+    },
+  })
 
   return (
     <ContentPage sx={{ maxWidth: 'unset', minWidth: '100vw', overflow: 'unset' }}>
@@ -257,8 +216,9 @@ export const TableView = () => {
         'tfoot tr:first-of-type th': { fontSize: '75%' },
         'tfoot tr:nth-of-type(2) th': { fontSize: '100%' },
       }}>
-        <Pagination />
-        <table className={ !data ? 'loading' : 'loaded' }>
+        <Pagination table={ table } />
+        
+        <table className={ pfasData.isLoading ? 'loading' : 'loaded' }>
           <thead>
             {table.getHeaderGroups().map(headerGroup => (
               <tr key={headerGroup.id}>

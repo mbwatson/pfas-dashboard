@@ -47,7 +47,7 @@
     "@fontsource/inter": "^5.0.16",
     "@hookform/resolvers": "^3.3.4",
     "@mui/icons-material": "^5.15.11",
-    "@mui/joy": "^5.0.0-beta.29",
+    "@mui/joy": "^5.0.0-beta.40",
     "@mui/material": "^5.15.11",
     "@tanstack/query-sync-storage-persister": "^5.29.0",
     "@tanstack/react-query": "^5.29.2",
