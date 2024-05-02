@@ -10,9 +10,14 @@ import {
   Stack,
   Typography,
 } from '@mui/joy'
-import { Tune as MenuIcon } from '@mui/icons-material'
+import {
+  Tune as MenuIcon,
+} from '@mui/icons-material'
 import { useAppContext } from '@context'
-import { ColorModeToggle } from './color-mode-toggle'
+import {
+  CacheSelect,
+  ColorModeSelect,
+} from './settings'
 
 export const PreferencesDrawer = () => {
   const { preferences } = useAppContext()
@@ -45,31 +50,25 @@ export const PreferencesDrawer = () => {
           alignItems="stretch"
           gap={ 2 }
         >
-          <DialogTitle>Preferences</DialogTitle>
           <ModalClose size="lg" />
-          
+
+          <DialogTitle>Preferences</DialogTitle>
+
           <Divider />
 
-          <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <Typography level="title-lg">Color mode:</Typography>
-            <Stack
-              direction="row"
-              justifyContent="flex-start"
-              alignItems="center"
-              gap={ 1 }
-            >
-              <ColorModeToggle />
-              <div>
-                <Typography level="title-md">
-                  Current: <strong>{ preferences.colorMode.current[0].toUpperCase() + preferences.colorMode.current.slice(1) }</strong>
-                </Typography>
-                <Typography level="body-xs">
-                  Switch to <strong>{ preferences.colorMode.other[0].toUpperCase() + preferences.colorMode.other.slice(1) }</strong> mode
-                </Typography>
-              </div>
-            </Stack>
+          <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Typography level="title-md">Look & Feel</Typography>
+            
+            <ColorModeSelect />
           </DialogContent>
 
+          <Divider />
+
+          <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Typography level="title-md">Behavior</Typography>
+
+            <CacheSelect />
+          </DialogContent>
           <Divider />
           
         </Stack>

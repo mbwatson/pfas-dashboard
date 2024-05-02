@@ -10,7 +10,7 @@ const SIZES = {
   xl: '1600px',
 }
 
-export const ContentPage = ({ children, maxWidth = 'md' }) => {
+export const ContentPage = ({ children, maxWidth = 'md', sx }) => {
   return (
     <Fragment>
       <Box sx={{
@@ -21,6 +21,7 @@ export const ContentPage = ({ children, maxWidth = 'md' }) => {
         minWidth: SIZES[maxWidth],
         maxWidth: SIZES[maxWidth],
         mx: 'auto',
+        ...sx
       }}>
         { children }
       </Box>
@@ -33,4 +34,5 @@ export const ContentPage = ({ children, maxWidth = 'md' }) => {
 ContentPage.propTypes = {
   children: PropTypes.node,
   maxWidth: PropTypes.oneOf(Object.keys(SIZES)),
+  sx: PropTypes.object,
 }

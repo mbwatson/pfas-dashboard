@@ -1,56 +1,52 @@
 import {
-  Dashboard as DashboardIcon,
-  QueryStats as AnalysisIcon,
-  Map as MapIcon,
-  Info as AboutIcon,
-  HeadsetMic as ContactIcon,
+  DataObject as RawDataIcon,
+  Home as HomeIcon,
+  TableRows as TableIcon,
 } from '@mui/icons-material'
 import {
-  AboutView,
-  AnalysisView,
-  ContactView,
   HomeView,
-  MapView,
+  RawDataView,
+  TableView,
 } from '../views'
 
 // this array is used to define both
-//   (1) routes (for react-router) and
-//   (2) main menu links
+// routes (for react-router)
 export const routes = [
   {
-    path: '/',
-    label: 'Dashboard',
-    icon: <DashboardIcon />,
-    requiresAuth: false,
-    element: <HomeView />,
+    id: 'home', // just for uniqueness
+    path: '/', // url
+    hidden: false, // whether it has a menu item
+    requiresAuth: false, // whether requires a logged-in user to access
+    element: <HomeView />, // what to render--the page content component
   },
   {
-    path: '/analysis',
-    label: 'Analysis',
-    icon: <AnalysisIcon />,
+    id: 'raw-data',
+    path: '/raw',
+    hidden: false,
     requiresAuth: true,
-    element: <AnalysisView />,
+    element: <RawDataView />,
   },
   {
-    path: '/map',
-    label: 'Map',
-    icon: <MapIcon />,
+    id: 'table',
+    path: '/table',
+    hidden: false,
     requiresAuth: true,
-    element:  <MapView />,
-  },
-  {
-    path: '/about',
-    label: 'About',
-    icon: <AboutIcon />,
-    requiresAuth: false,
-    element: <AboutView />,
-  },
-  {
-    path: '/contact',
-    label: 'Contact',
-    icon: <ContactIcon />,
-    requiresAuth: false,
-    element: <ContactView />,
+    element: <TableView />,
   },
 ]
 
+// here, we construct the main menu options
+// and pair an icon with each route.
+// `id` identifies the pairing.
+export const menuItems = [
+  { id: 'home',      label: 'Home', icon: <HomeIcon /> },
+  { id: 'raw-data',  label: 'Raw Data', icon: <RawDataIcon /> },
+  { id: 'table',     label: 'Table', icon: <TableIcon /> },
+].reduce((acc, { id, icon, label }) => {
+  const route = routes.find(r => r.id === id)
+  if (!route) {
+    return acc
+  }
+  acc.push({ ...route, icon, label })
+  return acc
+}, [])

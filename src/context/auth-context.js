@@ -1,26 +1,69 @@
-import { createContext, useContext, useMemo } from 'react'
+import { createContext, useContext, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
-import { useNavigate } from 'react-router-dom'
-import { useLocalStorage } from '@hooks'
+import { useAuth0 } from '@auth0/auth0-react'
 
 const AuthContext = createContext({ })
 
 export const useAuth = () => useContext(AuthContext)
 
-export const AuthProvider = ({ children }) => {
-  const navigate = useNavigate()
-  const [user, setUser] = useLocalStorage('user', null)
+const useDevelopmentAuth0 = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const user = useMemo(() => {
+    if (!isAuthenticated) {
+      return undefined
+    }
+    return {
+      email: "email@ddre.ss",
+      email_verified: true,
+      family_name: "Doe",
+      given_name: "J",
+      locale: "en",
+      name: "J Doe",
+      nickname: "jdoe",
+      picture: null,
+      sub: "google-oauth2|XXXXXXXXXXXXXXXXXXXXX",
+      updated_at: new Date().toISOString(),
+    }
+  }, [isAuthenticated])
 
-  const login = () => {
-    setUser({ username: 'fake_user' })
+  const loginWithRedirect = () => {
+    setIsAuthenticated(true)
   }
-
   const logout = () => {
-    setUser(null)
-    navigate("/", { replace: true })
+    setIsAuthenticated(false)
+  }
+  return {
+    isAuthenticated,
+    user,
+    loginWithRedirect,
+    logout,
+  }
+}
+
+export const AuthProvider = ({ children }) => {
+  const {
+    isAuthenticated,
+    user,
+    loginWithRedirect,
+    logout: auth0Logout,
+  } = process.env.NODE_ENV !== 'production'
+    ? useDevelopmentAuth0()
+    : useAuth0()
+
+  // these are simply wrappers around the Auth0 functions,
+  // allowing injection of custom app-related logic.
+  const login = () => {
+    loginWithRedirect()
+  }
+  const logout = () => {
+    auth0Logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      }
+    })
   }
 
-  const value = useMemo(() => ({ user, login, logout }), [user])
+  const value = useMemo(() => ({ user, login, logout, isAuthenticated }), [user])
 
   return (
     <AuthContext.Provider value={ value }>
