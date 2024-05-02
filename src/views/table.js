@@ -141,6 +141,9 @@ Pagination.propTypes = {
   table: PropTypes.object.isRequired,
 }
 
+const columnHeader = ({ column }) => column.id
+const columnFooter = ({ column }) => column.id
+
 export const TableView = () => {
   const { pfasData } = useData()
   const [sorting, setSorting] = useState([])
@@ -156,6 +159,8 @@ export const TableView = () => {
   const columns = sampleProperties.map(
     property => columnHelper.accessor(property, {
       cell: info => info.getValue(),
+      header: columnHeader,
+      footer: columnFooter,
     })
   )
 
