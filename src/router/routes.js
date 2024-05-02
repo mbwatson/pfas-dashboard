@@ -22,7 +22,7 @@ export const routes = [
   {
     id: 'raw-data',
     path: '/raw',
-    hidden: false,
+    hidden: true,
     requiresAuth: true,
     element: <RawDataView />,
   },
