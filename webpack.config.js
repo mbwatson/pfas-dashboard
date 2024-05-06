@@ -107,6 +107,7 @@ module.exports = {
     },
     historyApiFallback: true,
     static: path.resolve(__dirname, 'dist'),
+    port: 8000,
     setupMiddlewares: (middlewares, devServer) => {
       if (!devServer) {
         throw new Error('webpack-dev-server is not defined')
