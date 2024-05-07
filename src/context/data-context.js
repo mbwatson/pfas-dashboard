@@ -60,44 +60,6 @@ const createSampleQuerier = endpoint => async () => {
     })
 }
 
-const createGeoJsonQuerier = endpoint => async () => {
-  console.info(`fetching data from ${ apiRoot }/${ endpoint }...`)
-
-  const getFirstPage = async () => {
-    const { data } = await axios.get(`${ apiRoot }/${ endpoint }?page=1`)
-    if (!data) {
-      return
-    }
-    return data
-  }
-
-  // first, let's get the first page and how many pages there are in total.
-  const { count } = await getFirstPage()
-
-  if (!count) {
-    return []
-  }
-
-  // if we're here, we have a non-zero number of pages,
-  // so we make the neccssary number of requests.
-  const per_page = 10 // django rest framework default
-  const promises = [...Array(Math.ceil(count / per_page)).keys()]
-    .map(p => axios(`${ apiRoot }/${ endpoint }?page=${ p + 1 }`))
-
-  // return all features in one geojson feature collection.
-  return Promise.all(promises)
-    .then(responses => responses.map(r => r.data)
-      .reduce((geojson, d) => {
-        geojson.features.push(...d.features)
-        return geojson
-      }, { type: 'FeatureCollection', features: [] })
-    )
-    .catch(error => {
-      console.error(error.message)
-      return []
-    })
-}
-
 //
 
 // we want tanstack's queryClient available within our data context,
@@ -107,34 +69,14 @@ const DataContext = createContext({ })
 export const useData = () => useContext(DataContext)
 
 export const DataWrangler = ({ children }) => {
-  const dustSamplesQuery = useQuery({
-    queryKey: ['ahhs_dust_data'],
-    queryFn: createSampleQuerier('ahhs_dust_data'),
-  })
-  const waterSamplesQuery = useQuery({
-    queryKey: ['ahhs_water_data'],
-    queryFn: createSampleQuerier('ahhs_water_data'),
-  })
-  const serumSamplesQuery = useQuery({
-    queryKey: ['ncserum'],
-    queryFn: createSampleQuerier('ncserum'),
-  })
   const pfasDataQuery = useQuery({
     queryKey: ['pfas_sample_data'],
     queryFn: createSampleQuerier('pfas_sample_data'),
   })
-  const tapwaterSamplesQuery = useQuery({
-    queryKey: ['pfas_in_tapwater_usgs'],
-    queryFn: createGeoJsonQuerier('pfas_in_tapwater_usgs'),
-  })
 
   return (
     <DataContext.Provider value={{
-      dust: dustSamplesQuery,
-      water: waterSamplesQuery,
-      serum: serumSamplesQuery,
       pfasData: pfasDataQuery,
-      tapwater: tapwaterSamplesQuery,
     }}>
       { children }
     </DataContext.Provider>

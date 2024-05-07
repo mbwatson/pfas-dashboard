@@ -1,6 +1,6 @@
 import {
   DataObject as RawDataIcon,
-  Home as HomeIcon,
+  Dashboard as HomeIcon,
   TableRows as TableIcon,
 } from '@mui/icons-material'
 import {
@@ -9,21 +9,20 @@ import {
   TableView,
 } from '../views'
 
-// this array is used to define both
-// routes (for react-router)
+// this array is used to define routes (for react-router).
 export const routes = [
   {
     id: 'home', // just for uniqueness
     path: '/', // url
     hidden: false, // whether it has a menu item
-    requiresAuth: false, // whether requires a logged-in user to access
+    requiresAuth: false, // whether it requires a logged-in user to access
     element: <HomeView />, // what to render--the page content component
   },
   {
     id: 'raw-data',
     path: '/raw',
-    hidden: true,
-    requiresAuth: true,
+    hidden: true, // route will exist, but user will have to visit `/#/raw` manually...
+    requiresAuth: true, // ...provided they're logged in.
     element: <RawDataView />,
   },
   {
