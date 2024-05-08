@@ -6,7 +6,16 @@ import {
   Select,
   Stack,
   Typography,
+  Dropdown,
+  MenuButton,
+  Menu,
+  MenuItem,
+  ListItemDecorator,
+  ListItemContent,
 } from '@mui/joy';
+import {
+  KeyboardArrowDown as ExpandIcon,
+} from '@mui/icons-material'
 import { DashboardCard } from '@components/dashboard';
 import { useData } from '@context';
 import { ResponsivePie } from '@nivo/pie'
@@ -31,7 +40,20 @@ const substanceIds = [
   'pfuda',
 ]
 
-const media = ['dust', 'water', 'blood']
+const media = [
+  {
+    id: 'dust',
+    name: 'Dust',
+  },
+  {
+    id: 'water', 
+    name: 'Water',
+  },
+  {
+    id: 'blood',
+    name: 'Blood',
+  },
+]
 
 const emptySubstanceBuckets = substanceIds
   .reduce((acc, id) => {
@@ -49,19 +71,19 @@ const detectedSubstances = sample => {
 }
 
 const SubstancesInSamplesCard = () => {
-  const [selectedMedium, setSelectedMedium] = useState('dust')
+  const [selectedMediumId, setSelectedMediumId] = useState('dust')
   const { pfasData } = useData();
 
   const substanceBuckets = useMemo(() => pfasData.data
     .reduce((acc, sample) => {
-      if (sample.medium !== selectedMedium) {
+      if (sample.medium !== selectedMediumId) {
         return acc
       }
       detectedSubstances(sample).forEach(substanceId => {
         acc[substanceId] += 1
       })
       return acc
-  }, { ...emptySubstanceBuckets }), [pfasData.data, selectedMedium])
+  }, { ...emptySubstanceBuckets }), [pfasData.data, selectedMediumId])
 
   const chartData = useMemo(() => {
     if (!substanceBuckets) {
@@ -73,23 +95,48 @@ const SubstancesInSamplesCard = () => {
     }))
   }, [substanceBuckets])
 
-  const MediumSelect = useCallback(() => {
+  const handleSelectMedium = mediumId => () => {
+    setSelectedMediumId(mediumId)
+  }
+
+  const selectedMediumName = useMemo(() => {
+    const index = media.findIndex(m => m.id === selectedMediumId)
+    if (index === -1) {
+      console.error(`could not find medium name for ${ selectedMediumId }`)
+      return '?'
+    }
+    return media[index].name
+  }, [selectedMediumId])
+
+  const MediumMenu = useCallback(() => {
     return (
-      <Select
-        value={ selectedMedium }
-        onChange={ (event, newValue) => setSelectedMedium(newValue) }
-      >
-        {
-          media.map(field => (
-            <Option
-              key={ `option-${ field }` }
-              value={ field }
-            >{ field }</Option>
-          ))
-        }
-      </Select>
+      <Dropdown>
+        <MenuButton
+          variant="outlined"
+          color="neutral"
+          endDecorator={ <ExpandIcon /> }
+        >
+          <Typography level="title-lg">{ selectedMediumName }</Typography>
+        </MenuButton>
+
+        <Menu>
+          {
+            media.map(({ id, name }) => (
+              <MenuItem
+                key={ `option-${ id }` }
+                onClick={ handleSelectMedium(id) }
+                selected={ id === selectedMediumId }
+              >
+                <ListItemContent>
+                  <Typography level="title-lg">{ name }</Typography>
+                </ListItemContent>
+              </MenuItem>
+            ))
+          }
+        </Menu>
+      </Dropdown>
     );
-  }, [selectedMedium]);
+  }, [selectedMediumId]);
 
   if (!Object.keys(substanceBuckets).length === 0) {
     return null
@@ -98,8 +145,8 @@ const SubstancesInSamplesCard = () => {
   return (
     <DashboardCard title={
       <Stack direction="row" justifyContent="space-between" alignItems="center" gap={ 2 }>
-        <Typography level="title-lg">PFAS Chemicals by Medium</Typography>
-        <MediumSelect />
+        <Typography level="title-lg">PFAS Chemicals in { selectedMediumName }</Typography>
+        <MediumMenu />
       </Stack>
     }>
       <div style={{ minHeight: '400px' }}>

@@ -7,7 +7,10 @@ export const HomeView = () => {
   const { user } = useAuth()
 
   return (
-    <ContentPage>
+    <ContentPage sx={{
+      maxWidth: 'unset',
+      minWidth: '100vw',
+    }}>
       { user
         ? <Dashboard />
         : <Typography>Welcome! Please log in.</Typography>
