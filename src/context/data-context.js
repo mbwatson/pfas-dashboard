@@ -23,7 +23,7 @@ const createSampleQuerier = endpoint => async () => {
 
   const getFirstPage = async () => {
     try {
-      const { data } = await axios.get(`${ apiRoot }/${ endpoint }?page=1`, {
+      const { data } = await axios.get(`${ apiRoot }/${ endpoint }?page=1&psize=1`, {
         timeout: 1000 * 60 * 60 * 24, // 1 day
       })
       return data
@@ -42,9 +42,9 @@ const createSampleQuerier = endpoint => async () => {
 
   // if we're here, we have a non-zero number of pages,
   // so we make the neccssary number of requests.
-  const per_page = 10 // django rest framework default
-  const promises = [...Array(Math.ceil(data.count / per_page)).keys()]
-    .map(p => axios(`${ apiRoot }/${ endpoint }?page=${ p + 1 }`))
+  const PER_PAGE = 100
+  const promises = [...Array(Math.ceil(data.count / PER_PAGE)).keys()]
+    .map(p => axios(`${ apiRoot }/${ endpoint }?page=${ p + 1 }&psize=${ PER_PAGE }`))
 
   // return all results in one array.
   return Promise.all(promises)
