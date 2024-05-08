@@ -11,7 +11,7 @@ export const DashboardCard = ({ children, title }) => {
         p: 1,
         textAlign: 'center',
         borderRadius: 'sm',
-        height: '400px',
+        height: '500px',
         border: '1px solid',
         borderColor: preferences.colorMode.light ? 'primary.200' : 'primaryDark.700',
         backgroundColor: preferences.colorMode.light ? 'primary.100' : 'primaryDark.800',
