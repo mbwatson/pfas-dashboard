@@ -15,6 +15,10 @@ import {
 } from '@mui/joy'
 import {
   KeyboardArrowDown as ChevronDownIcon,
+  FirstPage as FirstIcon,
+  NavigateBefore as PreviousIcon,
+  NavigateNext as NextIcon,
+  LastPage as LastIcon,
 } from '@mui/icons-material'
 
 export const Pagination = ({ table }) => {
@@ -28,31 +32,28 @@ export const Pagination = ({ table }) => {
       justifyContent: 'flex-start',
       alignItems: 'stretch',
       gap: 2,
-      py: 2,
       'span': { alignSelf: 'center' },
       'input': { alignSelf: 'stretch', width: '4rem' },
       'select': { alignSelf: 'stretch' },
-      position: 'sticky',
-      top: 0,
     }}>
       {/* page navigation buttons */}
       <ButtonGroup variant="soft">
         <Button
           onClick={ () => table.firstPage() }
           disabled={ !table.getCanPreviousPage() }
-        >FIRST</Button>
+        ><FirstIcon /></Button>
         <Button
           onClick={ () => table.previousPage() }
           disabled={ !table.getCanPreviousPage() }
-        >PREV</Button>
+        ><PreviousIcon /></Button>
         <Button
           onClick={ () => table.nextPage() }
           disabled={ !table.getCanNextPage() }
-        >NEXT</Button>
+        ><NextIcon /></Button>
         <Button
           onClick={ () => table.lastPage() }
           disabled={ !table.getCanNextPage() }
-        >LAST</Button>
+        ><LastIcon /></Button>
       </ButtonGroup>
 
       {/* current page & total pages */}

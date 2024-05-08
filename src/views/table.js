@@ -1,5 +1,9 @@
 import { useState } from 'react'
-import { Button } from '@mui/joy'
+import { Button, CircularProgress, Divider, Stack } from '@mui/joy'
+import {
+  FilterList as FilterIcon,
+  Close as ClearFiltersIcon,
+} from '@mui/icons-material'
 import {
   createColumnHelper,
   getCoreRowModel,
@@ -107,6 +111,9 @@ export const TableView = () => {
   const [sorting, setSorting] = useState([])
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 25 })
   const [columnFilters, setColumnFilters] = useState([])
+  const [filtersVisibility, setFiltersVisibility] = useState(false)
+
+  const handleToggleFiltersVisibility = () => setFiltersVisibility(!filtersVisibility)
 
   const table = useReactTable({
     data: pfasData.data,
@@ -129,11 +136,59 @@ export const TableView = () => {
     },
   })
 
-  return (
-    <ContentPage sx={{ maxWidth: 'unset', minWidth: '100vw', overflow: 'unset' }}>
-      <Pagination table={ table } />
+  if (pfasData.isLoading) {
+    return (
+      <Stack
+        justifyContent="center"
+        alignItems="center"
+        sx={{ mt: 'calc(100px + 5rem)' }}
+      >
+        <CircularProgress />
+      </Stack>
+    )
+  }
 
-      <Button onClick={ () => table.resetColumnFilters() }>Clear Filters</Button>
+  return (
+    <ContentPage sx={{
+      maxWidth: 'unset',
+      minWidth: '100vw',
+      overflow: 'unset',
+      '.filter': {
+        maxHeight: filtersVisibility ? '48px' : 0,
+        overflow: 'hidden',
+        transition: 'max-height 250ms',
+      }
+    }}>
+      <Stack
+        variant="outlined"
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="center"
+        gap={ 2 }
+        sx={{
+          position: 'sticky',
+          left: '1rem',
+          my: 1,
+          p: 1,
+          display: 'inline-flex'
+        }}
+      >
+        <Pagination table={ table } />
+
+        <Divider orientation="vertical" />
+
+        <Button
+          variant={ filtersVisibility ? 'soft' : 'outlined' }
+          onClick={ handleToggleFiltersVisibility }
+          startDecorator={ <FilterIcon /> }
+        >{ filtersVisibility ? 'Hide' : 'Show' } Filters</Button>
+        <Button
+          variant="outlined"
+          onClick={ () => table.resetColumnFilters() }
+          startDecorator={ <ClearFiltersIcon /> }
+        >Clear Filters</Button>
+      </Stack>
+
 
       <DataTable table={ table } />
 

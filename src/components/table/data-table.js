@@ -57,7 +57,7 @@ export const DataTable = ({ table }) => {
                 colSpan={header.colSpan}
               >
                 { header.isPlaceholder ? null : (
-                  <span { ...{
+                  <span className="sortable" { ...{
                     onClick: header.column.getToggleSortingHandler(),
                   } }>
                     { flexRender(header.column.columnDef.header, header.getContext()) }
@@ -65,7 +65,7 @@ export const DataTable = ({ table }) => {
                   </span>
                 ) }
                 { header.column.getCanFilter() ? (
-                  <div>
+                  <div className="filter">
                     <Filter column={ header.column } />
                   </div>
                 ) : null }
@@ -176,6 +176,7 @@ function Filter({ column }) {
         value={ columnFilterValue ?? '' }
         onChange={ value => column.setFilterValue(value) }
         placeholder={ `Search... (${ column.getFacetedUniqueValues().size })` }
+        list={ column.id + 'list' }
       />
       <div />
     </Fragment>

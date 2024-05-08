@@ -73,7 +73,7 @@ export const Dashboard = () => {
       <Stack
         justifyContent="center"
         alignItems="center"
-        sx={{ flex: 1 }}
+        sx={{ mt: '100px' }}
       >
         <CircularProgress />
       </Stack>
@@ -87,20 +87,17 @@ export const Dashboard = () => {
       </Grid>
       <Grid xs={ 4 }>
         <DashboardCard title="Dolor laborum">
-          Ad proident tempor sint sit ex adipisicing consequat est velit in ex reprehenderit do enim cupidatat.
-          Proident sed qui ex dolor in esse mollit minim elit.
+          ... <br /> ... <br /> ...
         </DashboardCard>
       </Grid>
       <Grid xs={ 4 }>
         <DashboardCard title="Lorem ipsum">
-          Irure deserunt ut aute excepteur magna ad eu nulla minim cupidatat dolore sint.
-          Veniam incididunt excepteur sunt ad qui ad in ad laboris et consequat veniam deserunt.
+          ... <br /> ... <br /> ...
         </DashboardCard>
       </Grid>
       <Grid xs={ 8 }>
         <DashboardCard title="Do mollit">
-          Dolor laborum ea ad fugiat ullamco et in ad est laborum culpa eiusmod reprehenderit dolor.
-          Ut non consequat dolor eiusmod enim commodo amet dolor reprehenderit deserunt id cupidatat qui fugiat aute consequat.
+          ... <br /> ... <br /> ...
         </DashboardCard>
       </Grid>
     </Grid>
