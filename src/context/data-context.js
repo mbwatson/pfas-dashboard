@@ -2,7 +2,7 @@
   this context provider is responsible for application data.
   it fetches, massages, assembles, and--of course--provides data.
 */
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 
@@ -65,6 +65,26 @@ const createSampleQuerier = endpoint => async () => {
 // we want tanstack's queryClient available within our data context,
 // so we create a wrapper that provides tanstack query functionality.
 
+const chemicals = [
+  { id: 'pfna',   name: 'pfna name' },
+  { id: 'pfds',   name: 'pfds name' },
+  { id: 'pfhxa',  name: 'pfhxa name' },
+  { id: 'pfoa',   name: 'pfoa name' },
+  { id: 'pfos',   name: 'pfos name' },
+  { id: 'pfba',   name: 'pfba name' },
+  { id: 'pfdoa',  name: 'pfdoa name' },
+  { id: 'pfpea',  name: 'pfpea name' },
+  { id: 'pfhps',  name: 'pfhps name' },
+  { id: 'pfunda', name: 'pfunda name' },
+  { id: 'pfbs',   name: 'pfbs name' },
+  { id: 'pfpes',  name: 'pfpes name' },
+  { id: 'pfns',   name: 'pfns name' },
+  { id: 'pfhpa',  name: 'pfhpa name' },
+  { id: 'pfhxs',  name: 'pfhxs name' },
+  { id: 'pfda',   name: 'pfda name' },
+  { id: 'pfuda',  name: 'pfuda name' },
+]
+
 const DataContext = createContext({ })
 export const useData = () => useContext(DataContext)
 
@@ -74,9 +94,13 @@ export const DataWrangler = ({ children }) => {
     queryFn: createSampleQuerier('pfas_sample_data'),
   })
 
+  const chemicalIds = useMemo(() => chemicals.map(s => s.id), [])
+
   return (
     <DataContext.Provider value={{
       pfasData: pfasDataQuery,
+      chemicals,
+      chemicalIds,
     }}>
       { children }
     </DataContext.Provider>

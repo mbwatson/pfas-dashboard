@@ -169,7 +169,7 @@ export const TableView = () => {
           position: 'sticky',
           left: '1rem',
           my: 1,
-          p: 1,
+          py: 1,
           display: 'inline-flex'
         }}
       >
@@ -189,10 +189,11 @@ export const TableView = () => {
         >Clear Filters</Button>
       </Stack>
 
-
       <DataTable table={ table } />
 
-      <Pagination table={ table } />
+      <Stack py={ 2 }>
+        <Pagination table={ table } />
+      </Stack>
     </ContentPage>
   )
 }

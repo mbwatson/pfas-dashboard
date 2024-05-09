@@ -1,14 +1,14 @@
 import { useCallback, useMemo, useState } from 'react';
 import {
   Avatar,
-  Stack,
-  Typography,
   Dropdown,
+  ListItemDecorator,
+  ListItemContent,
   MenuButton,
   Menu,
   MenuItem,
-  ListItemDecorator,
-  ListItemContent,
+  Stack,
+  Typography,
 } from '@mui/joy';
 import {
   KeyboardArrowDown as ExpandIcon,
@@ -20,53 +20,16 @@ import { DashboardCard } from '@components/dashboard';
 import { useAppContext, useData } from '@context';
 import { ResponsivePie } from '@nivo/pie'
 
-const substances = [
-  { id: 'pfna',   name: 'pfna name' },
-  { id: 'pfds',   name: 'pfds name' },
-  { id: 'pfhxa',  name: 'pfhxa name' },
-  { id: 'pfoa',   name: 'pfoa name' },
-  { id: 'pfos',   name: 'pfos name' },
-  { id: 'pfba',   name: 'pfba name' },
-  { id: 'pfdoa',  name: 'pfdoa name' },
-  { id: 'pfpea',  name: 'pfpea name' },
-  { id: 'pfhps',  name: 'pfhps name' },
-  { id: 'pfunda', name: 'pfunda name' },
-  { id: 'pfbs',   name: 'pfbs name' },
-  { id: 'pfpes',  name: 'pfpes name' },
-  { id: 'pfns',   name: 'pfns name' },
-  { id: 'pfhpa',  name: 'pfhpa name' },
-  { id: 'pfhxs',  name: 'pfhxs name' },
-  { id: 'pfda',   name: 'pfda name' },
-  { id: 'pfuda',  name: 'pfuda name' },
-]
-
-const substanceIds = substances.map(s => s.id)
-
 const media = [
   { id: 'dust',    name: 'Dust',      icon: <DustIcon /> },
   { id: 'water',   name: 'Water',     icon: <WaterIcon /> },
   { id: 'blood',   name: 'Blood',     icon: <BloodIcon /> },
 ]
 
-const emptySubstanceBuckets = substanceIds
-  .reduce((acc, id) => {
-    acc[id] = 0;
-    return acc;
-  }, {});
-
-const detectedSubstances = sample => {
-  return substanceIds.reduce((acc, substanceId) => {
-    if (sample[`${ substanceId }_concentration`] > 0) {
-      acc.push(substanceId)
-    }
-    return acc
-  }, [])
-}
-
-export const SubstancesByMediumCard = () => {
+export const ChemicalsByMediumCard = () => {
   const { preferences } = useAppContext()
   const [selectedMediumId, setSelectedMediumId] = useState('dust')
-  const { pfasData } = useData();
+  const { chemicals, chemicalIds, pfasData } = useData();
 
   const selectedMedium = useMemo(() => {
     const index = media.findIndex(m => m.id === selectedMediumId)
@@ -77,22 +40,36 @@ export const SubstancesByMediumCard = () => {
     return media[index]
   }, [selectedMediumId])
 
+  const emptySubstanceBuckets = chemicalIds
+    .reduce((acc, id) => {
+      acc[id] = 0;
+      return acc;
+    }, {});
+
+  const detectedChemicals = sample => {
+    return chemicalIds.reduce((acc, chemicalId) => {
+      if (sample[`${ chemicalId }_concentration`] > 0) {
+        acc.push(chemicalId)
+      }
+      return acc
+    }, [])
+  }
 
   const chartData = useMemo(() => {
-    const substanceBuckets = pfasData.data
+    const chemicalBuckets = pfasData.data
       .reduce((acc, sample) => {
         if (sample.medium !== selectedMediumId) {
           return acc
         }
-        detectedSubstances(sample).forEach(substanceId => {
-          acc[substanceId] += 1
+        detectedChemicals(sample).forEach(chemicalId => {
+          acc[chemicalId] += 1
         })
         return acc
     }, { ...emptySubstanceBuckets })
 
-    return Object.keys(substanceBuckets).map(substanceId => ({
-      id: substanceId,
-      value: substanceBuckets[substanceId],
+    return Object.keys(chemicalBuckets).map(chemicalId => ({
+      id: chemicalId,
+      value: chemicalBuckets[chemicalId],
     }))
   }, [selectedMediumId, pfasData.data])
 
@@ -107,7 +84,7 @@ export const SubstancesByMediumCard = () => {
           variant="soft"
           color="primary"
           endDecorator={ <ExpandIcon /> }
-          sx={{ px: 1 }}
+          sx={{ px: 1, mx: 1 }}
         >
           <Typography
             level="h3"
@@ -159,8 +136,11 @@ export const SubstancesByMediumCard = () => {
           gap={ 1 }
         >
           <Avatar variant="plain" color="primary">{ selectedMedium.icon }</Avatar>
-          <Typography level="h3">PFAS Chemicals in</Typography>
-          <MediumSelect />
+          <Typography level="h3">
+            <span>PFAS Chemicals in</span>
+            <MediumSelect />
+            <span>Samples</span>
+          </Typography>
         </Stack>
       }
     >

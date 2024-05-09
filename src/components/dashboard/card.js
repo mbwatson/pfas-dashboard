@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { Card, CardContent, Typography } from '@mui/joy'
+import { Box, Card, CardContent, Typography } from '@mui/joy'
 import { useAppContext } from '@context'
 
 export const DashboardCard = ({ children, title }) => {
@@ -34,11 +34,13 @@ export const DashboardCard = ({ children, title }) => {
         },
       }}
     >
-      {
-        typeof title === 'string'
-          ? <Typography level="h3">{ title }</Typography>
-          : title
-      }
+      <Box>
+        {
+          typeof title === 'string'
+            ? <Typography level="h3">{ title }</Typography>
+            : title
+        }
+      </Box>
 
       <CardContent className="content">
         { children }

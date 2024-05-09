@@ -139,6 +139,7 @@ function Filter({ column }) {
             ? `(${ column.getFacetedMinMaxValues()?.[0] })`
             : ''
         }`}
+        style={{ backgroundColor: 'inherit', color: 'inherit' }}
       />
       <DebouncedInput
         type="number"
@@ -151,12 +152,14 @@ function Filter({ column }) {
             ? `(${ column.getFacetedMinMaxValues()?.[1] })`
             : ''
         }` }
+        style={{ backgroundColor: 'inherit', color: 'inherit' }}
       />
     </div>
   ) : filterVariant === 'select' ? (
     <select
       onChange={ e => column.setFilterValue(e.target.value) }
       value={ columnFilterValue }
+      style={{ backgroundColor: 'inherit', color: 'inherit' }}
     >
       <option value="">All</option>
       {
@@ -177,6 +180,7 @@ function Filter({ column }) {
         onChange={ value => column.setFilterValue(value) }
         placeholder={ `Search... (${ column.getFacetedUniqueValues().size })` }
         list={ column.id + 'list' }
+        style={{ backgroundColor: 'inherit', color: 'inherit' }}
       />
       <div />
     </Fragment>
