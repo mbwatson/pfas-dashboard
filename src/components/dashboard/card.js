@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { Card, CardContent, Divider, Typography } from '@mui/joy'
+import { Card, CardContent, Typography } from '@mui/joy'
 import { useAppContext } from '@context'
 
 export const DashboardCard = ({ children, title }) => {
@@ -11,27 +11,36 @@ export const DashboardCard = ({ children, title }) => {
         p: 1,
         textAlign: 'center',
         borderRadius: 'sm',
-        height: '500px',
+        height: '600px',
         border: '1px solid',
         borderColor: preferences.colorMode.light ? 'primary.200' : 'primaryDark.700',
         backgroundColor: preferences.colorMode.light ? 'primary.100' : 'primaryDark.800',
         transition: 'border-color 250ms',
         '&:hover': {
           borderColor: preferences.colorMode.light ? 'primary.500' : 'primaryDark.400',
-          cursor: 'pointer',
         },
-        '.MuiCardContent-root': {
+        '.header': {
+          height: '50px',
+          overflow: 'hidden',
+          '.MuiTypography-root': {
+            pl: 2,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          },
+        },
+        '.content': {
           overflowY: 'auto',
         },
       }}
     >
       {
         typeof title === 'string'
-          ? <Typography level="title-lg">{ title }</Typography>
+          ? <Typography level="h3">{ title }</Typography>
           : title
       }
-      <Divider />
-      <CardContent>
+
+      <CardContent className="content">
         { children }
       </CardContent>
     </Card>

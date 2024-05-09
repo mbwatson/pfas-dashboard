@@ -15,7 +15,7 @@ export const ContentPage = ({ children, maxWidth = 'md', sx }) => {
     <Fragment>
       <Box sx={{
         flex: 1,
-        mt: '6rem',
+        mt: '5.5rem',
         mb: '4rem',
         px: 2,
         minWidth: SIZES[maxWidth],

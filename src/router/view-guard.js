@@ -11,8 +11,9 @@ export const ViewGuard = ({ children }) => {
   const { auth } = useAppContext()
   
   if (!auth.user) {
-    return <Navigate to="/" />
+    return <Navigate to="/login" />
   }
+  
   return children
 }
 

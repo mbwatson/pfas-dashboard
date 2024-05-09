@@ -1,29 +1,29 @@
 import {
-  DataObject as RawDataIcon,
-  Dashboard as HomeIcon,
+  Dashboard as DashboardIcon,
   TableRows as TableIcon,
 } from '@mui/icons-material'
 import {
-  HomeView,
+  DashboardView,
+  LoginView,
   RawDataView,
   TableView,
 } from '../views'
 
-// this array is used to define routes (for react-router).
+// this array is used to define routes for react-router.
 export const routes = [
   {
-    id: 'home', // just for uniqueness
-    path: '/', // url
-    hidden: false, // whether it has a menu item
-    requiresAuth: false, // whether it requires a logged-in user to access
-    element: <HomeView />, // what to render--the page content component
+    id: 'dashboard',
+    path: '/',
+    hidden: false,
+    requiresAuth: true,
+    element: <DashboardView />,
   },
   {
-    id: 'raw-data',
-    path: '/raw',
-    hidden: true, // route will exist, but user will have to visit `/#/raw` manually...
-    requiresAuth: true, // ...provided they're logged in.
-    element: <RawDataView />,
+    id: 'login',
+    path: '/login',
+    hidden: false,
+    requiresAuth: false,
+    element: <LoginView />,
   },
   {
     id: 'table',
@@ -32,14 +32,20 @@ export const routes = [
     requiresAuth: true,
     element: <TableView />,
   },
+  {
+    id: 'raw-data',
+    path: '/raw',
+    hidden: true, // route will exist, but user will have to visit `/#/raw` manually...
+    requiresAuth: true, // ...provided they're logged in.
+    element: <RawDataView />,
+  },
 ]
 
 // here, we construct the main menu options
 // and pair an icon with each route.
 // `id` identifies the pairing.
 export const menuItems = [
-  { id: 'home',      label: 'Home', icon: <HomeIcon /> },
-  { id: 'raw-data',  label: 'Raw Data', icon: <RawDataIcon /> },
+  { id: 'dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
   { id: 'table',     label: 'Table', icon: <TableIcon /> },
 ].reduce((acc, { id, icon, label }) => {
   const route = routes.find(r => r.id === id)

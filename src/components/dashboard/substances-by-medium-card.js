@@ -1,7 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import {
-  CircularProgress,
-  Grid,
+  Avatar,
   Stack,
   Typography,
   Dropdown,
@@ -18,7 +17,7 @@ import {
   Bloodtype as BloodIcon,
 } from '@mui/icons-material'
 import { DashboardCard } from '@components/dashboard';
-import { useData } from '@context';
+import { useAppContext, useData } from '@context';
 import { ResponsivePie } from '@nivo/pie'
 
 const substances = [
@@ -64,7 +63,8 @@ const detectedSubstances = sample => {
   }, [])
 }
 
-const SubstancesInSamplesCard = () => {
+export const SubstancesByMediumCard = () => {
+  const { preferences } = useAppContext()
   const [selectedMediumId, setSelectedMediumId] = useState('dust')
   const { pfasData } = useData();
 
@@ -100,33 +100,22 @@ const SubstancesInSamplesCard = () => {
     setSelectedMediumId(mediumId)
   }
 
-  const MediumMenu = useCallback(() => {
+  const MediumSelect = useCallback(() => {
     return (
-      <Dropdown
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-      >
+      <Dropdown>
         <MenuButton
           variant="soft"
           color="primary"
           endDecorator={ <ExpandIcon /> }
-          startDecorator={ selectedMedium.icon }
+          sx={{ px: 1 }}
         >
           <Typography
-            level="title-lg"
+            level="h3"
             color="primary.text"
           >{ selectedMedium.name }</Typography>
         </MenuButton>
 
-        <Menu
-          variant="soft"
-        >
+        <Menu variant="soft">
           {
             media.map(({ icon, id, name }) => (
               <MenuItem
@@ -147,64 +136,48 @@ const SubstancesInSamplesCard = () => {
     );
   }, [selectedMedium]);
 
+  const pieStyle = useMemo(() => {
+    if (preferences.colorMode.dark) {
+      return {
+        arcLinkLabelsColor: { from: 'color' },
+        arcLinkLabelsTextColor: { from: 'color' },
+      }
+    }
+    return {
+      arcLinkLabelsColor: 'black',
+      arcLinkLabelsTextColor: 'black',
+    }
+  }, [preferences.colorMode.current])
+
   return (
     <DashboardCard
-      title={ `PFAS Chemicals in ${ selectedMedium.name }` }
-      action={ <MediumMenu /> }
+      title={
+        <Stack
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+          gap={ 1 }
+        >
+          <Avatar variant="plain" color="primary">{ selectedMedium.icon }</Avatar>
+          <Typography level="h3">PFAS Chemicals in</Typography>
+          <MediumSelect />
+        </Stack>
+      }
     >
-      <div style={{ minHeight: '500px' }}>
-        <ResponsivePie
-          height={ 500 }
-          data={ chartData }
-          margin={{ top: 40, right: 0, bottom: 40, left: 0 }}
-          innerRadius={ 0.5 }
-          padAngle={ 1 }
-          arcLinkLabelsColor={{ from: 'color' }}
-          arcLinkLabelsTextColor={{ from: 'color' }}
-        />
-      </div>
-
+      {
+        chartData.length > 0 ? (
+          <div style={{ minHeight: '500px' }}>
+            <ResponsivePie
+              height={ 500 }
+              data={ chartData }
+              margin={{ top: 40, right: 0, bottom: 40, left: 0 }}
+              innerRadius={ 0.5 }
+              padAngle={ 0.5 }
+              { ...pieStyle }
+            />
+          </div>
+        ) : 'Loading...'
+      }
     </DashboardCard>
   )
 }
-
-export const Dashboard = () => {
-  const { pfasData } = useData();
-
-  if (pfasData.isLoading) {
-    return (
-      <Stack
-        justifyContent="center"
-        alignItems="center"
-        sx={{ mt: '100px' }}
-      >
-        <CircularProgress />
-      </Stack>
-    )
-  }
-
-  return (
-    <Grid container spacing={2} sx={{
-      flexGrow: 1,
-    }}>
-      <Grid xs={ 12 } md={ 8 }>
-        <SubstancesInSamplesCard />
-      </Grid>
-      <Grid xs={ 12 } md={ 4 }>
-        <DashboardCard title="Do mollit">
-          ... <br /> ... <br /> ...
-        </DashboardCard>
-      </Grid>
-      <Grid xs={ 4 }>
-        <DashboardCard title="Lorem ipsum">
-          ... <br /> ... <br /> ...
-        </DashboardCard>
-      </Grid>
-      <Grid xs={ 8 }>
-        <DashboardCard title="Do mollit">
-          ... <br /> ... <br /> ...
-        </DashboardCard>
-      </Grid>
-    </Grid>
-  );
-};

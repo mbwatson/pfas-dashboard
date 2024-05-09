@@ -1,12 +1,14 @@
 import { createContext, useContext, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useAuth0 } from '@auth0/auth0-react'
+import { useNavigate } from 'react-router-dom'
 
 const AuthContext = createContext({ })
 
 export const useAuth = () => useContext(AuthContext)
 
 const useDevelopmentAuth0 = () => {
+  const navigate = useNavigate()
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const user = useMemo(() => {
     if (!isAuthenticated) {
@@ -28,6 +30,7 @@ const useDevelopmentAuth0 = () => {
 
   const loginWithRedirect = () => {
     setIsAuthenticated(true)
+    navigate('/')
   }
   const logout = () => {
     setIsAuthenticated(false)
