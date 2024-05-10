@@ -29,7 +29,7 @@ const media = [
 export const ChemicalsByMediumCard = () => {
   const { preferences } = useAppContext()
   const [selectedMediumId, setSelectedMediumId] = useState('dust')
-  const { chemicals, chemicalIds, pfasData } = useData();
+  const { chemicalIds, pfasData } = useData();
 
   const selectedMedium = useMemo(() => {
     const index = media.findIndex(m => m.id === selectedMediumId)

@@ -14,11 +14,11 @@ import {
   Typography,
 } from '@mui/joy'
 import {
-  Login as LoginIcon,
   Logout as LogoutIcon,
   Tune as PreferencesIcon,
 } from '@mui/icons-material'
 import { useAppContext } from '@context'
+import { LoginButton } from './login-button'
 
 //
 
@@ -48,15 +48,7 @@ export const AuthMenu = () => {
   }, [auth.isAuthenticated])
 
   if (!auth.isAuthenticated) {
-    return (
-      <Button
-        loading={ loading }
-        variant="soft"
-        size="lg"
-        onClick={ handleClickLogin }
-        startDecorator={ <LoginIcon /> }
-      >Login</Button>
-    )
+    return <LoginButton />
   }
 
   return (
