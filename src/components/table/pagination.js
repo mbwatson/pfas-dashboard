@@ -4,6 +4,7 @@ import {
   Button,
   ButtonGroup,
   Checkbox,
+  Divider,
   Dropdown,
   Input,
   Menu,
@@ -62,7 +63,7 @@ export const Pagination = ({ table }) => {
         of { table.getPageCount() }
       </span>
 
-      <span>|</span>
+      <Divider orientation="vertical" />
 
       {/* jump to page */}
       <span className="page-jump">Go to page</span>
