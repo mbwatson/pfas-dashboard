@@ -1,11 +1,20 @@
 import { Avatar, Card, CardContent, Divider, Stack, Typography } from '@mui/joy'
+import { useNavigate } from 'react-router-dom'
 import {
   Warning as WarningIcon,
 } from '@mui/icons-material'
 import { ContentPage } from '@components/layout'
 import { LoginButton } from '@components/auth'
+import { useAppContext } from '@context'
 
 export const LoginView = () => {
+  const { auth } = useAppContext()
+  const navigate = useNavigate()
+
+  if (auth.user) {
+    navigate('/')
+  }
+
   return (
     <ContentPage>
       <Card color="warning" variant="soft" sx={{ mt: 5, mx: 'auto', width: '100%', maxWidth: '500px', }}>
