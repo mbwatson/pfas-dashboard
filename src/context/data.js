@@ -25,7 +25,7 @@ const createSampleQuerier = endpoint => async () => {
   const getFirstPage = async () => {
     try {
       const { data } = await axios.get(`${ apiRoot }/${ endpoint }?page=1&psize=1`, {
-        timeout: 1000 * 60 * 60 * 24, // 1 day
+        timeout: 1000 * 5 // 5 seconds
       })
       return data
     } catch (error) {
@@ -125,7 +125,7 @@ const persister = createSyncStoragePersister({
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: {
-    staleTime: 1000 * 5,
+    staleTime: 1000 * 60 * 60 * 24, // 1 day,
   }, },
 })
 
