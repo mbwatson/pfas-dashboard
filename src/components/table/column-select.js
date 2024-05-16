@@ -6,6 +6,8 @@ import {
   ListItem,
   MenuButton,
   MenuList,
+  Stack,
+  Typography,
 } from '@mui/joy'
 import {
   KeyboardArrowDown as ChevronDownIcon,
@@ -22,22 +24,33 @@ export const ColumnSelect = ({ table }) => {
       >Columns</MenuButton>
       <Menu aria-labelledby="column-select" size="sm">
         <MenuList sx={{
-          maxWidth: '800px',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
+          maxWidth: '200px',
+          maxHeight: '66vh',
+          overflowY: 'auto',
         }}>
           {
-            table.getAllLeafColumns().map(column => {
+            table.getAllColumns().map(columnGroup => {
               return (
-                <ListItem key={ column.id }>
-                  <Checkbox
-                    label={ column.id }
-                    checked={ column.getIsVisible() }
-                    onChange={ column.getToggleVisibilityHandler() }
-                    variant="soft"
-                    size="sm"
-                  />
-                </ListItem>
+                <Stack key={ columnGroup.id }>
+                  <Typography
+                    level="body-xs"
+                    textTransform="uppercase"
+                    sx={{ p: 1 }}
+                  >{ columnGroup.id.toUpperCase() }</Typography>
+                  {
+                    columnGroup.columns.map(column => (
+                      <ListItem key={ column.id }>
+                        <Checkbox
+                          label={ column.id }
+                          checked={ column.getIsVisible() }
+                          onChange={ column.getToggleVisibilityHandler() }
+                          variant="soft"
+                          size="sm"
+                        />
+                      </ListItem>
+                    ))                    
+                  }
+                </Stack>
               )
             })
           }
