@@ -1,10 +1,10 @@
 import { Sheet, Typography } from '@mui/joy'
-import { useAppContext } from '@context'
+import { usePreferences } from '@context'
 
 //
 
 export const Footer = () => {
-  const { preferences } = useAppContext()
+  const preferences = usePreferences()
 
   return (
     <Sheet

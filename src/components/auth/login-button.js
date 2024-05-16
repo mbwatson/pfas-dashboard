@@ -2,10 +2,10 @@ import { Button } from '@mui/joy'
 import {
   Login as LoginIcon,
 } from '@mui/icons-material'
-import { useAppContext } from '@context'
+import { useAuth } from '@context'
 
 export const LoginButton = () => {
-  const { auth } = useAppContext()
+  const auth = useAuth()
 
   return (
     <Button

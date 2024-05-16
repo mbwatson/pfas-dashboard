@@ -1,54 +1,69 @@
-import { Fragment, useMemo } from 'react'
+import { useMemo } from 'react'
 import { Sheet } from '@mui/joy'
+import { TableRows as TableIcon } from '@mui/icons-material'
 import { AuthMenu } from '@components/auth'
-import { useAppContext } from '@context'
-import { menuItems, Router } from './router'
+import { DataProvider, PreferencesProvider, useAuth } from '@context'
 import { Header } from './components/layout'
-
+import {
+  LoginView,
+  TableView,
+  NotFoundView,
+} from './views'
 import { PreferencesDrawer } from '@components/preferences'
+import { Routes, Route } from 'react-router-dom'
+
+//
+
+const ClosedApp = () => (
+  <Sheet component="main">
+    <Routes>
+      <Route path="*" element={ <LoginView /> } />
+    </Routes>
+  </Sheet>
+)
+
+const menuItems = [
+  { id: 'table', path: '/', label: 'Table', icon: <TableIcon /> },
+]
+
+const OpenApp = () => {
+  const headerActions = useMemo(() => [
+    <AuthMenu key="auth-action-button" />,
+  ], [])
+
+  const visibleMenuItems = useMemo(() => [
+    ...menuItems.filter(r => !r.hidden)
+  ], [])
+
+  return (
+    <PreferencesProvider>
+      <Header
+        menuLinks={ visibleMenuItems }
+        actions={ headerActions }
+      />
+      
+      <Sheet component="main">
+        <DataProvider>
+          <Routes>
+            <Route index element={ <TableView /> } />
+            <Route path="*" element={ <NotFoundView /> } />
+          </Routes>
+        </DataProvider>
+      </Sheet>
+
+      <PreferencesDrawer />
+    </PreferencesProvider>
+  )
+}
 
 //
 
 export const App = () => {
-  const { auth, pageRef, preferences } = useAppContext()
+  const auth = useAuth()
 
-  const headerActions = useMemo(() => {
-    let actions = [<AuthMenu key="auth-action-button" />]
-    if (auth.user) {
-      actions = [
-        ...actions,
-      ]
-    }
-    return actions
-  }, [auth.user])
+  if (!auth.user) {
+    return <ClosedApp />
+  }
 
-  const availableMenuItems = useMemo(() => {
-    let items = [...menuItems]
-    if (!auth.user) {
-      items = items.filter(r => !r.requiresAuth)
-    }
-    return items.filter(r => !r.hidden)
-  }, [auth.user])
-
-  return (
-    <Fragment>
-      <Header
-        menuLinks={ availableMenuItems }
-        actions={ headerActions }
-      />
-      
-      <Sheet
-        component="main"
-        ref={ pageRef }
-        className={
-          preferences.colorMode.dark ? 'dark-mode' : 'light-mode'
-        }
-      >
-        <Router />
-      </Sheet>
-
-      <PreferencesDrawer />
-
-    </Fragment>
-  )
+  return <OpenApp />
 }

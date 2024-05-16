@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
-import { LinearProgress, Stack, Sheet } from '@mui/joy'
-import { useAppContext } from '@context'
+import { Stack, Sheet } from '@mui/joy'
+import { usePreferences } from '@context'
 import { Menu } from '@components/layout/nav-menu'
 
 //
 
 export const Header = ({ menuLinks, actions }) => {
-  const { loading, preferences } = useAppContext()
+  const preferences = usePreferences()
 
   return (
     <Sheet
@@ -20,14 +20,6 @@ export const Header = ({ menuLinks, actions }) => {
         borderColor: preferences.colorMode.light ? 'primary.100' : 'primaryDark.700',
       }}
     >
-      <LinearProgress
-        variant="soft"
-        size="md"
-        color="primary"
-        determinate={ !loading }
-        value={ loading ? undefined : 0 }
-      />
-
       <Stack
         flexDirection="row"
         justifyContent="space-between"

@@ -1,14 +1,12 @@
-import { Avatar, Card, CardContent, Divider, Stack, Typography } from '@mui/joy'
 import { useNavigate } from 'react-router-dom'
-import {
-  Warning as WarningIcon,
-} from '@mui/icons-material'
+import { Card, CardContent, Divider, Stack, Typography } from '@mui/joy'
+import { Warning as WarningIcon } from '@mui/icons-material'
 import { ContentPage } from '@components/layout'
 import { LoginButton } from '@components/auth'
-import { useAppContext } from '@context'
+import { useAuth } from '@context'
 
 export const LoginView = () => {
-  const { auth } = useAppContext()
+  const auth = useAuth()
   const navigate = useNavigate()
 
   if (auth.user) {

@@ -13,7 +13,7 @@ import {
 import { Menu as MenuIcon } from '@mui/icons-material'
 import { Link } from '@components/link'
 import { useWindowSize } from '@hooks'
-import { useAppContext } from '@context'
+import { usePreferences } from '@context'
 
 //
 
@@ -28,7 +28,7 @@ export const menuOptionsPropTypes = PropTypes.arrayOf(
 ).isRequired
 
 export const Menu = ({ options }) => {
-  const { preferences } = useAppContext()
+  const preferences = usePreferences()
   const { width } = useWindowSize()
   
   const DesktopMenu = () => {

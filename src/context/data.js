@@ -12,7 +12,7 @@ import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persist
 
 import { compress, decompress } from 'lz-string'
 
-import { useAppContext } from '@context'
+import { usePreferences } from '@context'
 
 //
 
@@ -102,7 +102,7 @@ export const DataWrangler = ({ children }) => {
       chemicals,
       chemicalIds,
     }}>
-      { children }
+      { pfasDataQuery.isPending ? 'Loading...' : children }
     </DataContext.Provider>
   )
 }
@@ -129,7 +129,7 @@ const queryClient = new QueryClient({
 })
 
 export const DataProvider = ({ children }) => {
-  const { preferences } = useAppContext()
+  const preferences = usePreferences()
 
   return (
     <PersistQueryClientProvider

@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 import {
   Avatar,
-  Button,
   Dropdown,
   IconButton,
   ListDivider,
@@ -17,20 +16,17 @@ import {
   Logout as LogoutIcon,
   Tune as PreferencesIcon,
 } from '@mui/icons-material'
-import { useAppContext } from '@context'
+import { usePreferences, useAuth } from '@context'
 import { LoginButton } from './login-button'
 
 //
 
 export const AuthMenu = () => {
-  const { auth, loading, preferences } = useAppContext()
+  const auth = useAuth()
+  const { preferences } = usePreferences()
 
   const handleClickLogout = () => {
     auth.logout()
-  }
-
-  const handleClickLogin = () => {
-    auth.login()
   }
 
   const handleClickPreferences = () => {

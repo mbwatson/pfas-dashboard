@@ -1,6 +1,7 @@
 import { createContext, useContext, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
-import { useAuth0 } from '@auth0/auth0-react'
+import { Auth0Provider, useAuth0 } from '@auth0/auth0-react'
+
 import { useNavigate } from 'react-router-dom'
 
 const AuthContext = createContext({ })
@@ -32,9 +33,11 @@ const useDevelopmentAuth0 = () => {
     setIsAuthenticated(true)
     navigate('/')
   }
+  
   const logout = () => {
     setIsAuthenticated(false)
   }
+
   return {
     isAuthenticated,
     user,
@@ -43,7 +46,7 @@ const useDevelopmentAuth0 = () => {
   }
 }
 
-export const AuthProvider = ({ children }) => {
+export const AuthInterface = ({ children }) => {
   const {
     isAuthenticated,
     user,
@@ -66,12 +69,32 @@ export const AuthProvider = ({ children }) => {
     })
   }
 
-  const value = useMemo(() => ({ user, login, logout, isAuthenticated }), [user])
+  const providedValue = useMemo(() => ({ user, login, logout, isAuthenticated }), [user])
 
   return (
-    <AuthContext.Provider value={ value }>
+    <AuthContext.Provider value={ providedValue }>
       { children }
     </AuthContext.Provider>
+  )
+}
+
+AuthInterface.propTypes = {
+  children: PropTypes.node,
+}
+
+export const AuthProvider = ({ children }) => {
+  return (
+    <Auth0Provider
+      domain="renci.auth0.com"
+      clientId="wVibbe3STC4m6mh7EDL9Bk6aXLEljmFR"
+      authorizationParams={{
+        redirect_uri: window.location.origin
+      }}
+    >
+      <AuthInterface>
+        { children }
+      </AuthInterface>
+    </Auth0Provider>
   )
 }
 

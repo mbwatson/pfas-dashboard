@@ -7,10 +7,10 @@ import {
 import {
   Inventory as CacheIcon,
 } from '@mui/icons-material'
-import { useAppContext } from '@context'
+import { usePreferences } from '@context'
 
 export const CacheSelect = () => {
-  const { preferences } = useAppContext()
+  const preferences = usePreferences()
   
   return (
     <Stack
@@ -36,11 +36,10 @@ export const CacheSelect = () => {
 }
 
 export const CacheToggle = () => {
-  const { notify, preferences } = useAppContext()
+  const preferences = usePreferences()
 
   const handleClick = () => {
     preferences.cache.toggle()
-    notify(`Cache is ${ preferences.cache.enabled ? 'dis' : 'en' }abled`, 'success')
   }
 
   return (
