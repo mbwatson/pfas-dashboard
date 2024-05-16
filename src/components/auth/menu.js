@@ -23,7 +23,7 @@ import { LoginButton } from './login-button'
 
 export const AuthMenu = () => {
   const auth = useAuth()
-  const { preferences } = usePreferences()
+  const preferences = usePreferences()
 
   const handleClickLogout = () => {
     auth.logout()
