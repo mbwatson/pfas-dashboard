@@ -17,7 +17,7 @@ import {
 } from '@tanstack/react-table'
 import { ContentPage } from '@components/layout'
 import { useData } from '@context'
-import { ColumnControls, DataTable, Pagination } from '@components/table'
+import { ColumnSelect, DataTable, Pagination } from '@components/table'
 
 const columnHelper = createColumnHelper()
 
@@ -322,7 +322,7 @@ export const TableView = () => {
 
         <Divider orientation="vertical" />
 
-        <ColumnControls table={ table } />
+        <ColumnSelect table={ table } />
 
         <Divider orientation="vertical" />
 

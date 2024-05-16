@@ -11,7 +11,7 @@ import {
   KeyboardArrowDown as ChevronDownIcon,
 } from '@mui/icons-material'
 
-export const ColumnControls = ({ table }) => {
+export const ColumnSelect = ({ table }) => {
   return (
     <Dropdown>
       <MenuButton
@@ -45,7 +45,7 @@ export const ColumnControls = ({ table }) => {
   )
 }
 
-ColumnControls.propTypes = {
+ColumnSelect.propTypes = {
   table: PropTypes.object.isRequired,
 }
 
