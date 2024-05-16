@@ -9,6 +9,7 @@ import {
 } from '@mui/joy'
 import {
   KeyboardArrowDown as ChevronDownIcon,
+  ViewColumn as ColumnsIcon,
 } from '@mui/icons-material'
 
 export const ColumnSelect = ({ table }) => {
@@ -17,7 +18,8 @@ export const ColumnSelect = ({ table }) => {
       <MenuButton
         variant="soft"
         endDecorator={ <ChevronDownIcon /> }
-      >COLUMNS</MenuButton>
+        startDecorator={ <ColumnsIcon /> }
+      >Columns</MenuButton>
       <Menu aria-labelledby="column-select" size="sm">
         <MenuList sx={{
           maxWidth: '800px',

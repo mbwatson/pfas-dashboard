@@ -30,9 +30,10 @@ export const LoginView = () => {
           sx={{ py: 2, px: 3 }}
         >
           <Typography level="body-lg">
-            <em>Access to this application is restricted!</em>
+            <em>Access to the PFAS Dashboard is restricted!</em>
             <br />
-            Please use the button below to identify yourself and gain access the PFAS Dashboard.
+            <br />
+            Please use the button below to identify yourself and gain access this application.
           </Typography>
 
           <Typography level="body-xs" fontStyle="italic">
