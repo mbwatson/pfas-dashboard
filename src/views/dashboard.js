@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Button, CircularProgress, Divider, Stack } from '@mui/joy'
 import {
   FilterList as FilterIcon,
@@ -17,43 +17,40 @@ import {
 } from '@tanstack/react-table'
 import { ContentPage } from '@components/layout'
 import { useData } from '@context'
-import { DataTable, Pagination } from '@components/table'
+import { ColumnControls, DataTable, Pagination } from '@components/table'
 
 const columnHelper = createColumnHelper()
 
 //
 
-const columnHeader = ({ column }) => column.id
-const columnFooter = ({ column }) => column.id
-
 const columns = [
   columnHelper.group({
     id: 'sample',
-    header: () => <span>Sample</span>,
-    footer: () => <span>Sample</span>,
+    header: 'Sample',
+    footer: 'Sample',
     columns: [
-      columnHelper.accessor('sample_id', {            cell: info => info.getValue(), header: 'Sample ID',      footer: 'Sample ID',    meta: { filterVariant: 'range' } }),
-      columnHelper.accessor('sample', {               cell: info => info.getValue(), header: 'Sample',         footer: 'Sample',       meta: { filterVariant: 'text' } }),
-      columnHelper.accessor('study', {                cell: info => info.getValue(), header: 'Study',          footer: 'Study',        meta: { filterVariant: 'select' } }),
-      columnHelper.accessor('pi', {                   cell: info => info.getValue(), header: 'PI',             footer: 'PI',           meta: { filterVariant: 'select' } }),
-      columnHelper.accessor('units', {                cell: info => info.getValue(), header: 'Units',          footer: 'Units',        meta: { filterVariant: 'select' } }),
-      columnHelper.accessor('medium', {               cell: info => info.getValue(), header: 'Medium',         footer: 'Medium',       meta: { filterVariant: 'select' } }),
+      columnHelper.accessor('sample_id', {            cell: info => info.getValue(), header: 'Sample ID',      footer: 'Sample ID',       meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('sample', {               cell: info => info.getValue(), header: 'Sample',         footer: 'Sample',          meta: { filterVariant: 'text' } }),
+      columnHelper.accessor('study', {                cell: info => info.getValue(), header: 'Study',          footer: 'Study',           meta: { filterVariant: 'select' } }),
+      columnHelper.accessor('pi', {                   cell: info => info.getValue(), header: 'PI',             footer: 'PI',              meta: { filterVariant: 'select' } }),
+      columnHelper.accessor('units', {                cell: info => info.getValue(), header: 'Units',          footer: 'Units',           meta: { filterVariant: 'select' } }),
+      columnHelper.accessor('medium', {               cell: info => info.getValue(), header: 'Medium',         footer: 'Medium',          meta: { filterVariant: 'select' } }),
     ],
   }),
   columnHelper.group({
     id: 'location',
-    header: () => <span>Location</span>,
-    footer: () => <span>Location</span>,
+    header: 'Location',
+    footer: 'Location',
     columns: [
-      columnHelper.accessor('city', {                 cell: info => info.getValue(), header: 'City',          footer: 'City',         meta: { filterVariant: 'text' } }),
-      columnHelper.accessor('state', {                cell: info => info.getValue(), header: 'State',         footer: 'State',        meta: { filterVariant: 'text' } }),
-      columnHelper.accessor('zipcode', {              cell: info => info.getValue(), header: 'ZIP Code',      footer: 'ZIP Code',     meta: { filterVariant: 'text' } }),
+      columnHelper.accessor('city', {                 cell: info => info.getValue(), header: 'City',          footer: 'City',             meta: { filterVariant: 'text' } }),
+      columnHelper.accessor('state', {                cell: info => info.getValue(), header: 'State',         footer: 'State',            meta: { filterVariant: 'text' } }),
+      columnHelper.accessor('zipcode', {              cell: info => info.getValue(), header: 'ZIP Code',      footer: 'ZIP Code',         meta: { filterVariant: 'text' } }),
     ],
   }),
   columnHelper.group({
     id: 'pfna',
-    header: () => <span>PFNA</span>,
-    footer: () => <span>PFNA</span>,
+    header: 'PFNA',
+    footer: 'PFNA',
     columns: [
       columnHelper.accessor('pfna_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
       columnHelper.accessor('pfna_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
@@ -63,8 +60,8 @@ const columns = [
   }),
   columnHelper.group({
     id: 'pfds',
-    header: () => <span>PFDS</span>,
-    footer: () => <span>PFDS</span>,
+    header: 'PFDS',
+    footer: 'PFDS',
     columns: [
       columnHelper.accessor('pfds_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
       columnHelper.accessor('pfds_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
@@ -74,8 +71,8 @@ const columns = [
   }),
   columnHelper.group({
     id: 'pfhxa',
-    header: () => <span>PFHXA</span>,
-    footer: () => <span>PFHXA</span>,
+    header: 'PFHXA',
+    footer: 'PFHXA',
     columns: [
       columnHelper.accessor('pfhxa_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
       columnHelper.accessor('pfhxa_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
@@ -85,8 +82,8 @@ const columns = [
   }),
   columnHelper.group({
     id: 'pfoa',
-    header: () => <span>PFOA</span>,
-    footer: () => <span>PFOA</span>,
+    header: 'PFOA',
+    footer: 'PFOA',
     columns: [
       columnHelper.accessor('pfoa_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
       columnHelper.accessor('pfoa_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
@@ -96,8 +93,8 @@ const columns = [
   }),
   columnHelper.group({
     id: 'pfos',
-    header: () => <span>PFOS</span>,
-    footer: () => <span>PFOS</span>,
+    header: 'PFOS',
+    footer: 'PFOS',
     columns: [
       columnHelper.accessor('pfos_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
       columnHelper.accessor('pfos_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
@@ -107,8 +104,8 @@ const columns = [
   }),
   columnHelper.group({
     id: 'pfba',
-    header: () => <span>PFBA</span>,
-    footer: () => <span>PFBA</span>,
+    header: 'PFBA',
+    footer: 'PFBA',
     columns: [
       columnHelper.accessor('pfba_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
       columnHelper.accessor('pfba_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
@@ -118,8 +115,8 @@ const columns = [
   }),
   columnHelper.group({
     id: 'pfdoa',
-    header: () => <span>PFDOA</span>,
-    footer: () => <span>PFDOA</span>,
+    header: 'PFDOA',
+    footer: 'PFDOA',
     columns: [
       columnHelper.accessor('pfdoa_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
       columnHelper.accessor('pfdoa_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
@@ -129,8 +126,8 @@ const columns = [
   }),
   columnHelper.group({
     id: 'pfpea',
-    header: () => <span>PFPEA</span>,
-    footer: () => <span>PFPEA</span>,
+    header: 'PFPEA',
+    footer: 'PFPEA',
     columns: [
       columnHelper.accessor('pfpea_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
       columnHelper.accessor('pfpea_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
@@ -140,8 +137,8 @@ const columns = [
   }),
   columnHelper.group({
     id: 'pfhps',
-    header: () => <span>PFHPS</span>,
-    footer: () => <span>PFHPS</span>,
+    header: 'PFHPS',
+    footer: 'PFHPS',
     columns: [
       columnHelper.accessor('pfhps_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
       columnHelper.accessor('pfhps_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
@@ -151,8 +148,8 @@ const columns = [
   }),
   columnHelper.group({
     id: 'pfunda',
-    header: () => <span>PFUNDA</span>,
-    footer: () => <span>PFUNDA</span>,
+    header: 'PFUNDA',
+    footer: 'PFUNDA',
     columns: [
       columnHelper.accessor('pfunda_concentration', { cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
       columnHelper.accessor('pfunda_mrl', {           cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
@@ -162,8 +159,8 @@ const columns = [
   }),
   columnHelper.group({
     id: 'pfbs',
-    header: () => <span>PFBS</span>,
-    footer: () => <span>PFBS</span>,
+    header: 'PFBS',
+    footer: 'PFBS',
     columns: [
       columnHelper.accessor('pfbs_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
       columnHelper.accessor('pfbs_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
@@ -173,8 +170,8 @@ const columns = [
   }),
   columnHelper.group({
     id: 'pfpes',
-    header: () => <span>PFPES</span>,
-    footer: () => <span>PFPES</span>,
+    header: 'PFPES',
+    footer: 'PFPES',
     columns: [
       columnHelper.accessor('pfpes_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
       columnHelper.accessor('pfpes_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
@@ -184,8 +181,8 @@ const columns = [
   }),
   columnHelper.group({
     id: 'pfns',
-    header: () => <span>PFNS</span>,
-    footer: () => <span>PFNS</span>,
+    header: 'PFNS',
+    footer: 'PFNS',
     columns: [
       columnHelper.accessor('pfns_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
       columnHelper.accessor('pfns_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
@@ -195,8 +192,8 @@ const columns = [
   }),
   columnHelper.group({
     id: 'pfhpa',
-    header: () => <span>PFHPA</span>,
-    footer: () => <span>PFHPA</span>,
+    header: 'PFHPA',
+    footer: 'PFHPA',
     columns: [
       columnHelper.accessor('pfhpa_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
       columnHelper.accessor('pfhpa_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
@@ -206,8 +203,8 @@ const columns = [
   }),
   columnHelper.group({
     id: 'pfhxs',
-    header: () => <span>PFHXS</span>,
-    footer: () => <span>PFHXS</span>,
+    header: 'PFHXS',
+    footer: 'PFHXS',
     columns: [
       columnHelper.accessor('pfhxs_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
       columnHelper.accessor('pfhxs_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
@@ -217,8 +214,8 @@ const columns = [
   }),
   columnHelper.group({
     id: 'pfda',
-    header: () => <span>PFDA</span>,
-    footer: () => <span>PFDA</span>,
+    header: 'PFDA',
+    footer: 'PFDA',
     columns: [
       columnHelper.accessor('pfda_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
       columnHelper.accessor('pfda_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
@@ -228,8 +225,8 @@ const columns = [
   }),
   columnHelper.group({
     id: 'pfuda',
-    header: () => <span>PFUDA</span>,
-    footer: () => <span>PFUDA</span>,
+    header: 'PFUDA',
+    footer: 'PFUDA',
     columns: [
       columnHelper.accessor('pfuda_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'none' } }), // bug
       columnHelper.accessor('pfuda_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'none' } }), // bug
@@ -247,6 +244,21 @@ export const TableView = () => {
   const [filtersVisibility, setFiltersVisibility] = useState(false)
 
   const handleToggleFiltersVisibility = () => setFiltersVisibility(!filtersVisibility)
+
+  const FilterControls = useCallback(() => [
+    <Button
+      key="visibility-toggle"
+      variant={ filtersVisibility ? 'soft' : 'outlined' }
+      onClick={ handleToggleFiltersVisibility }
+      startDecorator={ <FilterIcon /> }
+    >{ filtersVisibility ? 'Hide' : 'Show' } Filters</Button>,
+    <Button
+      key="clear-selections"
+      variant="outlined"
+      onClick={ () => table.resetColumnFilters() }
+      startDecorator={ <ClearFiltersIcon /> }
+    >Clear Filters</Button>,
+  ], [columnFilters, filtersVisibility])
 
   const table = useReactTable({
     data: pfasData.data,
@@ -310,16 +322,12 @@ export const TableView = () => {
 
         <Divider orientation="vertical" />
 
-        <Button
-          variant={ filtersVisibility ? 'soft' : 'outlined' }
-          onClick={ handleToggleFiltersVisibility }
-          startDecorator={ <FilterIcon /> }
-        >{ filtersVisibility ? 'Hide' : 'Show' } Filters</Button>
-        <Button
-          variant="outlined"
-          onClick={ () => table.resetColumnFilters() }
-          startDecorator={ <ClearFiltersIcon /> }
-        >Clear Filters</Button>
+        <ColumnControls table={ table } />
+
+        <Divider orientation="vertical" />
+
+        <FilterControls />
+
       </Stack>
 
       <DataTable table={ table } />

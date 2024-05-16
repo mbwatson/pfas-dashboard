@@ -3,19 +3,12 @@ import {
   Box,
   Button,
   ButtonGroup,
-  Checkbox,
   Divider,
-  Dropdown,
   Input,
-  Menu,
-  ListItem,
-  MenuButton,
-  MenuList,
   Option,
   Select,
 } from '@mui/joy'
 import {
-  KeyboardArrowDown as ChevronDownIcon,
   FirstPage as FirstIcon,
   NavigateBefore as PreviousIcon,
   NavigateNext as NextIcon,
@@ -90,37 +83,6 @@ export const Pagination = ({ table }) => {
           >{ size } per page</Option>
         ))}
       </Select>
-
-      {/* column visibility select */}
-      <Dropdown>
-        <MenuButton
-          variant="soft"
-          endDecorator={ <ChevronDownIcon /> }
-        >COLUMNS</MenuButton>
-        <Menu aria-labelledby="column-select" size="sm">
-          <MenuList sx={{
-            maxWidth: '800px',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-          }}>
-            {
-              table.getAllLeafColumns().map(column => {
-                return (
-                  <ListItem key={ column.id }>
-                    <Checkbox
-                      label={ column.id }
-                      checked={ column.getIsVisible() }
-                      onChange={ column.getToggleVisibilityHandler() }
-                      variant="soft"
-                      size="sm"
-                    />
-                  </ListItem>
-                )
-              })
-            }
-          </MenuList>
-        </Menu>
-      </Dropdown>
     </Box>
   )
 }
