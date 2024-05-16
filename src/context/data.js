@@ -3,6 +3,7 @@
   it fetches, massages, assembles, and--of course--provides data.
 */
 import { createContext, useContext, useMemo } from 'react'
+import { CircularProgress } from '@mui/joy'
 import PropTypes from 'prop-types'
 import axios from 'axios'
 
@@ -102,7 +103,7 @@ export const DataWrangler = ({ children }) => {
       chemicals,
       chemicalIds,
     }}>
-      { pfasDataQuery.isPending ? 'Loading...' : children }
+      { pfasDataQuery.isPending ? <CircularProgress sx={{ margin: '15rem auto' }} /> : children }
     </DataContext.Provider>
   )
 }
