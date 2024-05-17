@@ -123,7 +123,7 @@ const ChemicalDetectionPieChart = () => {
     }, [])
   }, [chemicalIds])
 
-  const chemicalBuckets = useMemo(() => table.getRowModel().rows
+  const chemicalBuckets = useMemo(() => table.getPrePaginationRowModel().rows
     .reduce((acc, row) => {
       detectedChemicals(row).forEach(chemicalId => {
         acc[chemicalId] += 1
