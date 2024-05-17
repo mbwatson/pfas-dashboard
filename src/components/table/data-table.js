@@ -54,6 +54,7 @@ export const DataTable = ({ table }) => {
               <th
                 key={ header.id }
                 colSpan={header.colSpan}
+                style={{ maxWidth: `${ header.getSize() }px` }}
               >
                 { header.isPlaceholder ? null : (
                   <span className="sortable" { ...{

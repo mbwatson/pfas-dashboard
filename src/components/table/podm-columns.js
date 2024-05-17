@@ -12,7 +12,7 @@ export const podmColumns = [
     header: 'Sample',
     footer: 'Sample',
     columns: [
-      columnHelper.accessor('sample_id', {            cell: info => info.getValue(), header: 'Sample ID',      footer: 'Sample ID',       meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('sample_id', {            cell: info => info.getValue(), header: 'Sample ID',      footer: 'Sample ID',       meta: { filterVariant: 'range' },    size: 100 }),
       columnHelper.accessor('sample', {               cell: info => info.getValue(), header: 'Sample',         footer: 'Sample',          meta: { filterVariant: 'text' } }),
       columnHelper.accessor('study', {                cell: info => info.getValue(), header: 'Study',          footer: 'Study',           meta: { filterVariant: 'select' } }),
       columnHelper.accessor('pi', {                   cell: info => info.getValue(), header: 'PI',             footer: 'PI',              meta: { filterVariant: 'select' } }),
@@ -25,9 +25,9 @@ export const podmColumns = [
     header: 'Location',
     footer: 'Location',
     columns: [
-      columnHelper.accessor('city', {                 cell: info => info.getValue(), header: 'City',          footer: 'City',             meta: { filterVariant: 'text' } }),
-      columnHelper.accessor('state', {                cell: info => info.getValue(), header: 'State',         footer: 'State',            meta: { filterVariant: 'text' } }),
-      columnHelper.accessor('zipcode', {              cell: info => info.getValue(), header: 'ZIP Code',      footer: 'ZIP Code',         meta: { filterVariant: 'text' } }),
+      columnHelper.accessor('city', {                 cell: info => info.getValue(), header: 'City',          footer: 'City',             meta: { filterVariant: 'text' }  }),
+      columnHelper.accessor('state', {                cell: info => info.getValue(), header: 'State',         footer: 'State',            meta: { filterVariant: 'text' },    size: 45  }),
+      columnHelper.accessor('zipcode', {              cell: info => info.getValue(), header: 'ZIP Code',      footer: 'ZIP Code',         meta: { filterVariant: 'text' },    size: 75  }),
     ],
   }),
   columnHelper.group({
