@@ -4,26 +4,14 @@ import {
   FilterList as FilterIcon,
   Close as ClearFiltersIcon,
 } from '@mui/icons-material'
-import {
-  getCoreRowModel,
-  getFacetedMinMaxValues,
-  getFacetedRowModel,
-  getFacetedUniqueValues,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from '@tanstack/react-table'
 import { useData } from '@context'
 import { ContentPage } from '@components/layout'
-import { ColumnSelect, DataTable, Pagination, podmColumns } from '@components/table'
+import { ColumnSelect, DataTable, Pagination } from '@components/table'
 
 export const TableView = () => {
-  const { pfasData } = useData()
-  const [sorting, setSorting] = useState([])
-  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 25 })
-  const [columnFilters, setColumnFilters] = useState([])
+  const { pfasData, podmTable } = useData()
   const [filtersVisibility, setFiltersVisibility] = useState(false)
+  const { table, columnFilters } = podmTable
 
   const handleToggleFiltersVisibility = () => setFiltersVisibility(!filtersVisibility)
 
@@ -41,27 +29,6 @@ export const TableView = () => {
       startDecorator={ <ClearFiltersIcon /> }
     >Clear Filters</Button>,
   ], [columnFilters, filtersVisibility])
-
-  const table = useReactTable({
-    data: pfasData.data,
-    columns: podmColumns,
-    debugTable: true,
-    getCoreRowModel: getCoreRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    onSortingChange: setSorting,
-    onPaginationChange: setPagination,
-    getFacetedRowModel: getFacetedRowModel(),
-    getFacetedUniqueValues: getFacetedUniqueValues(),
-    getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    state: {
-      columnFilters,
-      pagination,
-      sorting,
-    },
-  })
 
   if (pfasData.isLoading) {
     return (

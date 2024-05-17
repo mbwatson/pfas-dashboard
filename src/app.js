@@ -1,10 +1,14 @@
 import { useMemo } from 'react'
 import { Sheet } from '@mui/joy'
-import { TableRows as TableIcon } from '@mui/icons-material'
+import {
+  TableRows as TableIcon,
+  DonutSmall as ChartIcon,
+} from '@mui/icons-material'
 import { AuthMenu } from '@components/auth'
 import { DataProvider, PreferencesProvider, useAuth } from '@context'
 import { Header } from './components/layout'
 import {
+  ChartView,
   LoginView,
   TableView,
   NotFoundView,
@@ -23,7 +27,8 @@ const ClosedApp = () => (
 )
 
 const menuItems = [
-  { id: 'table', path: '/', label: 'Table', icon: <TableIcon /> },
+  { id: 'table', path: '/',      label: 'Table', icon: <TableIcon /> },
+  { id: 'chart', path: '/chart', label: 'Chart', icon: <ChartIcon /> },
 ]
 
 const OpenApp = () => {
@@ -46,6 +51,7 @@ const OpenApp = () => {
         <DataProvider>
           <Routes>
             <Route index element={ <TableView /> } />
+            <Route path="chart" element={ <ChartView /> } />
             <Route path="*" element={ <NotFoundView /> } />
           </Routes>
         </DataProvider>

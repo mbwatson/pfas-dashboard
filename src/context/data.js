@@ -2,7 +2,7 @@
   this context provider is responsible for application data.
   it fetches, massages, assembles, and--of course--provides data.
 */
-import { createContext, useContext, useMemo } from 'react'
+import { createContext, useContext, useMemo, useState } from 'react'
 import { CircularProgress } from '@mui/joy'
 import PropTypes from 'prop-types'
 import axios from 'axios'
@@ -12,6 +12,18 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 
 import { compress, decompress } from 'lz-string'
+
+import {
+  getCoreRowModel,
+  getFacetedMinMaxValues,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table'
+import { podmColumns } from '@components/table'
 
 import { usePreferences } from '@context'
 
@@ -90,6 +102,10 @@ const DataContext = createContext({ })
 export const useData = () => useContext(DataContext)
 
 export const DataWrangler = ({ children }) => {
+  const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 25 })
+  const [sorting, setSorting] = useState([])
+  const [columnFilters, setColumnFilters] = useState([])
+
   const pfasDataQuery = useQuery({
     queryKey: ['pfas_sample_data'],
     queryFn: createSampleQuerier('pfas_sample_data'),
@@ -97,11 +113,37 @@ export const DataWrangler = ({ children }) => {
 
   const chemicalIds = useMemo(() => chemicals.map(s => s.id), [])
 
+  const table = useReactTable({
+    data: pfasDataQuery.data,
+    columns: podmColumns,
+    debugTable: true,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    onSortingChange: setSorting,
+    onPaginationChange: setPagination,
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+    getFacetedMinMaxValues: getFacetedMinMaxValues(),
+    state: {
+      columnFilters,
+      pagination,
+      sorting,
+    },
+  })
+
   return (
     <DataContext.Provider value={{
       pfasData: pfasDataQuery,
       chemicals,
       chemicalIds,
+      podmTable: {
+        table,
+        columnFilters, setColumnFilters,
+        sorting, setSorting,
+      },
     }}>
       { pfasDataQuery.isPending ? <CircularProgress sx={{ margin: '15rem auto' }} /> : children }
     </DataContext.Provider>
