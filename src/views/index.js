@@ -1,4 +1,3 @@
-export * from './chart'
+export * from './dashboard'
 export * from './login'
 export * from './not-found'
-export * from './table'

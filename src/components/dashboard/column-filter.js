@@ -1,6 +1,6 @@
 import { Fragment, useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { DebouncedInput } from './debounced-input'
+import { DebouncedInput } from '@components/debounced-input'
 
 export const ColumnFilter = ({ column }) => {
   const { filterVariant } = column.columnDef.meta ?? {}
@@ -15,7 +15,7 @@ export const ColumnFilter = ({ column }) => {
   [column.getFacetedUniqueValues(), filterVariant])
 
   return filterVariant === 'range' ? (
-    <div>
+    <Fragment>
       <DebouncedInput
         type="number"
         min={ Number(column.getFacetedMinMaxValues()?.[0] ?? '') }
@@ -27,7 +27,7 @@ export const ColumnFilter = ({ column }) => {
             ? `(${ column.getFacetedMinMaxValues()?.[0] })`
             : ''
         }`}
-        style={{ backgroundColor: 'inherit', color: 'inherit' }}
+        style={{ backgroundColor: 'inherit', color: 'inherit', width: '75px' }}
       />
       <DebouncedInput
         type="number"
@@ -40,9 +40,9 @@ export const ColumnFilter = ({ column }) => {
             ? `(${ column.getFacetedMinMaxValues()?.[1] })`
             : ''
         }` }
-        style={{ backgroundColor: 'inherit', color: 'inherit' }}
+        style={{ backgroundColor: 'inherit', color: 'inherit', width: '75px' }}
       />
-    </div>
+    </Fragment>
   ) : filterVariant === 'select' ? (
     <select
       onChange={ e => column.setFilterValue(e.target.value) }
@@ -70,7 +70,6 @@ export const ColumnFilter = ({ column }) => {
         list={ column.id + 'list' }
         style={{ backgroundColor: 'inherit', color: 'inherit' }}
       />
-      <div />
     </Fragment>
   ) : (
     <div>NONE</div>

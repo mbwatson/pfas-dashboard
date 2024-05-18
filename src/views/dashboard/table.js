@@ -1,12 +1,22 @@
 import { useCallback, useState } from 'react'
-import { Button, CircularProgress, Divider, Stack } from '@mui/joy'
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  Stack,
+  Typography,
+} from '@mui/joy'
 import {
   FilterList as FilterIcon,
-  Close as ClearFiltersIcon,
 } from '@mui/icons-material'
 import { useData } from '@context'
-import { ContentPage } from '@components/layout'
-import { ColumnSelect, DataTable, Pagination } from '@components/table'
+import {
+  ClearFiltersButton,
+  ColumnSelect,
+  DataTable,
+  Pagination,
+} from '@components/dashboard'
 
 export const TableView = () => {
   const { pfasData, podmTable } = useData()
@@ -19,15 +29,11 @@ export const TableView = () => {
     <Button
       key="visibility-toggle"
       variant={ filtersVisibility ? 'soft' : 'outlined' }
+      size="sm"
       onClick={ handleToggleFiltersVisibility }
-      startDecorator={ <FilterIcon /> }
+      startDecorator={ <FilterIcon fontSize="sm" /> }
     >{ filtersVisibility ? 'Hide' : 'Show' } Filters</Button>,
-    <Button
-      key="clear-selections"
-      variant="outlined"
-      onClick={ () => table.resetColumnFilters() }
-      startDecorator={ <ClearFiltersIcon /> }
-    >Clear Filters</Button>,
+    <ClearFiltersButton key="clear-selections" />,
   ], [columnFilters, filtersVisibility])
 
   if (pfasData.isLoading) {
@@ -37,13 +43,19 @@ export const TableView = () => {
         alignItems="center"
         sx={{ mt: 'calc(100px + 5rem)' }}
       >
-        <CircularProgress />
+        <CircularProgress size="lg" />
       </Stack>
     )
   }
 
+  const SampleCount = useCallback(() => (
+    <Typography>
+      { table.getPrePaginationRowModel().rows.length } samples
+    </Typography>
+  ), [table.getPrePaginationRowModel().rows.length])
+
   return (
-    <ContentPage sx={{
+    <Box sx={{
       maxWidth: 'unset',
       minWidth: '100vw',
       overflow: 'unset',
@@ -54,11 +66,11 @@ export const TableView = () => {
       }
     }}>
       <Stack
-        variant="outlined"
         direction="row"
         justifyContent="flex-start"
         alignItems="center"
         gap={ 2 }
+        divider={ <Divider orientation="vertical" /> }
         sx={{
           position: 'sticky',
           left: '1rem',
@@ -67,23 +79,23 @@ export const TableView = () => {
           display: 'inline-flex'
         }}
       >
+        <SampleCount />
         <Pagination table={ table } />
-
-        <Divider orientation="vertical" />
-
         <ColumnSelect table={ table } />
-
-        <Divider orientation="vertical" />
-
         <FilterControls />
-
       </Stack>
 
       <DataTable table={ table } />
 
-      <Stack py={ 2 }>
+      <Stack
+        direction="row"
+        py={ 2 }
+        gap={ 2 }
+        divider={ <Divider orientation="vertical" /> }
+      >
+        <SampleCount />
         <Pagination table={ table } />
       </Stack>
-    </ContentPage>
+    </Box>
   )
 }

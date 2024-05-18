@@ -5,6 +5,7 @@ import theme from '../theme'
 import {
   useToggleLocalStorage,
 } from '@hooks'
+import { PreferencesDrawer } from '@components/preferences'
 
 //
 
@@ -43,6 +44,7 @@ const PreferencesInterface = ({ children }) => {
       cache,
     }}>
       { children }
+      <PreferencesDrawer />
     </PreferencesContext.Provider>
   )
 }

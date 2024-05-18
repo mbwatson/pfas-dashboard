@@ -1,7 +1,6 @@
 import { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Box } from '@mui/joy'
-import { Footer } from '@components/layout'
 
 const SIZES = {
   sm: '600px',
@@ -15,7 +14,7 @@ export const ContentPage = ({ children, maxWidth = 'md', sx }) => {
     <Fragment>
       <Box sx={{
         flex: 1,
-        mt: '5.5rem',
+        mt: '3.5rem',
         mb: '4rem',
         px: 2,
         minWidth: SIZES[maxWidth],
@@ -25,8 +24,6 @@ export const ContentPage = ({ children, maxWidth = 'md', sx }) => {
       }}>
         { children }
       </Box>
-
-      <Footer />
     </Fragment>
   )
 }

@@ -8,7 +8,6 @@ import {
   ListItemDecorator,
   ListSubheader,
   MenuButton,
-  MenuList,
 } from '@mui/joy'
 import {
   KeyboardArrowDown as ChevronDownIcon,
@@ -38,12 +37,14 @@ export const ColumnSelect = ({ table }) => {
   return (
     <Dropdown>
       <MenuButton
-        variant="soft"
-        endDecorator={ <ChevronDownIcon /> }
+        variant="outlined"
+        size="sm"
+        color="neutral"
+        endDecorator={ <ChevronDownIcon fontSize="sm" /> }
         startDecorator={ <ColumnsIcon /> }
       >Columns</MenuButton>
       <Menu aria-labelledby="column-select" size="sm">
-        <MenuList sx={{
+        <List sx={{
           width: '250px',
           maxWidth: '250px',
           height: '50vh',
@@ -92,7 +93,7 @@ export const ColumnSelect = ({ table }) => {
               )
             })
           }
-        </MenuList>
+        </List>
       </Menu>
     </Dropdown>
   )
