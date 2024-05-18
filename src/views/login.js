@@ -10,7 +10,7 @@ export const LoginView = () => {
   const navigate = useNavigate()
 
   if (auth.user) {
-    navigate('/')
+    navigate('/dashboard')
   }
 
   return (

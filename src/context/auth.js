@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
       domain="renci.auth0.com"
       clientId="wVibbe3STC4m6mh7EDL9Bk6aXLEljmFR"
       authorizationParams={{
-        redirect_uri: window.location.origin
+        redirect_uri: `${ window.location.origin }/#/dashboard`
       }}
     >
       <AuthInterface>
