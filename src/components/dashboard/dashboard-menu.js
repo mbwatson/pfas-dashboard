@@ -8,6 +8,7 @@ import {
   DonutSmall as ChartIcon,
   TableRows as TableIcon,
 } from '@mui/icons-material'
+import { usePreferences } from '@context'
 import { Link } from '@components/link'
 
 const menuItems = [
@@ -16,6 +17,7 @@ const menuItems = [
 ]
 
 export const DashboardMenu = () => {
+  const preferences = usePreferences()
 
   return (
     <List
@@ -33,9 +35,13 @@ export const DashboardMenu = () => {
           '&[aria-current="page"]': {
             pointerEvents: 'none',
             backgroundColor: 'var(--joy-palette-primary-outlinedActiveBg)',
-            color: 'var(--joy-palette-common-white)',
+            color: preferences.colorMode.dark
+              ? 'var(--joy-palette-common-white)'
+              : 'var(--joy-palette-primary-700)',
             '.MuiSvgIcon-root': {
-              fill: 'var(--joy-palette-common-white)',
+              fill: preferences.colorMode.dark
+                ? 'var(--joy-palette-common-white)'
+                : 'var(--joy-palette-primary-700)',
             },
           },
         },
