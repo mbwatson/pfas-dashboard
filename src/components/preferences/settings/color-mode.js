@@ -9,11 +9,11 @@ import {
   DarkModeRounded as DarkModeRoundedIcon,
   LightMode as LightModeIcon,
 } from '@mui/icons-material'
-import { useAppContext } from '@context'
+import { usePreferences } from '@context'
 
 export const ColorModeSelect = () => {
   const theme = useTheme()
-  const { preferences } = useAppContext()
+  const preferences = usePreferences()
 
   return (
     <Stack
@@ -44,7 +44,7 @@ export const ColorModeSelect = () => {
 }
 
 const ColorModeToggle = () => {
-  const { preferences } = useAppContext()
+  const preferences = usePreferences()
 
   const [mounted, setMounted] = useState(false)
 

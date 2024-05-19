@@ -1,54 +1,41 @@
-import { Fragment, useMemo } from 'react'
 import { Sheet } from '@mui/joy'
-import { AuthMenu } from '@components/auth'
-import { useAppContext } from '@context'
-import { menuItems, Router } from './router'
-import { Header } from './components/layout'
+import { Routes, Route } from 'react-router-dom'
+import { DataProvider, useAuth } from '@context'
+import {
+  DashboardView,
+  LoginView,
+  NotFoundView,
+} from './views'
 
-import { PreferencesDrawer } from '@components/preferences'
+//
+
+const ClosedApp = () => (
+  <Sheet component="main">
+    <Routes>
+      <Route path="*" element={ <LoginView /> } />
+    </Routes>
+  </Sheet>
+)
+
+const OpenApp = () => {
+  return (
+    <DataProvider>      
+      <Routes>
+        <Route path="/dashboard/*" element={ <DashboardView /> } />
+        <Route path="*" element={ <NotFoundView /> } />
+      </Routes>
+    </DataProvider>
+  )
+}
 
 //
 
 export const App = () => {
-  const { auth, pageRef, preferences } = useAppContext()
+  const auth = useAuth()
 
-  const headerActions = useMemo(() => {
-    let actions = [<AuthMenu key="auth-action-button" />]
-    if (auth.user) {
-      actions = [
-        ...actions,
-      ]
-    }
-    return actions
-  }, [auth.user])
+  if (!auth.user) {
+    return <ClosedApp />
+  }
 
-  const availableMenuItems = useMemo(() => {
-    let items = [...menuItems]
-    if (!auth.user) {
-      items = items.filter(r => !r.requiresAuth)
-    }
-    return items.filter(r => !r.hidden)
-  }, [auth.user])
-
-  return (
-    <Fragment>
-      <Header
-        menuLinks={ availableMenuItems }
-        actions={ headerActions }
-      />
-      
-      <Sheet
-        component="main"
-        ref={ pageRef }
-        className={
-          preferences.colorMode.dark ? 'dark-mode' : 'light-mode'
-        }
-      >
-        <Router />
-      </Sheet>
-
-      <PreferencesDrawer />
-
-    </Fragment>
-  )
+  return <OpenApp />
 }

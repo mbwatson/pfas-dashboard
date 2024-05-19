@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 import {
   Avatar,
-  Button,
   Dropdown,
   IconButton,
   ListDivider,
@@ -14,23 +13,20 @@ import {
   Typography,
 } from '@mui/joy'
 import {
-  Login as LoginIcon,
   Logout as LogoutIcon,
   Tune as PreferencesIcon,
 } from '@mui/icons-material'
-import { useAppContext } from '@context'
+import { usePreferences, useAuth } from '@context'
+import { LoginButton } from './login-button'
 
 //
 
 export const AuthMenu = () => {
-  const { auth, loading, preferences } = useAppContext()
+  const auth = useAuth()
+  const preferences = usePreferences()
 
   const handleClickLogout = () => {
     auth.logout()
-  }
-
-  const handleClickLogin = () => {
-    auth.login()
   }
 
   const handleClickPreferences = () => {
@@ -48,23 +44,18 @@ export const AuthMenu = () => {
   }, [auth.isAuthenticated])
 
   if (!auth.isAuthenticated) {
-    return (
-      <Button
-        loading={ loading }
-        variant="soft"
-        size="lg"
-        onClick={ handleClickLogin }
-        startDecorator={ <LoginIcon /> }
-      >Login</Button>
-    )
+    return <LoginButton />
   }
 
   return (
     <Dropdown>
       <MenuButton
+        variant="solid"
+        color="primary"
         slots={{ root: IconButton }}
-        slotProps={{ root: { size: 'lg', color: 'primary' } }}
-      ><Avatar>{ initials }</Avatar></MenuButton>
+        slotProps={{ root: { size: 'sm', color: 'primary' } }}
+        sx={{ borderRadius: '18px' }}
+      ><Avatar variant="soft" color="primary" size="sm">{ initials }</Avatar></MenuButton>
 
       <Menu placement="bottom-end" sx={{ width: '250px' }}>
         <Stack flexDirection="row" justifyContent="center" alignItems="center" p={ 2 } gap={ 2 }>

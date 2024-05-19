@@ -1,4 +1,3 @@
-export * from './home'
+export * from './dashboard'
+export * from './login'
 export * from './not-found'
-export * from './raw-data'
-export * from './table'

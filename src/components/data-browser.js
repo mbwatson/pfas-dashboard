@@ -14,7 +14,7 @@ import {
 } from '@mui/icons-material'
 import { collapseAllNested, darkStyles, defaultStyles, JsonView } from 'react-json-view-lite'
 import 'react-json-view-lite/dist/index.css'
-import { useAppContext, useData } from '@context'
+import { usePreferences, useData } from '@context'
 
 const DataTabStatusIndicator = ({ dataKey }) => {
   const data = useData()
@@ -68,7 +68,7 @@ const DataTabContentSkeleton = () => {
 //
 
 const DataTabContent = ({ dataKey }) => {
-  const { preferences } = useAppContext()
+  const { preferences } = usePreferences()
   const data = useData()
 
   const _data = data[dataKey].data

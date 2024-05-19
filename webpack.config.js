@@ -93,6 +93,7 @@ module.exports = {
     alias: {
       '@components': path.resolve(__dirname, 'src/components/'),
       '@content': path.resolve(__dirname, 'src/content/'),
+      '@data': path.resolve(__dirname, 'src/data/'),
       '@context': path.resolve(__dirname, 'src/context/'),
       '@hooks': path.resolve(__dirname, 'src/hooks/'),
       '@images': path.resolve(__dirname, 'src/images/'),
@@ -107,6 +108,7 @@ module.exports = {
     },
     historyApiFallback: true,
     static: path.resolve(__dirname, 'dist'),
+    port: 8000,
     setupMiddlewares: (middlewares, devServer) => {
       if (!devServer) {
         throw new Error('webpack-dev-server is not defined')

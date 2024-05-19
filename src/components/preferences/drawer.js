@@ -13,14 +13,14 @@ import {
 import {
   Tune as MenuIcon,
 } from '@mui/icons-material'
-import { useAppContext } from '@context'
+import { usePreferences } from '@context'
 import {
   CacheSelect,
   ColorModeSelect,
 } from './settings'
 
 export const PreferencesDrawer = () => {
-  const { preferences } = useAppContext()
+  const preferences = usePreferences()
 
   return (
     <Drawer
@@ -78,7 +78,7 @@ export const PreferencesDrawer = () => {
 }
 
 export const PreferencesToggle = () => {
-  const { preferences } = useAppContext()
+  const { preferences } = usePreferences()
 
   return (
     <IconButton

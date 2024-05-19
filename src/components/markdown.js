@@ -5,7 +5,7 @@ import {
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Link } from './link'
-import { useAppContext } from '@context'
+import { usePreferences } from '@context'
 
 const Paragraph = props => {
   return (
@@ -37,7 +37,7 @@ const Blockquote = props => {
 }
 
 const Codeblock = props => {
-  const { preferences } = useAppContext()
+  const { preferences } = usePreferences()
   return (
     <Box
       component="pre"
