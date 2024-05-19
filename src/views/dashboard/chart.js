@@ -22,7 +22,7 @@ export const ChartView = () => {
     }
     const svg = containerRef.current.querySelector('svg')
     console.log(svg)
-    saveSvgAsPng(svg, `samples -- ${ new Date().toLocaleString() }`, {
+    saveSvgAsPng(svg, `pfas-samples--${ new Date().toLocaleString() }`, {
       scale: 2,
       format: 'png',
       quality: '0.5',
@@ -37,7 +37,7 @@ export const ChartView = () => {
         sx={{ py: 2 }}
         endDecorator={
           <Button
-            variant="soft"
+            variant="outlined"
             color="neutral"
             size="sm"
             onClick={ handleClickDownload }

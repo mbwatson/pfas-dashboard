@@ -13,7 +13,7 @@ export const DataTable = ({ table, sx = {} }) => {
       sx={{
         overflow: 'scroll',
         border: '1px solid #333',
-        '.sortable': {
+        'tr:nth-of-type(2) th span.sortable': {
           cursor: 'pointer',
           '&:hover': {
             filter: 'brightness(1.1)',

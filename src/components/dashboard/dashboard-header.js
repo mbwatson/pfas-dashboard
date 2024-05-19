@@ -28,7 +28,6 @@ export const DashboardHeader = ({ endActions = [], startAction = null }) => {
           level="h4"
           component="h1"
           color="primary.text"
-          sx={{ flex: 1 }}
         >PFAS Dashboard</Typography>
         <Stack
           direction="row"

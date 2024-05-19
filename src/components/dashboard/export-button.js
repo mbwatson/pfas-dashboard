@@ -9,7 +9,19 @@ const csvConfig = mkConfig({ useKeysAsHeaders: true })
 
 export const ExportButton = ({ table }) => {
   const handleClickDownload = () => {
-    const rows = table.getFilteredRowModel().rows.map(r => r.original)
+    const visibleColumnIds = table.getVisibleLeafColumns().map(c => c.id)
+
+    const rows = table.getFilteredRowModel().rows
+      .map(r => r.original)
+      .reduce((acc, row) => {
+        const reducedRow = Object.fromEntries(
+          Object.entries(row).filter(([key, ]) => {
+            return visibleColumnIds.includes(key)
+          })
+        )
+        acc.push(reducedRow)
+        return acc
+      }, [])
     const csv = generateCsv(csvConfig)(rows)
     download(csvConfig)(csv)
   }

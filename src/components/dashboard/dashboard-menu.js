@@ -23,12 +23,9 @@ export const DashboardMenu = () => {
       orientation="horizontal"
       color="primary"
       sx={{
-        '--List-radius': '8px',
-        '--List-padding': '4px',
         '--List-gap': '8px',
-        '--ListItem-gap': '0px',
+        '--List-flex': 1,
         justifyContent: 'flex-end',
-        gap: 0,
         p: 0,
         '.MuiListItemButton-root': {
           transition: 'background-color 250ms',
