@@ -33,7 +33,10 @@ export const DashboardMenu = () => {
           '&[aria-current="page"]': {
             pointerEvents: 'none',
             backgroundColor: 'var(--joy-palette-primary-outlinedActiveBg)',
-            color: 'var(--joy-palette-primary-outlinedColor)',
+            color: 'var(--joy-palette-common-white)',
+            '.MuiSvgIcon-root': {
+              fill: 'var(--joy-palette-common-white)',
+            },
           },
         },
       }}
