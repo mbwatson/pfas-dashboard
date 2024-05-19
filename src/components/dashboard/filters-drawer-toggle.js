@@ -9,9 +9,17 @@ export const FiltersDrawerToggle = ({ active = false, onClick }) => {
     <IconButton
       size="sm"
       variant="soft"
-      color={ active ? 'primary' : 'neutral' }
+      color="primary"
       onClick={ onClick }
-    ><DrawerIcon fontSize="sm" /></IconButton>
+    >
+      <DrawerIcon
+        fontSize="sm"
+        sx={{
+          transform: active ? 'scale(1, 1)' : 'scale(-1, 1)',
+          transition: 'transform 150ms',
+        }}
+      />
+    </IconButton>
   )
 }
 

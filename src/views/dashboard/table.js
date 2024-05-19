@@ -14,6 +14,7 @@ import {
   ClearFiltersButton,
   ColumnSelect,
   DataTable,
+  ExportButton,
   Pagination,
 } from '@components/dashboard'
 
@@ -74,6 +75,7 @@ export const TableView = () => {
         <Pagination table={ table } />
         <ColumnSelect table={ table } />
         <FilterControls />
+        <ExportButton table={ table } />
       </Stack>
 
       <DataTable

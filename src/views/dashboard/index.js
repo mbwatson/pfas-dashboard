@@ -15,7 +15,7 @@ import { FiltersDrawerToggle } from '@components/dashboard'
 //
 
 export const DashboardView = () => {
-  const filtersDrawer = useToggleState(true)
+  const filtersDrawer = useToggleState(false)
 
   const headerStartAction = useMemo(() => (
     <FiltersDrawerToggle
