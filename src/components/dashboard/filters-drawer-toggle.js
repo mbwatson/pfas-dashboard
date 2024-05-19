@@ -12,10 +12,13 @@ export const FiltersDrawerToggle = ({ active = false, onClick }) => {
       color="primary"
       onClick={ onClick }
     >
-      <DrawerIcon sx={{
-        transform: active ? 'scale(1, 1)' : 'scale(-1, 1)',
-        transition: 'transform 150ms',
-      }} />
+      <DrawerIcon
+        fontSize="lg"
+        sx={{
+          transform: active ? 'scale(1, 1)' : 'scale(-1, 1)',
+          transition: 'transform 150ms',
+        }}
+      />
     </IconButton>
   )
 }
