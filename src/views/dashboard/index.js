@@ -42,7 +42,7 @@ export const DashboardView = () => {
         overflow: 'auto',
         position: 'relative',
         pl: '1rem',
-        mt: '53px',
+        pt: '48px',
       }}>
         <Routes>
           <Route path="table" element={ <TableView /> } />

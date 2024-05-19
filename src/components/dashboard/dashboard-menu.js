@@ -45,6 +45,7 @@ export const DashboardMenu = () => {
         menuItems.map(({ Icon, label, path }) => (
           <ListItem role="none" key={ path }>
             <ListItemButton
+              size="lg"
               variant="soft"
               role="menuitem"
               component={ Link }

@@ -53,7 +53,7 @@ export const AuthMenu = () => {
         variant="solid"
         color="primary"
         slots={{ root: IconButton }}
-        slotProps={{ root: { size: 'sm', color: 'primary' } }}
+        slotProps={{ root: { size: 'sm', color: 'primary', sx: { p: 1 } } }}
         sx={{ borderRadius: '18px' }}
       ><Avatar variant="soft" color="primary" size="sm">{ initials }</Avatar></MenuButton>
 
