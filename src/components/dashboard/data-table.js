@@ -5,7 +5,7 @@ import {
 } from '@tanstack/react-table'
 import { ColumnFilter } from './column-filter'
 
-export const DataTable = ({ table }) => {
+export const DataTable = ({ table, sx = {} }) => {
   return (
     <Sheet
       variant="soft"
@@ -45,6 +45,7 @@ export const DataTable = ({ table }) => {
         },
         'tfoot tr:first-of-type th': { fontSize: '75%' },
         'tfoot tr:nth-of-type(2) th': { fontSize: '100%' },
+         ...sx,
       }}
     >
       <thead>
@@ -109,6 +110,7 @@ export const DataTable = ({ table }) => {
 }
 
 DataTable.propTypes = {
+  sx: PropTypes.object.isRequired,
   table: PropTypes.object.isRequired,
 }
 

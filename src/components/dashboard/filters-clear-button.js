@@ -15,6 +15,7 @@ export const ClearFiltersButton = ({ sx = {}, ...props }) => {
       key="clear-selections"
       variant="outlined"
       size="sm"
+      color="neutral"
       onClick={ () => table.resetColumnFilters() }
       startDecorator={ <ClearFiltersIcon fontSize="sm" /> }
       { ...props }

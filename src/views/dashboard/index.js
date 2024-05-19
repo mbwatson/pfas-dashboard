@@ -36,12 +36,13 @@ export const DashboardView = () => {
         endActions={ headerEndActions }
       />
       <Sheet component="main" sx={{
-        minWidth: filtersDrawer.enabled ? 'calc(100vw - 360px)' : '100vw',
+        width: filtersDrawer.enabled ? 'calc(100vw - 360px)' : '100vw',
         marginLeft: filtersDrawer.enabled ? '360px' : '0',
         transition: 'margin-left 250ms ease-out, min-width 250ms ease-out',
-        overflow: 'scroll',
+        overflow: 'auto',
+        position: 'relative',
         pl: '1rem',
-        pt: '3rem',
+        mt: '53px',
       }}>
         <Routes>
           <Route path="table" element={ <TableView /> } />

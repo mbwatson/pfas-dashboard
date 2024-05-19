@@ -1,6 +1,5 @@
-import { useCallback, useState } from 'react'
+import { Fragment, useCallback, useState } from 'react'
 import {
-  Box,
   Button,
   CircularProgress,
   Divider,
@@ -29,6 +28,7 @@ export const TableView = () => {
     <Button
       key="visibility-toggle"
       variant={ filtersVisibility ? 'soft' : 'outlined' }
+      color="neutral"
       size="sm"
       onClick={ handleToggleFiltersVisibility }
       startDecorator={ <FilterIcon fontSize="sm" /> }
@@ -55,16 +55,7 @@ export const TableView = () => {
   ), [table.getPrePaginationRowModel().rows.length])
 
   return (
-    <Box sx={{
-      maxWidth: 'unset',
-      minWidth: '100vw',
-      overflow: 'unset',
-      '.filter': {
-        maxHeight: filtersVisibility ? '48px' : 0,
-        overflow: 'hidden',
-        transition: 'max-height 250ms',
-      }
-    }}>
+    <Fragment>      
       <Stack
         direction="row"
         justifyContent="flex-start"
@@ -73,7 +64,7 @@ export const TableView = () => {
         divider={ <Divider orientation="vertical" /> }
         sx={{
           position: 'sticky',
-          left: '1rem',
+          left: 0,
           my: 1,
           py: 1,
           display: 'inline-flex'
@@ -85,7 +76,16 @@ export const TableView = () => {
         <FilterControls />
       </Stack>
 
-      <DataTable table={ table } />
+      <DataTable
+        table={ table }
+        sx={{
+          '.filter': {
+            maxHeight: filtersVisibility ? '48px' : 0,
+            overflow: 'hidden',
+            transition: 'max-height 250ms',
+          },
+        }}
+      />
 
       <Stack
         direction="row"
@@ -96,6 +96,6 @@ export const TableView = () => {
         <SampleCount />
         <Pagination table={ table } />
       </Stack>
-    </Box>
+    </Fragment>
   )
 }
