@@ -50,12 +50,12 @@ export const AuthMenu = () => {
   return (
     <Dropdown>
       <MenuButton
-        variant="outlined"
+        variant="solid"
         color="primary"
         slots={{ root: IconButton }}
         slotProps={{ root: { size: 'sm', color: 'primary' } }}
         sx={{ borderRadius: '18px' }}
-      >{ initials }</MenuButton>
+      ><Avatar variant="soft" color="primary" size="sm">{ initials }</Avatar></MenuButton>
 
       <Menu placement="bottom-end" sx={{ width: '250px' }}>
         <Stack flexDirection="row" justifyContent="center" alignItems="center" p={ 2 } gap={ 2 }>

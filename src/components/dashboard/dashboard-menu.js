@@ -22,7 +22,6 @@ export const DashboardMenu = () => {
       role="menubar"
       orientation="horizontal"
       color="primary"
-      variant="plain"
       sx={{
         '--List-radius': '8px',
         '--List-padding': '4px',
@@ -36,7 +35,8 @@ export const DashboardMenu = () => {
           borderRadius: 'sm',
           '&[aria-current="page"]': {
             pointerEvents: 'none',
-            backgroundColor: 'var(--joy-palette-primary-solidActiveBg)',
+            backgroundColor: 'var(--joy-palette-primary-outlinedActiveBg)',
+            color: 'var(--joy-palette-primary-outlinedColor)',
           },
         },
       }}
@@ -45,7 +45,7 @@ export const DashboardMenu = () => {
         menuItems.map(({ Icon, label, path }) => (
           <ListItem role="none" key={ path }>
             <ListItemButton
-              variant={"solid"}
+              variant="soft"
               role="menuitem"
               component={ Link }
               nav to={ path }
