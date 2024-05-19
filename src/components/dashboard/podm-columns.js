@@ -12,7 +12,7 @@ export const podmColumns = [
     header: 'Sample',
     footer: 'Sample',
     columns: [
-      columnHelper.accessor('sample_id', {            cell: info => info.getValue(), header: 'Sample ID',      footer: 'Sample ID',       meta: { filterVariant: 'range' },    size: 100 }),
+      columnHelper.accessor('sample_id', {            cell: info => info.getValue(), header: 'Sample ID',      footer: 'Sample ID',       meta: { filterVariant: 'none' },    size: 125 }),
       columnHelper.accessor('sample', {               cell: info => info.getValue(), header: 'Sample',         footer: 'Sample',          meta: { filterVariant: 'text' } }),
       columnHelper.accessor('study', {                cell: info => info.getValue(), header: 'Study',          footer: 'Study',           meta: { filterVariant: 'select' } }),
       columnHelper.accessor('pi', {                   cell: info => info.getValue(), header: 'PI',             footer: 'PI',              meta: { filterVariant: 'select' } }),
@@ -35,10 +35,10 @@ export const podmColumns = [
     header: 'PFNA',
     footer: 'PFNA',
     columns: [
-      columnHelper.accessor('pfna_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfna_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfna_dl', {              cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfna_flags', {           cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 80 }),
+      columnHelper.accessor('pfna_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfna_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfna_dl', {              cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfna_flags', {           cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 90 }),
     ],
   }),
   columnHelper.group({
@@ -46,10 +46,10 @@ export const podmColumns = [
     header: 'PFDS',
     footer: 'PFDS',
     columns: [
-      columnHelper.accessor('pfds_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfds_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfds_dl', {              cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfds_flags', {           cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 80 }),
+      columnHelper.accessor('pfds_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfds_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfds_dl', {              cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfds_flags', {           cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 90 }),
     ],
   }),
   columnHelper.group({
@@ -57,10 +57,10 @@ export const podmColumns = [
     header: 'PFHXA',
     footer: 'PFHXA',
     columns: [
-      columnHelper.accessor('pfhxa_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfhxa_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfhxa_dl', {             cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfhxa_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 80 }),
+      columnHelper.accessor('pfhxa_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfhxa_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfhxa_dl', {             cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfhxa_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 90 }),
     ],
   }),
   columnHelper.group({
@@ -68,10 +68,10 @@ export const podmColumns = [
     header: 'PFOA',
     footer: 'PFOA',
     columns: [
-      columnHelper.accessor('pfoa_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfoa_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfoa_dl', {              cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfoa_flags', {           cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 80 }),
+      columnHelper.accessor('pfoa_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfoa_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfoa_dl', {              cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfoa_flags', {           cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 90 }),
     ],
   }),
   columnHelper.group({
@@ -79,10 +79,10 @@ export const podmColumns = [
     header: 'PFOS',
     footer: 'PFOS',
     columns: [
-      columnHelper.accessor('pfos_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfos_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfos_dl', {              cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfos_flags', {           cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 80 }),
+      columnHelper.accessor('pfos_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfos_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfos_dl', {              cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfos_flags', {           cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 90 }),
     ],
   }),
   columnHelper.group({
@@ -90,10 +90,10 @@ export const podmColumns = [
     header: 'PFBA',
     footer: 'PFBA',
     columns: [
-      columnHelper.accessor('pfba_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfba_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfba_dl', {              cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfba_flags', {           cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 80 }),
+      columnHelper.accessor('pfba_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfba_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfba_dl', {              cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfba_flags', {           cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 90 }),
     ],
   }),
   columnHelper.group({
@@ -101,10 +101,10 @@ export const podmColumns = [
     header: 'PFDOA',
     footer: 'PFDOA',
     columns: [
-      columnHelper.accessor('pfdoa_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfdoa_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfdoa_dl', {             cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfdoa_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 80 }),
+      columnHelper.accessor('pfdoa_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfdoa_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfdoa_dl', {             cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfdoa_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 90 }),
     ],
   }),
   columnHelper.group({
@@ -112,10 +112,10 @@ export const podmColumns = [
     header: 'PFPEA',
     footer: 'PFPEA',
     columns: [
-      columnHelper.accessor('pfpea_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfpea_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfpea_dl', {             cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfpea_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 80 }),
+      columnHelper.accessor('pfpea_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfpea_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfpea_dl', {             cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfpea_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 90 }),
     ],
   }),
   columnHelper.group({
@@ -123,10 +123,10 @@ export const podmColumns = [
     header: 'PFHPS',
     footer: 'PFHPS',
     columns: [
-      columnHelper.accessor('pfhps_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfhps_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfhps_dl', {             cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfhps_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 80 }),
+      columnHelper.accessor('pfhps_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfhps_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfhps_dl', {             cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfhps_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 90 }),
     ],
   }),
   columnHelper.group({
@@ -134,10 +134,10 @@ export const podmColumns = [
     header: 'PFUNDA',
     footer: 'PFUNDA',
     columns: [
-      columnHelper.accessor('pfunda_concentration', { cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfunda_mrl', {           cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfunda_dl', {            cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfunda_flags', {         cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 80 }),
+      columnHelper.accessor('pfunda_concentration', { cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfunda_mrl', {           cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfunda_dl', {            cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfunda_flags', {         cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 90 }),
     ],
   }),
   columnHelper.group({
@@ -145,10 +145,10 @@ export const podmColumns = [
     header: 'PFBS',
     footer: 'PFBS',
     columns: [
-      columnHelper.accessor('pfbs_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfbs_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfbs_dl', {              cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfbs_flags', {           cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 80 }),
+      columnHelper.accessor('pfbs_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfbs_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfbs_dl', {              cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfbs_flags', {           cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 90 }),
     ],
   }),
   columnHelper.group({
@@ -156,10 +156,10 @@ export const podmColumns = [
     header: 'PFPES',
     footer: 'PFPES',
     columns: [
-      columnHelper.accessor('pfpes_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfpes_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfpes_dl', {             cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfpes_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 80 }),
+      columnHelper.accessor('pfpes_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfpes_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfpes_dl', {             cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfpes_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 90 }),
     ],
   }),
   columnHelper.group({
@@ -167,10 +167,10 @@ export const podmColumns = [
     header: 'PFNS',
     footer: 'PFNS',
     columns: [
-      columnHelper.accessor('pfns_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfns_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfns_dl', {              cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfns_flags', {           cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 80 }),
+      columnHelper.accessor('pfns_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfns_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfns_dl', {              cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfns_flags', {           cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 90 }),
     ],
   }),
   columnHelper.group({
@@ -178,10 +178,10 @@ export const podmColumns = [
     header: 'PFHPA',
     footer: 'PFHPA',
     columns: [
-      columnHelper.accessor('pfhpa_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfhpa_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfhpa_dl', {             cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfhpa_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 80 }),
+      columnHelper.accessor('pfhpa_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfhpa_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfhpa_dl', {             cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfhpa_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 90 }),
     ],
   }),
   columnHelper.group({
@@ -189,10 +189,10 @@ export const podmColumns = [
     header: 'PFHXS',
     footer: 'PFHXS',
     columns: [
-      columnHelper.accessor('pfhxs_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfhxs_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfhxs_dl', {             cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfhxs_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 80 }),
+      columnHelper.accessor('pfhxs_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfhxs_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfhxs_dl', {             cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfhxs_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 90 }),
     ],
   }),
   columnHelper.group({
@@ -200,10 +200,10 @@ export const podmColumns = [
     header: 'PFDA',
     footer: 'PFDA',
     columns: [
-      columnHelper.accessor('pfda_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfda_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfda_dl', {              cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' },   size: 110 }),
-      columnHelper.accessor('pfda_flags', {           cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 80 }),
+      columnHelper.accessor('pfda_concentration', {   cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfda_mrl', {             cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfda_dl', {              cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'range' } }),
+      columnHelper.accessor('pfda_flags', {           cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' },  size: 90 }),
     ],
   }),
   columnHelper.group({
@@ -214,7 +214,7 @@ export const podmColumns = [
       columnHelper.accessor('pfuda_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'none' } }), //,   si1e: 100 bug
       columnHelper.accessor('pfuda_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'none' } }), //,   si1e: 100 bug
       columnHelper.accessor('pfuda_dl', {             cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'none' } }), //,   si1e: 100 bug
-      columnHelper.accessor('pfuda_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' } ,  size: 80}),
+      columnHelper.accessor('pfuda_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' } ,  size: 90}),
     ],
   }),
 ]
