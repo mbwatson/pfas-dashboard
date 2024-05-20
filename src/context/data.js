@@ -112,6 +112,7 @@ export const DataWrangler = ({ children }) => {
   })
 
   const chemicalIds = useMemo(() => chemicals.map(s => s.id), [])
+  console.log(pfasDataQuery.data)
 
   const table = useReactTable({
     data: pfasDataQuery.data,
