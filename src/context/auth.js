@@ -10,7 +10,7 @@ export const useAuth = () => useContext(AuthContext)
 
 const useDevelopmentAuth0 = () => {
   const navigate = useNavigate()
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(true)
   const user = useMemo(() => {
     if (!isAuthenticated) {
       return undefined
