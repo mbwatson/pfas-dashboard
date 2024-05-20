@@ -41,7 +41,7 @@ export const ChartView = () => {
             color="neutral"
             size="sm"
             onClick={ handleClickDownload }
-            startDecorator={ <DownloadIcon fonstSize="sm" /> }
+            startDecorator={ <DownloadIcon fontSize="sm" /> }
           >PNG</Button>
       }>
         Samples by PFAS Chemical Detection
