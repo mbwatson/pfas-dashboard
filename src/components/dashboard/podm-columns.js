@@ -12,7 +12,7 @@ export const podmColumns = [
     header: 'Sample',
     footer: 'Sample',
     columns: [
-      columnHelper.accessor('sample_id', {            cell: info => info.getValue(), header: 'Sample ID',      footer: 'Sample ID',       meta: { filterVariant: 'none' },    size: 125 }),
+      columnHelper.accessor('sample_id', {            cell: info => info.getValue(), header: 'ID',             footer: 'ID',       meta: { filterVariant: 'none' },    size: 125 }),
       columnHelper.accessor('sample', {               cell: info => info.getValue(), header: 'Sample',         footer: 'Sample',          meta: { filterVariant: 'text' } }),
       columnHelper.accessor('study', {                cell: info => info.getValue(), header: 'Study',          footer: 'Study',           meta: { filterVariant: 'select' } }),
       columnHelper.accessor('pi', {                   cell: info => info.getValue(), header: 'PI',             footer: 'PI',              meta: { filterVariant: 'select' } }),
