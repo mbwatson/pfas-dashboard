@@ -5,7 +5,7 @@ export * from './filters-clear-button'
 export * from './filters-drawer'
 export * from './filters-drawer-toggle'
 
-export * from './samples-by-chemical-card'
+export * from './samples-by-chemical-pie-chart'
 
 export * from './podm-columns'
 
