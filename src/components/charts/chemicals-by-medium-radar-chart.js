@@ -1,11 +1,37 @@
 import { useMemo } from 'react'
 import PropTypes from 'prop-types'
-import { useData } from '@context'
+import { useData, usePreferences } from '@context'
 import { ResponsiveRadar } from '@nivo/radar'
 
 //
 
+const GridLabel = ({ id, x, y }) => {
+  const preferences = usePreferences()
+
+  return (
+    <g transform={ `translate(${ x }, ${ y })` }>
+      <g transform={ `translate(0, 0)` }>
+        <text style={{
+          textAlign: 'center',
+          fontSize: 10,
+          fontFamily: 'Inter',
+          fill: preferences.colorMode.light ? '#333' : '#ddd',
+        }}>
+          { id }
+        </text>
+      </g>
+    </g>
+  )
+}
+
+GridLabel.propTypes = {
+  id: PropTypes.string.isRequired,
+  x: PropTypes.number.isRequired,
+  y: PropTypes.number.isRequired,
+}
+
 export const ChemicalsByMediumRadarChart = ({ data }) => {
+  const preferences = usePreferences()
   const { chemicalIds } = useData();
 
   // generate array of sampled media from data
@@ -66,6 +92,7 @@ export const ChemicalsByMediumRadarChart = ({ data }) => {
       colors={{ scheme: 'pastel1' }}
       gridLabelOffset={ 25 }
       gridLevels={ 10 }
+      gridLabel={ GridLabel }
       dotSize={ 8 }
       dotColor={{ from: 'color' }}
       dotBorderWidth={ 2 }
@@ -90,7 +117,7 @@ export const ChemicalsByMediumRadarChart = ({ data }) => {
             {
               on: 'hover',
               style: {
-                itemTextColor: '#000'
+                itemTextColor: preferences.colorMode.light ? '#000' : '#fff',
               }
             }
           ]

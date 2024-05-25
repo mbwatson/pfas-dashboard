@@ -31,7 +31,7 @@ const useDevelopmentAuth0 = () => {
 
   const loginWithRedirect = () => {
     setIsAuthenticated(true)
-    navigate('/dashboard')
+    navigate('dashboard')
   }
   
   const logout = () => {
@@ -60,7 +60,7 @@ export const AuthInterface = ({ children }) => {
   // allowing injection of custom app-related logic.
   const login = () => {
     loginWithRedirect({
-      appState: { targetUrl: '/' }
+      appState: { targetUrl: '/dashboard' }
     })
   }
   const logout = () => {

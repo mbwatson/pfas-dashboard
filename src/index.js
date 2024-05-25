@@ -1,10 +1,7 @@
 import { App } from './app'
 import { createRoot } from 'react-dom/client'
 import { HashRouter } from 'react-router-dom'
-import {
-  AuthProvider,
-  PreferencesProvider,
-} from '@context'
+import { AuthProvider } from '@context'
 import './index.css'
 import '@fontsource/inter'
 
@@ -14,9 +11,7 @@ const root = createRoot(container)
 const ProvisionedApp = () => (
   <HashRouter>
     <AuthProvider>
-      <PreferencesProvider>
         <App />
-      </PreferencesProvider>
     </AuthProvider>
   </HashRouter>
 )

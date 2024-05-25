@@ -26,11 +26,6 @@ Tooltip.propTypes = {
 //
 
 export const ChemicalDetectionPieChart = ({ data }) => {
-  console.log(data)
-  // console.log(data.map(sample => ({
-  //   id: sample.sample_id,
-
-  // })))
   const { chemicalIds } = useData();
   const preferences = usePreferences()
 
@@ -102,7 +97,7 @@ export const ChemicalDetectionPieChart = ({ data }) => {
             {
               on: 'hover',
               style: {
-                itemTextColor: '#000'
+                itemTextColor: preferences.colorMode.light ? '#000' : '#fff',
               }
             }
           ]
