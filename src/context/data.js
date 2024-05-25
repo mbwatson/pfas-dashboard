@@ -111,7 +111,7 @@ export const DataWrangler = ({ children }) => {
     queryFn: createSampleQuerier('pfas_sample_data'),
   })
 
-  const chemicalIds = useMemo(() => chemicals.map(s => s.id), [])
+  const chemicalIds = useMemo(() => chemicals.map(s => s.id).sort(), [])
 
   const table = useReactTable({
     data: pfasDataQuery.data,

@@ -6,14 +6,16 @@ import {
 } from '@mui/joy'
 import {
   DonutSmall as ChartIcon,
+  Difference as CompareIcon,
   TableRows as TableIcon,
 } from '@mui/icons-material'
 import { usePreferences } from '@context'
 import { Link } from '@components/link'
 
 const menuItems = [
-  { id: 'table', path: 'table', label: 'Table', Icon: TableIcon },
-  { id: 'chart', path: 'chart', label: 'Chart', Icon: ChartIcon },
+  { id: 'table',   path: 'table',   label: 'Table',   Icon: TableIcon },
+  { id: 'chart',   path: 'chart',   label: 'Chart',   Icon: ChartIcon },
+  { id: 'compare', path: 'compare', label: 'Compare', Icon: CompareIcon },
 ]
 
 export const DashboardMenu = () => {
