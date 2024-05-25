@@ -25,10 +25,14 @@ Tooltip.propTypes = {
 
 //
 
-export const ChemicalDetectionPieChart = () => {
-  const { chemicalIds, podmTable } = useData();
+export const ChemicalDetectionPieChart = ({ data }) => {
+  console.log(data)
+  // console.log(data.map(sample => ({
+  //   id: sample.sample_id,
+
+  // })))
+  const { chemicalIds } = useData();
   const preferences = usePreferences()
-  const { table } = podmTable
 
   const emptyChemicalBuckets = useMemo(() => chemicalIds
     .reduce((acc, id) => {
@@ -45,23 +49,25 @@ export const ChemicalDetectionPieChart = () => {
     }, [])
   }, [chemicalIds])
 
-  const chemicalBuckets = useMemo(() => table.getPrePaginationRowModel().rows
+  const chemicalBuckets = useMemo(() => data
     .reduce((acc, row) => {
       detectedChemicals(row).forEach(chemicalId => {
         acc[chemicalId] += 1
       })
       return acc
-  }, { ...emptyChemicalBuckets }), [table.getRowModel().rows])
+  }, { ...emptyChemicalBuckets }), [data])
 
   const chartData = useMemo(() => {
     if (!chemicalBuckets) {
       return []
     }
-    return Object.keys(chemicalBuckets).map(chemicalId => ({
-      id: chemicalId,
-      value: chemicalBuckets[chemicalId],
-    }))
-  }, [chemicalBuckets])
+    return Object.keys(chemicalBuckets)
+      .sort()
+      .map(chemicalId => ({
+        id: chemicalId,
+        value: chemicalBuckets[chemicalId],
+      }))
+  }, [chemicalBuckets, data])
 
 
   if (!Object.keys(chemicalBuckets).length === 0) {
@@ -70,12 +76,42 @@ export const ChemicalDetectionPieChart = () => {
 
   return (
     <ResponsivePie
+      key={ chartData.length }
       data={ chartData }
-      margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
+      margin={{ top: 40, right: 80, bottom: 40, left: 80 }}
       innerRadius={ 0.5 }
       padAngle={ 1 }
+      arcLabelsSkipAngle={ 10 }
       arcLinkLabelsTextColor={ preferences.colorMode.light ? '#333' : '#ddd' }
-      tooltip={ Tooltip }
+      colors={{ scheme: 'pastel1' }}
+      legends={[
+        {
+          anchor: 'top-left',
+          direction: 'column',
+          justify: false,
+          translateX: -60,
+          translateY: 0,
+          itemsSpacing: 4,
+          itemWidth: 50,
+          itemHeight: 16,
+          itemTextColor: '#999',
+          itemOpacity: 1,
+          symbolSize: 16,
+          symbolShape: 'square',
+          effects: [
+            {
+              on: 'hover',
+              style: {
+                itemTextColor: '#000'
+              }
+            }
+          ]
+        }
+      ]}
     />
   )
+}
+
+ChemicalDetectionPieChart.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.object).isRequired,
 }
