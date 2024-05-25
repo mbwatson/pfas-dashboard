@@ -9,7 +9,7 @@ import {
 import {
   Circle as IndicatorIcon,
 } from '@mui/icons-material'
-import { ColumnFilter } from './column-filter'
+import { ColumnFilter } from '@components/table'
 import { useData } from '@context'
 
 export const ColumnFilters = () => {

@@ -23,7 +23,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { podmColumns } from '@components/dashboard'
+import { podmColumns } from '@components/table'
 
 import { usePreferences } from '@context'
 

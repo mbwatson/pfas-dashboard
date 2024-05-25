@@ -11,11 +11,13 @@ import {
 } from '@mui/icons-material'
 import { useData } from '@context'
 import {
-  ClearFiltersButton,
   ColumnSelect,
   DataTable,
   ExportButton,
   Pagination,
+} from '@components/table'
+import {
+  ClearFiltersButton,
 } from '@components/dashboard'
 
 export const TableView = () => {

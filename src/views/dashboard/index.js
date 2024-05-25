@@ -5,12 +5,14 @@ import { AuthMenu } from '@components/auth'
 import {
   DashboardHeader,
   DashboardMenu,
-  FiltersDrawer,
 } from '@components/dashboard'
 import { useToggleState } from '@hooks'
 import { ChartView } from './chart'
 import { TableView } from './table'
-import { FiltersDrawerToggle } from '@components/dashboard'
+import { 
+  FiltersDrawer,
+  FiltersDrawerToggle,
+} from '@components/dashboard'
 
 //
 
