@@ -8,6 +8,7 @@ import {
 } from '@components/dashboard'
 import { useToggleState } from '@hooks'
 import { ChartView } from './chart'
+import { CompareView } from './compare'
 import { TableView } from './table'
 import { 
   FiltersDrawer,
@@ -43,12 +44,13 @@ export const DashboardView = () => {
         transition: 'margin-left 250ms ease-out, min-width 250ms ease-out',
         overflow: 'auto',
         position: 'relative',
-        pl: '1rem',
-        pt: '48px',
+        px: 2,
+        pt: 8,
       }}>
         <Routes>
           <Route path="table" element={ <TableView /> } />
           <Route path="chart" element={ <ChartView /> } />
+          <Route path="compare" element={ <CompareView /> } />
           <Route path="*" element={ <Navigate to="table" /> } />
         </Routes>
       </Sheet>
