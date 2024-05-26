@@ -134,6 +134,8 @@ export const DataWrangler = ({ children }) => {
     },
   })
 
+  const filterCount = table.getAllLeafColumns().filter(col => col.getIsFiltered()).length
+
   return (
     <DataContext.Provider value={{
       pfasData: pfasDataQuery,
@@ -144,6 +146,7 @@ export const DataWrangler = ({ children }) => {
         columnFilters, setColumnFilters,
         sorting, setSorting,
       },
+      filterCount,
     }}>
       { pfasDataQuery.isPending ? <CircularProgress sx={{ margin: '15rem auto' }} /> : children }
     </DataContext.Provider>
