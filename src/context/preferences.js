@@ -1,10 +1,8 @@
 import { createContext, useCallback, useContext, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { CssVarsProvider, useColorScheme } from '@mui/joy/styles'
-import theme from '../theme'
-import {
-  useToggleLocalStorage,
-} from '@hooks'
+import { theme } from '../theme'
+import { useToggleLocalStorage } from '@hooks'
 import { PreferencesDrawer } from '@components/preferences'
 
 //

@@ -1,6 +1,6 @@
 import { Sheet } from '@mui/joy'
 import { Routes, Route } from 'react-router-dom'
-import { DataProvider, useAuth } from '@context'
+import { DataProvider, PreferencesProvider, useAuth } from '@context'
 import {
   DashboardView,
   LoginView,
@@ -19,12 +19,14 @@ const ClosedApp = () => (
 
 const OpenApp = () => {
   return (
-    <DataProvider>      
-      <Routes>
-        <Route path="/dashboard/*" element={ <DashboardView /> } />
-        <Route path="*" element={ <NotFoundView /> } />
-      </Routes>
-    </DataProvider>
+    <PreferencesProvider>
+      <DataProvider>      
+        <Routes>
+          <Route path="dashboard/*" element={ <DashboardView /> } />
+          <Route path="*" element={ <NotFoundView /> } />
+        </Routes>
+      </DataProvider>
+    </PreferencesProvider>
   )
 }
 

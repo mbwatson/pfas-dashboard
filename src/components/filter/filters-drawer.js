@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import { Box, Sheet, DialogTitle, Divider } from '@mui/joy'
-import { ColumnFilters } from './column-filters'
-import { ClearFiltersButton } from '@components/dashboard'
+import { ColumnFilters, ClearFiltersButton } from '@components/filter'
 
 export const FiltersDrawer = ({ open, onClose }) => {
   return (

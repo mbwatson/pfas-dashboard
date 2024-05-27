@@ -6,16 +6,20 @@ import {
 } from '@mui/joy'
 import {
   DonutSmall as ChartIcon,
+  Difference as CompareIcon,
   TableRows as TableIcon,
 } from '@mui/icons-material'
+import { usePreferences } from '@context'
 import { Link } from '@components/link'
 
 const menuItems = [
-  { id: 'table', path: 'table', label: 'Table', Icon: TableIcon },
-  { id: 'chart', path: 'chart', label: 'Chart', Icon: ChartIcon },
+  { id: 'table',   path: 'table',   label: 'Table',   Icon: TableIcon },
+  { id: 'chart',   path: 'chart',   label: 'Chart',   Icon: ChartIcon },
+  { id: 'compare', path: 'compare', label: 'Compare', Icon: CompareIcon },
 ]
 
 export const DashboardMenu = () => {
+  const preferences = usePreferences()
 
   return (
     <List
@@ -33,7 +37,14 @@ export const DashboardMenu = () => {
           '&[aria-current="page"]': {
             pointerEvents: 'none',
             backgroundColor: 'var(--joy-palette-primary-outlinedActiveBg)',
-            color: 'var(--joy-palette-primary-outlinedColor)',
+            color: preferences.colorMode.dark
+              ? 'var(--joy-palette-common-white)'
+              : 'var(--joy-palette-primary-700)',
+            '.MuiSvgIcon-root': {
+              fill: preferences.colorMode.dark
+                ? 'var(--joy-palette-common-white)'
+                : 'var(--joy-palette-primary-700)',
+            },
           },
         },
       }}
@@ -42,6 +53,7 @@ export const DashboardMenu = () => {
         menuItems.map(({ Icon, label, path }) => (
           <ListItem role="none" key={ path }>
             <ListItemButton
+              size="lg"
               variant="soft"
               role="menuitem"
               component={ Link }

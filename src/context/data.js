@@ -23,7 +23,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { podmColumns } from '@components/dashboard'
+import { podmColumns } from '@components/table'
 
 import { usePreferences } from '@context'
 
@@ -111,7 +111,7 @@ export const DataWrangler = ({ children }) => {
     queryFn: createSampleQuerier('pfas_sample_data'),
   })
 
-  const chemicalIds = useMemo(() => chemicals.map(s => s.id), [])
+  const chemicalIds = useMemo(() => chemicals.map(s => s.id).sort(), [])
 
   const table = useReactTable({
     data: pfasDataQuery.data,
@@ -134,6 +134,8 @@ export const DataWrangler = ({ children }) => {
     },
   })
 
+  const filterCount = table.getAllLeafColumns().filter(col => col.getIsFiltered()).length
+
   return (
     <DataContext.Provider value={{
       pfasData: pfasDataQuery,
@@ -144,6 +146,7 @@ export const DataWrangler = ({ children }) => {
         columnFilters, setColumnFilters,
         sorting, setSorting,
       },
+      filterCount,
     }}>
       { pfasDataQuery.isPending ? <CircularProgress sx={{ margin: '15rem auto' }} /> : children }
     </DataContext.Provider>
