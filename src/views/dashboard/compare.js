@@ -87,7 +87,7 @@ export const CompareView = () => {
     if (analytes[0] === analytes[1]) {
       return (
         <Fragment>
-          <Typography>distribution</Typography>
+          <Typography level="h4">Distribution of { analytes[0] }</Typography>
         </Fragment>
       )
     }
@@ -122,7 +122,10 @@ export const CompareView = () => {
           </li>          
         </ul>
         <AnalyteCorrelationScatterplot
-          data={ table.getPrePaginationRowModel().rows }
+          data={ table.getPrePaginationRowModel().rows.filter(row => (
+            Number(row.original[`${ analytes[0] }_concentration`]) > 0
+            && Number(row.original[`${ analytes[1] }_concentration`]) > 0
+          )) }
           analytes={ analytes }
         />
       </Box>
