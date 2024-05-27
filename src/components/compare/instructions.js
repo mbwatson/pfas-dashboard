@@ -38,7 +38,7 @@ export const Instructions = () => {
         alignItems: 'center',
         gap: 0.5,
       }}>
-        <Typography level="body-xs" verticalAlign="middle" textAlign="right">No samples</Typography>
+        <Typography level="body-xs" textAlign="right">No samples</Typography>
         {
           [...Array(10).keys()].map(i => (
             <Box key={ `box-size-${ i }` } sx={{
@@ -54,8 +54,8 @@ export const Instructions = () => {
             </Box>
           ))
         }
-        <Typography level="body-xs" verticalAlign="middle" textAlign="left">All samples</Typography>
-        <Typography level="body-xs" verticalAlign="middle" textAlign="right"><InlineMath math="r = 1" /></Typography>
+        <Typography level="body-xs" textAlign="left">All samples</Typography>
+        <Typography level="body-xs" textAlign="right"><InlineMath math="r = 1" /></Typography>
         {
           [...Array(10).keys()].map(i => (
             <Box key={ `box-alpha-${ i }` } sx={{
@@ -71,7 +71,7 @@ export const Instructions = () => {
             </Box>
           ))
         }
-        <Typography level="body-xs" verticalAlign="middle" textAlign="left"><InlineMath math="r = 1" /></Typography>
+        <Typography level="body-xs" textAlign="left"><InlineMath math="r = 1" /></Typography>
       </Box>
 
       <Typography level="body-sm" my={ 2 }>

@@ -1,5 +1,5 @@
 import { useCallback } from 'react'
-import { Button, FormControl, Option, Select } from '@mui/joy'
+import { Button, Option, Select, Stack } from '@mui/joy'
 import {
   Close as ClearIcon,
 } from '@mui/icons-material'
@@ -17,7 +17,7 @@ export const AnalyteSelect = () => {
   }, [analytes[0], analytes[1]])
 
   return (
-    <FormControl orientation="horizontal" sx={{ gap: 2 }}>
+    <Stack direction="row" gap={ 2 }>
       <Select value={ analytes[0] ?? '' } variant="outlined" onChange={ handleChangeAnalyte(0) }>
         <Option key="select-null" value="">Select analyte</Option>
         {
@@ -44,6 +44,6 @@ export const AnalyteSelect = () => {
         disabled={ analytes.every(a => !a) }
       >Clear</Button>
 
-    </FormControl>
+    </Stack>
   )
 }
