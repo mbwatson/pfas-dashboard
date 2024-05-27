@@ -11,12 +11,14 @@ import {
 } from '@mui/icons-material'
 import { useData } from '@context'
 import {
-  ClearFiltersButton,
   ColumnSelect,
   DataTable,
   ExportButton,
   Pagination,
-} from '@components/dashboard'
+} from '@components/table'
+import {
+  ClearFiltersButton,
+} from '@components/filter'
 
 export const TableView = () => {
   const { pfasData, podmTable } = useData()
@@ -50,9 +52,7 @@ export const TableView = () => {
   }
 
   const SampleCount = useCallback(() => (
-    <Typography>
-      { table.getPrePaginationRowModel().rows.length } samples
-    </Typography>
+    <Typography level="body-md">{ table.getPrePaginationRowModel().rows.length } samples</Typography>
   ), [table.getPrePaginationRowModel().rows.length])
 
   return (
@@ -66,8 +66,7 @@ export const TableView = () => {
         sx={{
           position: 'sticky',
           left: 0,
-          my: 1,
-          py: 1,
+          mb: 2,
           display: 'inline-flex'
         }}
       >

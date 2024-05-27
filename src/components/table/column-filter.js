@@ -27,7 +27,7 @@ export const ColumnFilter = ({ column }) => {
             ? `(${ column.getFacetedMinMaxValues()?.[0] })`
             : ''
         }`}
-        style={{ backgroundColor: 'inherit', color: 'inherit', width: '75px' }}
+        style={{ backgroundColor: 'inherit', color: 'inherit', width: '100%' }}
       />
       <DebouncedInput
         type="number"
@@ -40,7 +40,7 @@ export const ColumnFilter = ({ column }) => {
             ? `(${ column.getFacetedMinMaxValues()?.[1] })`
             : ''
         }` }
-        style={{ backgroundColor: 'inherit', color: 'inherit', width: '75px' }}
+        style={{ backgroundColor: 'inherit', color: 'inherit', width: '100%' }}
       />
     </Fragment>
   ) : filterVariant === 'select' ? (
@@ -52,7 +52,11 @@ export const ColumnFilter = ({ column }) => {
       <option value="">All</option>
       {
         sortedUniqueValues.map(value => (
-          <option value={ value } key={ value }>{ value }</option>
+          <option
+            value={ value }
+            key={ value }
+            style={{ width: '100%' }}
+          >{ value }</option>
         ))
       }
     </select>
@@ -68,11 +72,11 @@ export const ColumnFilter = ({ column }) => {
         onChange={ value => column.setFilterValue(value) }
         placeholder={ `Search... (${ column.getFacetedUniqueValues().size })` }
         list={ column.id + 'list' }
-        style={{ backgroundColor: 'inherit', color: 'inherit' }}
+        style={{ backgroundColor: 'inherit', color: 'inherit', width: '100%' }}
       />
     </Fragment>
   ) : (
-    <div>NONE</div>
+    <div className="no-filtering" />
   )
 }
 

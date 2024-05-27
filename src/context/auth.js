@@ -10,7 +10,7 @@ export const useAuth = () => useContext(AuthContext)
 
 const useDevelopmentAuth0 = () => {
   const navigate = useNavigate()
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(true)
   const user = useMemo(() => {
     if (!isAuthenticated) {
       return undefined
@@ -31,7 +31,7 @@ const useDevelopmentAuth0 = () => {
 
   const loginWithRedirect = () => {
     setIsAuthenticated(true)
-    navigate('/dashboard')
+    navigate('dashboard')
   }
   
   const logout = () => {
@@ -60,7 +60,7 @@ export const AuthInterface = ({ children }) => {
   // allowing injection of custom app-related logic.
   const login = () => {
     loginWithRedirect({
-      appState: { targetUrl: '/' }
+      appState: { targetUrl: '/dashboard' }
     })
   }
   const logout = () => {

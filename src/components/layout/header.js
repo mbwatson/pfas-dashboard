@@ -13,14 +13,13 @@ export const DashboardHeader = ({ endActions = [], startAction = null }) => {
         top: 0,
         width: '100%',
         zIndex: 99,
-        py: 1, px: 2,
         borderBottom: '1px solid #999',
       }}
     >
       <Stack
         direction="row"
         justifyContent="space-between"
-        alignItems="center"
+        alignItems="stretch"
         gap={ 2 }
       >
         { startAction }
@@ -28,6 +27,7 @@ export const DashboardHeader = ({ endActions = [], startAction = null }) => {
           level="h4"
           component="h1"
           color="primary.text"
+          sx={{ alignSelf: 'center' }}
         >PFAS Dashboard</Typography>
         <Stack
           direction="row"
