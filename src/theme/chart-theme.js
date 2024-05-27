@@ -1,4 +1,4 @@
-export const theme = {
+export const chartTheme = {
   background: 'transparent',
   text: {
     fontSize: 11,

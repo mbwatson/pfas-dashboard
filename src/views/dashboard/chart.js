@@ -1,4 +1,5 @@
 import {
+  Divider,
   Grid,
   Stack,
   Typography,
@@ -15,9 +16,16 @@ export const ChartView = () => {
 
   return (
     <Stack direction="column">
-      <Typography>
-        { table.getPrePaginationRowModel().rows.length } samples
-      </Typography>
+      <Stack
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="center"
+        gap={ 2 }
+        divider={ <Divider orientation="vertical" /> }
+        sx={{ mb: 2, display: 'inline-flex', height: '32px', }}
+      >
+        <Typography level="body-md">{ table.getPrePaginationRowModel().rows.length } samples</Typography>
+      </Stack>
 
       <Grid container spacing={ 2 } sx={{ pr: 2 }}>
         <Grid xs={ 12 } sm={ 12 } md={ 12 } lg={ 11 } xl={ 6 }>

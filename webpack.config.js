@@ -98,6 +98,7 @@ module.exports = {
       '@hooks': path.resolve(__dirname, 'src/hooks/'),
       '@images': path.resolve(__dirname, 'src/images/'),
       '@util': path.resolve(__dirname, 'src/util/'),
+      '@views': path.resolve(__dirname, 'src/views/'),
     }
   },
 

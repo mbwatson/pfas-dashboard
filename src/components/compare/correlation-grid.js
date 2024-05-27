@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Box } from '@mui/joy'
 import { useData, usePreferences } from '@context'
 import { pearsonsR } from '@util'
+import { IndicatorBox } from './correlation-indicator-box'
 
 //
 
@@ -11,7 +12,7 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
   const { colorMode } = usePreferences();
   const max = useRef(0);
 
-  const pairCount = useCallback((id1, id2) => {
+  const correlationCount = useCallback((id1, id2) => {
     if (id1 === id2) {
       return 0
     }
@@ -39,19 +40,16 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
       )
     }
 
-    const count = pairCount(id1, id2)
+    const count = correlationCount(id1, id2)
     const r = pearsonsR(
       data.map(row => Number(row.original[`${ id1 }_concentration`])),
       data.map(row => Number(row.original[`${ id2 }_concentration`])),
     )
 
     return (
-      <Box
-        sx={{
-          background: `rgb(var(--joy-palette-primary-mainChannel) / ${ r })`,
-          height: `calc(100% * ${ count / max.current })`,
-          width: `calc(100% * ${ count / max.current })`,
-        }}
+      <IndicatorBox
+        alpha={ r }
+        size={ count / max.current }
       />
     );
   }, [data]);
@@ -79,7 +77,7 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
         alignItems: 'center',
         fontSize: '75%',
         cursor: 'pointer',
-        filter: 'saturate(0.25)',
+        filter: 'saturate(0.5)',
         '&.highlight': {
           filter: 'saturate(1.0)',
         },

@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useData, usePreferences } from '@context'
 import { ResponsiveRadar } from '@nivo/radar'
-import { theme } from './theme'
+import { chartTheme } from '../../theme'
 
 //
 
@@ -124,7 +124,7 @@ export const ChemicalsByMediumRadarChart = ({ data }) => {
           ]
         }
       ]}
-      theme={ theme }
+      theme={ chartTheme }
     />
   )
 }

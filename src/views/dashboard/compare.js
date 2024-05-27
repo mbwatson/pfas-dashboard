@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useMemo, useRef, useState } from 'react'
+import { createContext, useCallback, useContext, useRef, useState } from 'react'
 import {
   Box,
   Card,
@@ -13,72 +13,43 @@ import { useData } from '@context'
 import {
   AnalyteCorrelationGrid,
   AnalyteCorrelationScatterplot,
-} from '@components/charts'
+  AnalyteSelect,
+  Distribution,
+  Instructions,
+} from '@components/compare'
 import { InlineMath } from 'react-katex'
 import 'katex/dist/katex.min.css'
 import { pearsonsR } from '@util'
-import { Link } from '@components/link'
 import { PngDownloadButton } from '@components/dashboard'
 
-const Instructions = () => {
-  return (
-    <Fragment>
-      <Typography level="h4">Instructions</Typography>
-
-      <Divider />
-
-      <Typography level="body-sm" my={ 2 }>
-        Choose a pair of analytes for comparison by selecting a cell in the grid.
-      </Typography>
-      <Typography level="body-sm" my={ 2 }>
-        Each of the non-diagonal cells in the grid contains a square describing
-        the samples in which <em>both</em> selected analytes are detected.
-        The <em>size</em> of the square indicates the number of such samples
-        (as a part of the whole of currently filtered samples).
-        The <em>opacity</em> of the square indicates how strong the correlation
-        is between those two analytes<sup>*</sup>.
-      </Typography>
-
-      <Typography level="body-sm" my={ 2 }>
-        Selecting a cell presents a scatterplot ilustrating the relationship
-        between the analytes defined by the selected cell.
-      </Typography>
-
-      <Divider />
-
-      <Typography variant="caption" level="body-xs" my={ 2 }>
-        * This is correlation in terms of
-        the <Link to="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Pearson
-        correlation coefficient <InlineMath math="r" /></Link>.
-      </Typography>
-    </Fragment>
-  )
-}
+const CompareContext = createContext({ })
+export const useCompare = () => useContext(CompareContext)
 
 export const CompareView = () => {
   const containerRef = useRef(null)
   const { chemicalIds, podmTable: { table } } = useData()
   const [analytes, setAnalytes] = useState([null, null])
+  const max = useRef(0);
 
-  const handleClickClearSelection = () => {
+  const clearAnalytes = useCallback(() => {
     setAnalytes([null, null])
-  }
+  }, [])
 
   const correlationCount = useCallback((id1, id2) => {
     if (id1 === id2) {
       return 0
     }
-    const count = table.getPrePaginationRowModel().rows
+    return table.getPrePaginationRowModel().rows
       .reduce((count, row) => {
         if (Number(row.original[`${ id1 }_concentration`]) > 0
             && Number(row.original[`${ id2 }_concentration`]) > 0
         ) { count += 1 }
+        if (count > max.current) {
+          max.current += 1
+        }
         return count
       }, 0)
-    
-    return count
   }, [table.getPrePaginationRowModel().rows]);
-
 
   const SelectionDetails = useCallback(() => {
     if (!analytes[0] || !analytes[1]) {
@@ -92,11 +63,7 @@ export const CompareView = () => {
       ))
 
     if (analytes[0] === analytes[1]) {
-      return (
-        <Fragment>
-          <Typography level="h4">Distribution of { analytes[0] }</Typography>
-        </Fragment>
-      )
+      return <Distribution analyte={ analytes[0] } />
     }
 
     return (
@@ -107,7 +74,7 @@ export const CompareView = () => {
           endDecorator={
             <Stack direction="row" gap={ 1 }>
               <PngDownloadButton containerRef={ containerRef } />
-              <IconButton variant="soft" size="sm" onClick={ handleClickClearSelection }><CloseIcon /></IconButton>
+              <IconButton variant="soft" size="sm" onClick={ clearAnalytes }><CloseIcon /></IconButton>
             </Stack>
           }
         ><span>{ analytes[0] } <InlineMath math="\times" /> { analytes[1] }</span></Typography>
@@ -128,50 +95,61 @@ export const CompareView = () => {
             }` } />
           </li>          
         </ul>
+        
         <AnalyteCorrelationScatterplot
-          data={ correlationData }
           analytes={ analytes }
+          data={ correlationData }
         />
       </Box>
     )
   }, [analytes[0], analytes[1]])
 
   return (
-    <Stack
-      justifyContent="flex-start"
-      alignItems="stretch"
-      gap={ 2 }
-      sx={{ flex: 1 }}
-    >
-      <Card variant="soft">
-        <Typography level="h2">
-          Comparing { chemicalIds.length } analytes across { table.getPrePaginationRowModel().rows.length } samples
-        </Typography>
-
-        <Divider />
-
-        <Stack flexDirection={{ xs: 'column', md: 'row' }}>
-          <CardContent sx={{ flex: '0 1 400px' }}>
-            <AnalyteCorrelationGrid
-              data={ table.getPrePaginationRowModel().rows }
-              selectedAnalytes={ analytes }
-              onClickCell={ setAnalytes }
-            />
-          </CardContent>
-          <CardContent sx={{
-            flex: 1,
-            mt: 1,
-            p: 2,
-            backgroundImage: 'linear-gradient(120deg, var(--joy-palette-background-surface) 50%, transparent 100%)',
-            borderBottomLeftRadius: '6px',
-            borderTopLeftRadius: '6px',
-          }}>
-            <SelectionDetails />
-          </CardContent>
+    <CompareContext.Provider value={{ analytes, setAnalytes, clearAnalytes, correlationCount }}>
+      <Stack
+        justifyContent="flex-start"
+        alignItems="stretch"
+        gap={ 2 }
+        sx={{ flex: 1 }}
+      >
+        <Stack
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+          gap={ 2 }
+          divider={ <Divider orientation="vertical" /> }
+          sx={{ display: 'inline-flex' }}
+        >
+          <Typography level="body-md">{ table.getPrePaginationRowModel().rows.length } samples</Typography>
+          <AnalyteSelect />
         </Stack>
-      </Card>
+        <Card variant="soft">
+          <Typography level="h3">Correlation Matrix</Typography>
 
-    </Stack>
+          <Divider />
+
+          <Stack flexDirection={{ xs: 'column', md: 'row' }}>
+            <CardContent sx={{ flex: '0 1 400px' }}>
+              <AnalyteCorrelationGrid
+                data={ table.getPrePaginationRowModel().rows }
+                selectedAnalytes={ analytes }
+                onClickCell={ setAnalytes }
+              />
+            </CardContent>
+            <CardContent sx={{
+              flex: 1,
+              mt: 1,
+              p: 2,
+              backgroundImage: 'linear-gradient(120deg, var(--joy-palette-background-surface) 50%, transparent 100%)',
+              borderBottomLeftRadius: '6px',
+              borderTopLeftRadius: '6px',
+            }}>
+              <SelectionDetails />
+            </CardContent>
+          </Stack>
+        </Card>
+      </Stack>
+    </CompareContext.Provider>
   )
 }
 

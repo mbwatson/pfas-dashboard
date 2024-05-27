@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { Box, Typography } from '@mui/joy'
 import { ResponsiveScatterPlot } from '@nivo/scatterplot'
-import { theme } from './theme'
+import { chartTheme } from '../../theme'
 
 //
 
@@ -17,11 +17,11 @@ export const AnalyteCorrelationScatterplot = ({
       padding: '12px 16px',
       '.MuiTypography-root': { m: 0 }
     }}>
-      <Typography level="title-xs">Sample ID: { node.data.sample_id }</Typography>
+      <Typography level="title-xs">Sample: { node.data.sample_id }</Typography>
       <Typography level="body-xs">{ analytes[0] }: { node.formattedX }</Typography>
       <Typography level="body-xs">{ analytes[1] }: { node.formattedY }</Typography>
     </Box>
-  ), [analytes])
+  ), [analytes[0], analytes[1]])
 
   Tooltip.propTypes = {
     node: PropTypes.object.isRequired,
@@ -71,7 +71,7 @@ export const AnalyteCorrelationScatterplot = ({
         truncateTickAt: 0
       }}
       tooltip={ Tooltip }
-      theme={ theme }
+      theme={ chartTheme }
     />
   )
 }

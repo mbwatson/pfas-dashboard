@@ -1,19 +1,20 @@
 import { Fragment, useMemo } from 'react'
-import { Navigate, Routes, Route } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import { Sheet } from '@mui/joy'
 import { AuthMenu } from '@components/auth'
 import {
   DashboardHeader,
   DashboardMenu,
-} from '@components/dashboard'
+} from '@components/layout'
 import { useToggleState } from '@hooks'
 import { ChartView } from './chart'
 import { CompareView } from './compare'
+import { NotFoundView } from '../'
 import { TableView } from './table'
 import { 
   FiltersDrawer,
   FiltersDrawerToggle,
-} from '@components/dashboard'
+} from '@components/filter'
 
 //
 
@@ -51,7 +52,7 @@ export const DashboardView = () => {
           <Route path="table" element={ <TableView /> } />
           <Route path="chart" element={ <ChartView /> } />
           <Route path="compare" element={ <CompareView /> } />
-          <Route path="*" element={ <Navigate to="table" /> } />
+          <Route path="*" element={ <NotFoundView /> } />
         </Routes>
       </Sheet>
       <FiltersDrawer

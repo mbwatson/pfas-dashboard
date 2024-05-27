@@ -11,7 +11,7 @@ const root = createRoot(container)
 const ProvisionedApp = () => (
   <HashRouter>
     <AuthProvider>
-        <App />
+      <App />
     </AuthProvider>
   </HashRouter>
 )
