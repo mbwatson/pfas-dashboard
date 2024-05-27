@@ -27,7 +27,7 @@ export const useCompare = () => useContext(CompareContext)
 
 export const CompareView = () => {
   const containerRef = useRef(null)
-  const { chemicalIds, podmTable: { table } } = useData()
+  const { podmTable: { table } } = useData()
   const [analytes, setAnalytes] = useState([null, null])
   const max = useRef(0);
 
