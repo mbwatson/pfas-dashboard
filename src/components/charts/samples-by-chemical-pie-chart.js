@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Box, Divider, Typography } from '@mui/joy'
 import { useData, usePreferences } from '@context'
 import { ResponsivePie } from '@nivo/pie'
+import { theme } from './theme'
 
 const Tooltip = ({ datum }) => {
   return (
@@ -103,6 +104,7 @@ export const ChemicalDetectionPieChart = ({ data }) => {
           ]
         }
       ]}
+      theme={ theme }
     />
   )
 }

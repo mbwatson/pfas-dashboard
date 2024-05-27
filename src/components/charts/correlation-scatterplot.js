@@ -1,24 +1,8 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
+import { Box, Typography } from '@mui/joy'
 import { ResponsiveScatterPlot } from '@nivo/scatterplot'
-
-//
-
-const Tooltip = ({ node }) => (
-  <div style={{
-    color: node.color,
-    background: '#333',
-    padding: '12px 16px'
-  }}>
-    <strong>{ node.id }</strong> <br />
-    {`x: ${ node.formattedX }`} <br />
-    {`y: ${ node.formattedY }`}
-  </div>
-)
-
-Tooltip.propTypes = {
-  node: PropTypes.object.isRequired,
-}
+import { theme } from './theme'
 
 //
 
@@ -26,12 +10,30 @@ export const AnalyteCorrelationScatterplot = ({
   data = [],
   analytes = [],
 }) => {
+  const Tooltip = useCallback(({ node }) => (
+    <Box sx={{
+      color: 'var(--joy-palette-primary-softColor)',
+      background: 'var(--joy-palette-primary-softBg)',
+      padding: '12px 16px',
+      '.MuiTypography-root': { m: 0 }
+    }}>
+      <Typography level="title-xs">Sample ID: { node.data.sample_id }</Typography>
+      <Typography level="body-xs">{ analytes[0] }: { node.formattedX }</Typography>
+      <Typography level="body-xs">{ analytes[1] }: { node.formattedY }</Typography>
+    </Box>
+  ), [analytes])
+
+  Tooltip.propTypes = {
+    node: PropTypes.object.isRequired,
+  }
+
   const chartData = useMemo(() => [{
     id: `${ analytes[0] } x ${ analytes[1] }`,
     data: data.reduce((acc, d) => {
       acc.push({
         x: d.original[`${ analytes[0] }_concentration`],
         y: d.original[`${ analytes[1] }_concentration`],
+        sample_id: d.original.sample_id,
       })
       return acc
     }, [])
@@ -42,7 +44,7 @@ export const AnalyteCorrelationScatterplot = ({
       data={ chartData }
       height={ 500 }
       width={ 500 }
-      margin={{ top: 20, right: 30, bottom: 70, left: 70 }}
+      margin={{ top: 20, right: 30, bottom: 60, left: 70 }}
       xScale={{ type: 'linear', min: 0, max: 'auto' }}
       yScale={{ type: 'linear', min: 0, max: 'auto' }}
       colors={{ scheme: 'paired' }}
@@ -69,6 +71,7 @@ export const AnalyteCorrelationScatterplot = ({
         truncateTickAt: 0
       }}
       tooltip={ Tooltip }
+      theme={ theme }
     />
   )
 }

@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useState } from 'react'
+import { Fragment, useCallback, useRef, useState } from 'react'
 import {
   Box,
   Card,
@@ -18,7 +18,7 @@ import { InlineMath } from 'react-katex'
 import 'katex/dist/katex.min.css'
 import { pearsonsR } from '@util'
 import { Link } from '@components/link'
-
+import { PngDownloadButton } from '@components/dashboard'
 
 const Instructions = () => {
   return (
@@ -28,11 +28,11 @@ const Instructions = () => {
       <Divider />
 
       <Typography level="body-sm" my={ 2 }>
-        Choose a pair of analytes for comparison by selecting a cell in the grid above.
+        Choose a pair of analytes for comparison by selecting a cell in the grid.
       </Typography>
       <Typography level="body-sm" my={ 2 }>
         Each of the non-diagonal cells in the grid contains a square describing
-        the samples in which <em>both</em> selected analytes were detected.
+        the samples in which <em>both</em> selected analytes are detected.
         The <em>size</em> of the square indicates the number of such samples
         (as a part of the whole of currently filtered samples).
         The <em>opacity</em> of the square indicates how strong the correlation
@@ -47,7 +47,7 @@ const Instructions = () => {
       <Divider />
 
       <Typography variant="caption" level="body-xs" my={ 2 }>
-        * This means correlation in terms of
+        * This is correlation in terms of
         the <Link to="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Pearson
         correlation coefficient <InlineMath math="r" /></Link>.
       </Typography>
@@ -56,6 +56,7 @@ const Instructions = () => {
 }
 
 export const CompareView = () => {
+  const containerRef = useRef(null)
   const { chemicalIds, podmTable: { table } } = useData()
   const [analytes, setAnalytes] = useState([null, null])
 
@@ -92,15 +93,18 @@ export const CompareView = () => {
     }
 
     return (
-      <Fragment>
+      <Box ref={ containerRef }>
         <Typography
           level="h4"
           justifyContent="space-between"
-          endDecorator={ <IconButton variant="soft" size="sm" onClick={ handleClickClearSelection }><CloseIcon /></IconButton> }
+          endDecorator={
+            <Stack direction="row" gap={ 1 }>
+              <PngDownloadButton containerRef={ containerRef } />
+              <IconButton variant="soft" size="sm" onClick={ handleClickClearSelection }><CloseIcon /></IconButton>
+            </Stack>
+          }
         ><span>{ analytes[0] } <InlineMath math="\times" /> { analytes[1] }</span></Typography>
 
-        <Divider />
-        
         <ul style={{ margin: '1rem 0 0 0' }}>
           <li>
             <Typography>
@@ -121,7 +125,7 @@ export const CompareView = () => {
           data={ table.getPrePaginationRowModel().rows }
           analytes={ analytes }
         />
-      </Fragment>
+      </Box>
     )
   }, [analytes[0], analytes[1]])
 
@@ -130,7 +134,7 @@ export const CompareView = () => {
       justifyContent="flex-start"
       alignItems="stretch"
       gap={ 2 }
-      sx={{ flex: 1, }}
+      sx={{ flex: 1 }}
     >
       <Card variant="soft">
         <Typography level="h2">

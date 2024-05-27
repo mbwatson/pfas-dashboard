@@ -1,34 +1,17 @@
 import { useRef } from 'react'
 import PropTypes from 'prop-types'
 import {
-  Button,
   Card,
   CardActions,
   CardContent,
   Divider,
   Typography,
 } from '@mui/joy'
-import {
-  FileDownload as DownloadIcon,
-} from '@mui/icons-material'
-import { saveSvgAsPng } from 'save-svg-as-png'
+import { PngDownloadButton } from './png-download-button'
 
 export const ChartCard = ({ children, title }) => {
   const containerRef = useRef(null)
-
-  const handleClickDownload = () => {
-    if (!containerRef.current) {
-      return
-    }
-    const svg = containerRef.current.querySelector('svg')
-    saveSvgAsPng(svg, `pfas-samples-${ new Date().toLocaleString() }`, {
-      scale: 2,
-      format: 'png',
-      quality: '0.5',
-      download: true,
-    })
-  }
-
+  
   return (
     <Card variant="soft">
       <Typography
@@ -56,13 +39,7 @@ export const ChartCard = ({ children, title }) => {
       <Divider />
 
       <CardActions buttonFlex="0 1 120px" sx={{ justifyContent: 'flex-end' }}>
-        <Button
-          variant="outlined"
-          color="neutral"
-          size="sm"
-          onClick={ handleClickDownload }
-          startDecorator={ <DownloadIcon fontSize="sm" /> }
-        >PNG</Button>
+        <PngDownloadButton containerRef={ containerRef } />
       </CardActions>
     </Card>
   )
