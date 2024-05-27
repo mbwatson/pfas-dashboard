@@ -2,7 +2,6 @@ import { Fragment } from 'react'
 import {
   Box,
   Divider,
-  Stack,
   Typography,
 } from '@mui/joy'
 import { Link } from '@components/link'
