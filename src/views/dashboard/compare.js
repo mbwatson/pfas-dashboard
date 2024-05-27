@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useRef, useState } from 'react'
+import { Fragment, useCallback, useMemo, useRef, useState } from 'react'
 import {
   Box,
   Card,
@@ -79,10 +79,17 @@ export const CompareView = () => {
     return count
   }, [table.getPrePaginationRowModel().rows]);
 
+
   const SelectionDetails = useCallback(() => {
     if (!analytes[0] || !analytes[1]) {
       return <Instructions />
     }
+
+    const correlationData = table.getPrePaginationRowModel().rows
+      .filter(row => (
+        Number(row.original[`${ analytes[0] }_concentration`]) > 0
+        && Number(row.original[`${ analytes[1] }_concentration`]) > 0
+      ))
 
     if (analytes[0] === analytes[1]) {
       return (
@@ -122,10 +129,7 @@ export const CompareView = () => {
           </li>          
         </ul>
         <AnalyteCorrelationScatterplot
-          data={ table.getPrePaginationRowModel().rows.filter(row => (
-            Number(row.original[`${ analytes[0] }_concentration`]) > 0
-            && Number(row.original[`${ analytes[1] }_concentration`]) > 0
-          )) }
+          data={ correlationData }
           analytes={ analytes }
         />
       </Box>
