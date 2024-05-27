@@ -19,12 +19,48 @@ import 'katex/dist/katex.min.css'
 import { pearsonsR } from '@util'
 import { Link } from '@components/link'
 
+
+const Instructions = () => {
+  return (
+    <Fragment>
+      <Typography level="h4">Instructions</Typography>
+
+      <Divider />
+
+      <Typography level="body-sm" my={ 2 }>
+        Choose a pair of analytes for comparison by selecting a cell in the grid above.
+      </Typography>
+      <Typography level="body-sm" my={ 2 }>
+        Each of the non-diagonal cells in the grid contains a square describing
+        the samples in which <em>both</em> selected analytes were detected.
+        The <em>size</em> of the square indicates the number of such samples
+        (as a part of the whole of currently filtered samples).
+        The <em>opacity</em> of the square indicates how strong the correlation
+        is between those two analytes<sup>*</sup>.
+      </Typography>
+
+      <Typography level="body-sm" my={ 2 }>
+        Selecting a cell presents a scatterplot ilustrating the relationship
+        between the analytes defined by the selected cell.
+      </Typography>
+
+      <Divider />
+
+      <Typography variant="caption" level="body-xs" my={ 2 }>
+        * This means correlation in terms of
+        the <Link to="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Pearson
+        correlation coefficient <InlineMath math="r" /></Link>.
+      </Typography>
+    </Fragment>
+  )
+}
+
 export const CompareView = () => {
-  const { podmTable: { table } } = useData()
-  const [pair, setPair] = useState([null, null])
+  const { chemicalIds, podmTable: { table } } = useData()
+  const [analytes, setAnalytes] = useState([null, null])
 
   const handleClickClearSelection = () => {
-    setPair([null, null])
+    setAnalytes([null, null])
   }
 
   const correlationCount = useCallback((id1, id2) => {
@@ -43,68 +79,51 @@ export const CompareView = () => {
   }, [table.getPrePaginationRowModel().rows]);
 
   const SelectionDetails = useCallback(() => {
+    if (!analytes[0] || !analytes[1]) {
+      return <Instructions />
+    }
+
+    if (analytes[0] === analytes[1]) {
+      return (
+        <Fragment>
+          <Typography>distribution</Typography>
+        </Fragment>
+      )
+    }
+
     return (
-      <Box sx={{
-        p: 2,
-        mr: 3,
-        mt: 2,
-        backgroundImage: 'linear-gradient(120deg, var(--joy-palette-background-surface) 50%, transparent 100%)',
-      }}>
-        {
-          pair[0] && pair[1] ? (
-            <Fragment>
-              <Typography
-                level="h4"
-                justifyContent="space-between"
-                endDecorator={ <IconButton variant="outlined" size="sm" onClick={ handleClickClearSelection }><CloseIcon /></IconButton> }
-              ><span>{ pair[0] } <InlineMath math="\times" /> { pair[1] }</span></Typography>
-              
-              <ul>
-                <li>
-                  <Typography>
-                    { correlationCount(...pair) } samples contain both { pair[0] } and { pair[1] }.
-                  </Typography>
-                </li>
+      <Fragment>
+        <Typography
+          level="h4"
+          justifyContent="space-between"
+          endDecorator={ <IconButton variant="soft" size="sm" onClick={ handleClickClearSelection }><CloseIcon /></IconButton> }
+        ><span>{ analytes[0] } <InlineMath math="\times" /> { analytes[1] }</span></Typography>
 
-                <li>
-                  <InlineMath math={ `r = ${
-                    pearsonsR(
-                      table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ pair[0] }_concentration`])),
-                      table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ pair[1] }_concentration`])),
-                    )
-                  }` } />
-                </li>          
-              </ul>
-            </Fragment>
-          ) : (
-            <Fragment>
-              <Typography level="h4">Instructions</Typography>
+        <Divider />
+        
+        <ul style={{ margin: '1rem 0 0 0' }}>
+          <li>
+            <Typography>
+              { correlationCount(...analytes) } samples contain both { analytes[0] } and { analytes[1] }.
+            </Typography>
+          </li>
 
-              <Divider />
-
-              <Typography level="body-sm" my={ 2 }>
-                Choose a pair of analytes for comparison by selecting a cell in the grid above.
-              </Typography>
-              <Typography level="body-sm" my={ 2 }>
-                Each of the non-diagonal cells in the grid contains a square describing
-                the samples in which <em>both</em> selected analytes were detected.
-                The <em>size</em> of the square indicates the number of such samples
-                (as a part of the whole of currently filtered samples).
-                The <em>opacity</em> of the square indicates how strong the correlation
-                is between those two analytes<sup>*</sup>.
-              </Typography>
-
-              <Divider />
-
-              <Typography variant="caption" level="body-xs">
-                * Correlation in terms of the <Link to="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Pearson correlation coefficient <InlineMath math="r" /></Link>.
-              </Typography>
-            </Fragment>
-          )
-        }
-      </Box>
+          <li>
+            <InlineMath math={ `r = ${
+              pearsonsR(
+                table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ analytes[0] }_concentration`])),
+                table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ analytes[1] }_concentration`])),
+              )
+            }` } />
+          </li>          
+        </ul>
+        <AnalyteCorrelationScatterplot
+          data={ table.getPrePaginationRowModel().rows }
+          analytes={ analytes }
+        />
+      </Fragment>
     )
-  }, [pair[0], pair[1]])
+  }, [analytes[0], analytes[1]])
 
   return (
     <Stack
@@ -115,7 +134,7 @@ export const CompareView = () => {
     >
       <Card variant="soft">
         <Typography level="h2">
-          Comparing { table.getPrePaginationRowModel().rows.length } samples
+          Comparing { chemicalIds.length } analytes across { table.getPrePaginationRowModel().rows.length } samples
         </Typography>
 
         <Divider />
@@ -124,28 +143,20 @@ export const CompareView = () => {
           <CardContent sx={{ flex: '0 1 400px' }}>
             <AnalyteCorrelationGrid
               data={ table.getPrePaginationRowModel().rows }
-              selectedAnalytes={ pair }
-              onClickCell={ setPair }
+              selectedAnalytes={ analytes }
+              onClickCell={ setAnalytes }
             />
+          </CardContent>
+          <CardContent sx={{
+            flex: 1,
+            mt: 1,
+            p: 2,
+            backgroundImage: 'linear-gradient(120deg, var(--joy-palette-background-surface) 50%, transparent 100%)',
+            borderBottomLeftRadius: '6px',
+            borderTopLeftRadius: '6px',
+          }}>
             <SelectionDetails />
           </CardContent>
-            {
-              pair[0] && pair[1] ? (
-                <CardContent sx={{
-                  flex: 1,
-                  backgroundImage: 'linear-gradient(120deg, var(--joy-palette-background-surface) 50%, transparent 100%)',
-                  mt: 1,
-                  p: 2,
-                }}>
-                  <Card variant="plain" sx={{ height: '532px', backgroundColor: 'transparent' }}>
-                    <AnalyteCorrelationScatterplot
-                      data={ table.getPrePaginationRowModel().rows }
-                      analytes={ pair }
-                    />
-                  </Card>
-                </CardContent>
-              ) : null
-            }
         </Stack>
       </Card>
 
