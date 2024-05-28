@@ -32,7 +32,7 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
     if (id1 === id2) {
       return (
         <Box sx={{
-          background: colorMode.light ? '#ccc6' : '#3336',
+          background: colorMode.light ? '#cde6' : '#2346',
           height: '50%',
           width: '50%',
           borderRadius: '50%',

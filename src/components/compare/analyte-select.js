@@ -18,7 +18,12 @@ export const AnalyteSelect = () => {
 
   return (
     <Stack direction="row" gap={ 2 }>
-      <Select value={ analytes[0] ?? '' } variant="outlined" onChange={ handleChangeAnalyte(0) }>
+      <Select
+        value={ analytes[0] ?? '' }
+        variant="outlined"
+        color={ analytes[0] ? 'primary' : 'neutral' }
+        onChange={ handleChangeAnalyte(0) }
+      >
         <Option key="select-null" value="">Select analyte</Option>
         {
           chemicalIds.map(id => (
@@ -26,7 +31,12 @@ export const AnalyteSelect = () => {
           ))
         }
       </Select>
-      <Select value={ analytes[1] ?? '' } variant="outlined" onChange={ handleChangeAnalyte(1) }>
+      <Select
+        value={ analytes[1] ?? '' }
+        variant="outlined"
+        color={ analytes[1] ? 'primary' : 'neutral' }
+        onChange={ handleChangeAnalyte(1) }
+      >
         <Option key="select-null" value="">Select analyte</Option>
         {
           chemicalIds.map(id => (

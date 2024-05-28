@@ -1,10 +1,9 @@
 import { Sheet } from '@mui/joy'
 import { Routes, Route } from 'react-router-dom'
-import { DataProvider, PreferencesProvider, useAuth } from '@context'
+import { useAuth } from '@context'
 import {
   DashboardView,
   LoginView,
-  NotFoundView,
 } from './views'
 
 //
