@@ -29,7 +29,7 @@ export const ChartView = () => {
 
       <Grid container spacing={ 2 } sx={{ pr: 2 }}>
         <Grid xs={ 12 } sm={ 12 } md={ 12 } lg={ 11 } xl={ 6 }>
-          <ChartCard title="Detection Frequencies">
+          <ChartCard title="Analyte Detection Frequencies">
             <ChemicalDetectionPieChart data={ table.getPrePaginationRowModel().rows } />
           </ChartCard>
         </Grid>

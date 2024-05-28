@@ -5,8 +5,7 @@ import {
   Typography,
 } from '@mui/joy'
 import { Link } from '@components/link'
-import { InlineMath } from 'react-katex'
-import 'katex/dist/katex.min.css'
+import { Latex } from '@components/latex'
 import { IndicatorBox } from './correlation-indicator-box'
 
 export const Instructions = () => {
@@ -55,7 +54,7 @@ export const Instructions = () => {
           ))
         }
         <Typography level="body-xs" textAlign="left">All samples</Typography>
-        <Typography level="body-xs" textAlign="right"><InlineMath math="r = 1" /></Typography>
+        <Typography level="body-xs" textAlign="right"><Latex>r = 0</Latex></Typography>
         {
           [...Array(10).keys()].map(i => (
             <Box key={ `box-alpha-${ i }` } sx={{
@@ -71,7 +70,7 @@ export const Instructions = () => {
             </Box>
           ))
         }
-        <Typography level="body-xs" textAlign="left"><InlineMath math="r = 1" /></Typography>
+        <Typography level="body-xs" textAlign="left"><Latex>r = 1</Latex></Typography>
       </Box>
 
       <Typography level="body-sm" my={ 2 }>
@@ -84,7 +83,7 @@ export const Instructions = () => {
       <Typography variant="caption" level="body-xs" my={ 2 }>
         * This is correlation in terms of
         the <Link to="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Pearson
-        correlation coefficient <InlineMath math="r" /></Link>.
+        correlation coefficient <Latex>r</Latex></Link>.
       </Typography>
     </Fragment>
   )

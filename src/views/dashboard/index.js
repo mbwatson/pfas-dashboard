@@ -51,8 +51,8 @@ export const DashboardView = () => {
           pt: 8,
         }}>
           <Routes>
-            <Route path="table" element={ <TableView /> } />
-            <Route path="chart" element={ <ChartView /> } />
+            <Route index element={ <TableView /> } />
+            <Route path="charts" element={ <ChartView /> } />
             <Route path="compare" element={ <CompareView /> } />
             <Route path="*" element={ <NotFoundView /> } />
           </Routes>

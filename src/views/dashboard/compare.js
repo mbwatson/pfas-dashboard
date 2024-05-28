@@ -17,8 +17,7 @@ import {
   Distribution,
   Instructions,
 } from '@components/compare'
-import { InlineMath } from 'react-katex'
-import 'katex/dist/katex.min.css'
+import { Latex } from '@components/latex'
 import { pearsonsR } from '@util'
 import { PngDownloadButton } from '@components/dashboard'
 
@@ -77,7 +76,7 @@ export const CompareView = () => {
               <IconButton variant="soft" size="sm" onClick={ clearAnalytes }><CloseIcon /></IconButton>
             </Stack>
           }
-        ><span>{ analytes[0] } <InlineMath math="\times" /> { analytes[1] }</span></Typography>
+        ><span>{ analytes[0] } <Latex>\times</Latex> { analytes[1] }</span></Typography>
 
         <ul style={{ margin: '1rem 0 0 0' }}>
           <li>
@@ -87,12 +86,12 @@ export const CompareView = () => {
           </li>
 
           <li>
-            <InlineMath math={ `r = ${
+            <Latex>{ `r = ${
               pearsonsR(
                 table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ analytes[0] }_concentration`])),
                 table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ analytes[1] }_concentration`])),
               )
-            }` } />
+            }` }</Latex>
           </li>          
         </ul>
         
