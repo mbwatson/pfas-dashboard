@@ -17,19 +17,6 @@ const ClosedApp = () => (
   </Sheet>
 )
 
-const OpenApp = () => {
-  return (
-    <PreferencesProvider>
-      <DataProvider>      
-        <Routes>
-          <Route path="dashboard/*" element={ <DashboardView /> } />
-          <Route path="*" element={ <NotFoundView /> } />
-        </Routes>
-      </DataProvider>
-    </PreferencesProvider>
-  )
-}
-
 //
 
 export const App = () => {
@@ -39,5 +26,5 @@ export const App = () => {
     return <ClosedApp />
   }
 
-  return <OpenApp />
+  return <DashboardView />
 }

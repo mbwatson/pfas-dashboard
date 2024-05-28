@@ -2,6 +2,7 @@ import { Fragment, useMemo } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { Sheet } from '@mui/joy'
 import { AuthMenu } from '@components/auth'
+import { DataProvider, PreferencesProvider, useAuth } from '@context'
 import {
   DashboardHeader,
   DashboardMenu,
@@ -34,6 +35,8 @@ export const DashboardView = () => {
   ], [])
 
   return (
+    <PreferencesProvider>
+      <DataProvider>      
     <Fragment>
       <DashboardHeader
         startAction={ headerStartAction }
@@ -60,5 +63,7 @@ export const DashboardView = () => {
         onClose={ filtersDrawer.unset }
       />
     </Fragment>
+      </DataProvider>
+    </PreferencesProvider>
   )
 }
