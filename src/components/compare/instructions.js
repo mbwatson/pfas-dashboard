@@ -17,11 +17,11 @@ export const Instructions = () => {
       <Divider />
 
       <Typography level="body-sm" my={ 2 }>
-        Choose a pair of analytes for comparison with the select boxes above
-        or by selecting a cell in the grid.
+        Choose a pair of analytes for comparison. Select analytes using the
+        select boxes above to by clicking a cell in the grid.
       </Typography>
       <Typography level="body-sm" my={ 2 }>
-        Each of the non-diagonal cells in the grid contains a square describing
+        Each non-diagonal cell in the grid contains a square describing
         the samples in which <em>both</em> selected analytes are detected.
         The <em>size</em> of the square indicates the number of such samples
         (as a part of the whole of currently filtered samples).
@@ -75,8 +75,7 @@ export const Instructions = () => {
       </Box>
 
       <Typography level="body-sm" my={ 2 }>
-        Selecting a cell presents a scatterplot illustrating the relationship
-        between the analytes defined by the selected cell.
+        Selecting a cell presents details about the respective analytes.
       </Typography>
 
       <Divider />
