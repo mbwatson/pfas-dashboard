@@ -75,7 +75,8 @@ export const Instructions = () => {
       </Box>
 
       <Typography level="body-sm" my={ 2 }>
-        Selecting a cell presents details about the respective analytes.
+        Selecting a non-diagonal cell presents details about the respective analytes, including a scatterplot.
+        Selecting a diagonal cell presents the distribution for that analyte.
       </Typography>
 
       <Divider />
