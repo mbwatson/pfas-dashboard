@@ -13,8 +13,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 
 # install deps
 COPY package*.json ./
-RUN npm ci \
-  --loglevel verbose
+RUN npm ci
 
 # copy in source files
 COPY . /app
