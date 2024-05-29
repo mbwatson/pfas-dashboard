@@ -57,7 +57,7 @@ export const PreferencesProvider = ({ children }) => {
   return (
     <CssVarsProvider
       theme={ theme }
-      defaultMode="system"
+      defaultMode="light"
     >
       <PreferencesInterface>
         { children }

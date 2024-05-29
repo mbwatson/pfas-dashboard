@@ -98,9 +98,7 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        pb: 1,
-        writingMode: 'sideways-lr',
-        textOrientation: 'sideways',
+        transform: 'rotate(-90deg)',
       },
       '.row-header.cell': {
         display: 'flex',
