@@ -119,7 +119,9 @@ export const CompareView = () => {
           divider={ <Divider orientation="vertical" /> }
           sx={{ display: 'inline-flex' }}
         >
-          <Typography level="body-md">{ table.getPrePaginationRowModel().rows.length } samples</Typography>
+          <Typography level="body-md" sx={{ whiteSpace: 'nowrap' }}>
+            { table.getPrePaginationRowModel().rows.length } samples
+          </Typography>
           <AnalyteSelect />
         </Stack>
         <Card variant="soft">

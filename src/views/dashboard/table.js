@@ -39,6 +39,7 @@ export const TableView = () => {
       size="sm"
       onClick={ handleToggleFiltersVisibility }
       startDecorator={ <FilterIcon fontSize="sm" /> }
+      sx={{ whiteSpace: 'nowrap' }}
     >{ filtersVisibility ? 'Hide' : 'Show' } Filters</Button>,
     <ClearFiltersButton key="clear-selections" />,
   ], [columnFilters, filtersVisibility])
@@ -56,7 +57,9 @@ export const TableView = () => {
   }
 
   const SampleCount = useCallback(() => (
-    <Typography level="body-md">{ table.getPrePaginationRowModel().rows.length } samples</Typography>
+    <Typography level="body-md" sx={{ whiteSpace: 'nowrap' }}>
+      { table.getPrePaginationRowModel().rows.length } samples
+    </Typography>
   ), [table.getPrePaginationRowModel().rows.length])
 
   return (

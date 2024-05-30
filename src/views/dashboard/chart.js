@@ -24,7 +24,9 @@ export const ChartView = () => {
         divider={ <Divider orientation="vertical" /> }
         sx={{ mb: 2, display: 'inline-flex', height: '32px', }}
       >
-        <Typography level="body-md">{ table.getPrePaginationRowModel().rows.length } samples</Typography>
+        <Typography level="body-md" sx={{ whiteSpace: 'nowrap' }}>
+          { table.getPrePaginationRowModel().rows.length } samples
+        </Typography>
       </Stack>
 
       <Grid container spacing={ 2 } sx={{ pr: 2 }}>
