@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { CssVarsProvider, useColorScheme } from '@mui/joy/styles'
 import { theme } from '../theme'
@@ -25,6 +25,9 @@ const PreferencesInterface = ({ children }) => {
   const toggleColorMode = useCallback(() => setMode(otherColorMode), [mode])
 
   const cache = useToggleLocalStorage('use-cache')
+  useEffect(() => {
+    if (!cache.enabled) { localStorage.removeItem('PFAS_DATA_CACHE') }
+  }, [cache.enabled])
 
   return (
     <PreferencesContext.Provider value={{

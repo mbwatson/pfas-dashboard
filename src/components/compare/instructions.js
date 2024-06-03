@@ -37,7 +37,7 @@ export const Instructions = () => {
         alignItems: 'center',
         gap: 0.5,
       }}>
-        <Typography level="body-xs" textAlign="right">No samples</Typography>
+        <Typography level="body-xs" textAlign="right" sx={{ pr: 0.5 }}>No samples</Typography>
         {
           [...Array(10).keys()].map(i => (
             <Box key={ `box-size-${ i }` } sx={{
@@ -53,8 +53,8 @@ export const Instructions = () => {
             </Box>
           ))
         }
-        <Typography level="body-xs" textAlign="left">All samples</Typography>
-        <Typography level="body-xs" textAlign="right"><Latex>r = 0</Latex></Typography>
+        <Typography level="body-xs" textAlign="left" sx={{ pl: 0.5 }}>All samples</Typography>
+        <Typography level="body-xs" textAlign="right" sx={{ pr: 0.5 }}><Latex>r = 0</Latex></Typography>
         {
           [...Array(10).keys()].map(i => (
             <Box key={ `box-alpha-${ i }` } sx={{
@@ -70,7 +70,7 @@ export const Instructions = () => {
             </Box>
           ))
         }
-        <Typography level="body-xs" textAlign="left"><Latex>r = 1</Latex></Typography>
+        <Typography level="body-xs" textAlign="left" sx={{ pl: 0.5 }}><Latex>r = 1</Latex></Typography>
       </Box>
 
       <Typography level="body-sm" my={ 2 }>

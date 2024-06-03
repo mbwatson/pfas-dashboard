@@ -2,7 +2,14 @@
   this context provider is responsible for application data.
   it fetches, massages, assembles, and--of course--provides data.
 */
-import { createContext, useContext, useMemo, useState } from 'react'
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 import { CircularProgress } from '@mui/joy'
 import PropTypes from 'prop-types'
 import axios from 'axios'
@@ -12,6 +19,9 @@ import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client
 import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister'
 
 import { compress, decompress } from 'lz-string'
+
+import { usePreferences } from '@context'
+import { analytes } from '@data'
 
 import {
   getCoreRowModel,
@@ -25,20 +35,74 @@ import {
 } from '@tanstack/react-table'
 import { podmColumns } from '@components/table'
 
-import { usePreferences } from '@context'
-
 //
 
-const apiRoot = `${ process.env.API_HOST }/podm/api`
+const API_URL = `${ process.env.API_HOST }/podm/api`
+const CACHE_KEY = 'PFAS_DATA_CACHE'
 
-const createSampleQuerier = endpoint => async () => {
-  console.info(`fetching data from ${ apiRoot }/${ endpoint }...`)
+// this hook is responsible for fetching & refreshing api tokens
+const useToken = () => {
+  const [accessToken, setAccessToken] = useState(null)
+
+  const fetchToken = useCallback(async () => {
+    try {
+      const response = await axios.post(
+        // the trailing slash is necessary here,
+        // as it matches urls.py in the backend.
+        `${ API_URL }/token/`,
+        {
+          username: process.env.API_USERNAME,
+          password: process.env.API_PASSWORD,
+        },
+      )
+      console.log(response)
+      if (response.status !== 200) {
+        throw new Error('invalid response')
+      }
+      const { access, refresh } = await response.data
+      if (!access || !refresh) {
+        throw new Error('could not locate tokens')
+      }
+      setAccessToken(access)
+    } catch (error) {
+      console.error(error.message)
+      return
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchToken()
+  }, [])
+
+  return { accessToken, fetchToken }
+}
+
+// we want tanstack's queryClient available within our data context,
+// so we create a wrapper that provides tanstack query functionality.
+
+const DataContext = createContext({ })
+export const useData = () => useContext(DataContext)
+
+const createMultiQuerier = (endpoint, accessToken) => async () => {
+  console.info(`fetching data from ${ API_URL }/${ endpoint }...`)
+
+  if (!accessToken) {
+    console.log('no access token')
+    return []
+  }
 
   const getFirstPage = async () => {
     try {
-      const { data } = await axios.get(`${ apiRoot }/${ endpoint }?page=1&psize=1`, {
-        timeout: 1000 * 5 // 5 seconds
-      })
+      const { data } = await axios.get(
+        `${ API_URL }/${ endpoint }?page=1&psize=1`,
+        {
+          timeout: 1000 * 5, // 5 seconds
+          headers: {
+            Authorization: `Bearer ${ accessToken }`,
+            'Content-Type': 'application/json',
+          },
+        }
+      )
       return data
     } catch (error) {
       console.error(error.message)
@@ -57,7 +121,16 @@ const createSampleQuerier = endpoint => async () => {
   // so we make the neccssary number of requests.
   const PER_PAGE = 100
   const promises = [...Array(Math.ceil(data.count / PER_PAGE)).keys()]
-    .map(p => axios(`${ apiRoot }/${ endpoint }?page=${ p + 1 }&psize=${ PER_PAGE }`))
+    .map(p => axios(
+      `${ API_URL }/${ endpoint }?page=${ p + 1 }&psize=${ PER_PAGE }`,
+      {
+        timeout: 1000 * 5, // 5 seconds
+        headers: {
+          Authorization: `Bearer ${ accessToken }`,
+          'Content-Type': 'application/json',
+        },
+      }
+    ))
 
   // return all results in one array.
   return Promise.all(promises)
@@ -73,45 +146,17 @@ const createSampleQuerier = endpoint => async () => {
     })
 }
 
-//
-
-// we want tanstack's queryClient available within our data context,
-// so we create a wrapper that provides tanstack query functionality.
-
-const chemicals = [
-  { id: 'pfna',   name: 'pfna name' },
-  { id: 'pfds',   name: 'pfds name' },
-  { id: 'pfhxa',  name: 'pfhxa name' },
-  { id: 'pfoa',   name: 'pfoa name' },
-  { id: 'pfos',   name: 'pfos name' },
-  { id: 'pfba',   name: 'pfba name' },
-  { id: 'pfdoa',  name: 'pfdoa name' },
-  { id: 'pfpea',  name: 'pfpea name' },
-  { id: 'pfhps',  name: 'pfhps name' },
-  { id: 'pfunda', name: 'pfunda name' },
-  { id: 'pfbs',   name: 'pfbs name' },
-  { id: 'pfpes',  name: 'pfpes name' },
-  { id: 'pfns',   name: 'pfns name' },
-  { id: 'pfhpa',  name: 'pfhpa name' },
-  { id: 'pfhxs',  name: 'pfhxs name' },
-  { id: 'pfda',   name: 'pfda name' },
-  { id: 'pfuda',  name: 'pfuda name' },
-]
-
-const DataContext = createContext({ })
-export const useData = () => useContext(DataContext)
-
-export const DataWrangler = ({ children }) => {
+export const DataWrangler = ({ accessToken, children }) => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 25 })
   const [sorting, setSorting] = useState([])
   const [columnFilters, setColumnFilters] = useState([])
 
   const pfasDataQuery = useQuery({
     queryKey: ['pfas_sample_data'],
-    queryFn: createSampleQuerier('pfas_sample_data'),
+    queryFn: createMultiQuerier('pfas_sample_data', accessToken),
   })
 
-  const chemicalIds = useMemo(() => chemicals.map(s => s.id).sort(), [])
+  const chemicalIds = useMemo(() => analytes.map(s => s.id).sort(), [])
 
   const table = useReactTable({
     data: pfasDataQuery.data,
@@ -139,7 +184,7 @@ export const DataWrangler = ({ children }) => {
   return (
     <DataContext.Provider value={{
       pfasData: pfasDataQuery,
-      chemicals,
+      analytes,
       chemicalIds,
       podmTable: {
         table,
@@ -155,11 +200,12 @@ export const DataWrangler = ({ children }) => {
 
 DataWrangler.propTypes = {
   children: PropTypes.node,
+  accessToken: PropTypes.string,
 }
 
 // Tanstack Query machinery
 const persister = createSyncStoragePersister({
-  key: 'PFAS_DATA_CACHE',
+  key: CACHE_KEY,
   storage: window.localStorage,
   // we're potentially dealing with a significant
   // amount of data, and local storage isn't huge,
@@ -177,6 +223,16 @@ const queryClient = new QueryClient({
 export const DataProvider = ({ children }) => {
   const preferences = usePreferences()
 
+  const { accessToken, refreshing } = useToken()
+
+  if (!accessToken && !refreshing) {
+    return <div>API: establishing connection...</div>
+  }
+
+  if (!accessToken && refreshing) {
+    return <div>API: refreshing connection...</div>
+  }
+
   return (
     <PersistQueryClientProvider
       client={ queryClient }
@@ -187,7 +243,7 @@ export const DataProvider = ({ children }) => {
         },
       }}
     >
-      <DataWrangler>
+      <DataWrangler accessToken={ accessToken }>
         { children }
       </DataWrangler>
     </PersistQueryClientProvider>

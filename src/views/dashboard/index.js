@@ -36,7 +36,7 @@ export const DashboardView = () => {
 
   return (
     <PreferencesProvider>
-      <DataProvider>      
+      <DataProvider>
         <DashboardHeader
           startAction={ headerStartAction }
           endActions={ headerEndActions }
@@ -56,11 +56,11 @@ export const DashboardView = () => {
             <Route path="compare" element={ <CompareView /> } />
             <Route path="*" element={ <NotFoundView /> } />
           </Routes>
+          <FiltersDrawer
+            open={ filtersDrawer.enabled }
+            onClose={ filtersDrawer.unset }
+          />
         </Sheet>
-        <FiltersDrawer
-          open={ filtersDrawer.enabled }
-          onClose={ filtersDrawer.unset }
-        />
       </DataProvider>
     </PreferencesProvider>
   )

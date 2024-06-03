@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useRef, useState } from 'react'
+import { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react'
 import {
   Box,
   Card,
@@ -55,11 +55,16 @@ export const CompareView = () => {
       return <Instructions />
     }
 
-    const correlationData = table.getPrePaginationRowModel().rows
+    const correlationData = useMemo(() => table.getPrePaginationRowModel().rows
       .filter(row => (
         Number(row.original[`${ analytes[0] }_concentration`]) > 0
         && Number(row.original[`${ analytes[1] }_concentration`]) > 0
-      ))
+      )), [table.getPrePaginationRowModel().rows])
+
+    const r = useMemo(() => pearsonsR(
+      table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ analytes[0] }_concentration`])),
+      table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ analytes[1] }_concentration`])),
+    ), [table.getPrePaginationRowModel().rows])
 
     if (analytes[0] === analytes[1]) {
       return <Distribution analyte={ analytes[0] } />
@@ -86,12 +91,7 @@ export const CompareView = () => {
           </li>
 
           <li>
-            <Latex>{ `r = ${
-              pearsonsR(
-                table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ analytes[0] }_concentration`])),
-                table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ analytes[1] }_concentration`])),
-              )
-            }` }</Latex>
+            <Latex>{ `r = ${ r }` }</Latex>
           </li>          
         </ul>
         
