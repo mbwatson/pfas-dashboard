@@ -55,7 +55,6 @@ const useToken = () => {
           password: process.env.API_PASSWORD,
         },
       )
-      console.log(response)
       if (response.status !== 200) {
         throw new Error('invalid response')
       }
