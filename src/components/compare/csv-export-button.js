@@ -7,22 +7,9 @@ import { mkConfig, generateCsv, download } from 'export-to-csv'
 
 const csvConfig = mkConfig({ useKeysAsHeaders: true })
 
-export const ExportButton = ({ table }) => {
+export const CsvExportButton = ({ data }) => {
   const handleClickDownload = () => {
-    const visibleColumnIds = table.getVisibleLeafColumns().map(c => c.id)
-
-    const rows = table.getFilteredRowModel().rows
-      .map(r => r.original)
-      .reduce((acc, row) => {
-        const reducedRow = Object.fromEntries(
-          Object.entries(row).filter(([key, ]) => {
-            return visibleColumnIds.includes(key)
-          })
-        )
-        acc.push(reducedRow)
-        return acc
-      }, [])
-    const csv = generateCsv(csvConfig)(rows)
+    const csv = generateCsv(csvConfig)(data)
     download(csvConfig)(csv)
   }
 
@@ -37,6 +24,8 @@ export const ExportButton = ({ table }) => {
   )
 }
 
-ExportButton.propTypes = {
-  table: PropTypes.object.isRequired,
+CsvExportButton.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.object
+  ).isRequired,
 }

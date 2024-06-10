@@ -14,6 +14,7 @@ import {
   AnalyteCorrelationGrid,
   AnalyteCorrelationScatterplot,
   AnalyteSelect,
+  CsvExportButton,
   Distribution,
   Instructions,
 } from '@components/compare'
@@ -29,6 +30,7 @@ export const CompareView = () => {
   const { podmTable: { table } } = useData()
   const [analytes, setAnalytes] = useState([null, null])
   const max = useRef(0);
+
 
   const clearAnalytes = useCallback(() => {
     setAnalytes([null, null])
@@ -49,6 +51,19 @@ export const CompareView = () => {
         return count
       }, 0)
   }, [table.getPrePaginationRowModel().rows]);
+
+  const dataForCsv = useMemo(() => {
+    return table.getPrePaginationRowModel().rows
+      .reduce((acc, row) => {
+        const {
+          sample_id,
+          [`${ analytes[0] }_concentration`]: analyte1,
+          [`${ analytes[1] }_concentration`]: analyte2,
+        } = row.original;
+        acc.push({ sample_id, [analytes[0]]: analyte1, [analytes[1]]: analyte2 })
+        return acc
+      }, [])
+  }, [analytes[0], analytes[1], table.getPrePaginationRowModel().rows])
 
   const SelectionDetails = useCallback(() => {
     if (!analytes[0] || !analytes[1]) {
@@ -77,6 +92,7 @@ export const CompareView = () => {
           justifyContent="space-between"
           endDecorator={
             <Stack direction="row" gap={ 1 }>
+              <CsvExportButton data={ dataForCsv } />
               <PngDownloadButton containerRef={ containerRef } />
               <IconButton variant="soft" size="sm" onClick={ clearAnalytes }><CloseIcon /></IconButton>
             </Stack>
