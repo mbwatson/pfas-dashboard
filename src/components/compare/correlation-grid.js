@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useRef } from 'react'
+import { Fragment, useCallback, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Box } from '@mui/joy'
 import { useData, usePreferences } from '@context'
@@ -11,6 +11,10 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
   const { chemicalIds } = useData();
   const { colorMode } = usePreferences();
   const max = useRef(0);
+
+  useEffect(() => {
+    max.current = 0;
+  }, [data])
 
   const correlationCount = useCallback((id1, id2) => {
     if (id1 === id2) {
