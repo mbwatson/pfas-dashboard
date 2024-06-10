@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import PropTypes from 'prop-types'
 import {
   Box,
@@ -12,25 +13,27 @@ import { Circle as DetectionIcon } from '@mui/icons-material'
 import { useData } from '@context'
 import { KeyValuePair } from './key-value-pair'
 
-const DetectionIndicator = ({ flag = '' }) => {
-  let color = '#99999966'
-  switch (flag) {
-    case '<MRL':
-      color = '#EBC49F'
-      break;
-    case 'Detect':
-      color = '#D37676'
-      break;
-    default:
-      color = '#99999966'
+const DetectionIndicator = memo(
+  function detectionIndicator({ flag = '' }) {
+    let color = '#99999966'
+    switch (flag) {
+      case '<MRL':
+        color = '#EBC49F'
+        break;
+      case 'Detect':
+        color = '#D37676'
+        break;
+      default:
+        color = '#99999966'
+    }
+    return (
+      <DetectionIcon
+        fontSize="sm"
+        sx={{ color }}
+      />
+    )
   }
-  return (
-    <DetectionIcon
-      fontSize="sm"
-      sx={{ color }}
-    />
-  )
-}
+)
 
 DetectionIndicator.propTypes = {
   flag: PropTypes.oneOf(['ND', 'Detect', '<MRL']),
@@ -45,7 +48,7 @@ export const SampleCard = ({ sample }) => {
       divider={ <Divider /> }
       sx={{
         width: '450px',
-        height: '450px',
+        height: '470px',
         overflow: 'hidden',
       }}
     >
@@ -99,6 +102,30 @@ export const SampleCard = ({ sample }) => {
           }
         </Box>
       </CardContent>
+
+      <Divider />
+
+      <CardContent>
+        <Stack
+          direction="row"
+          justifyContent="center"
+          gap={ 2 }
+        >
+          <Typography
+            startDecorator={ <DetectionIndicator flag="ND" /> }
+            level="body-xs"
+          >ND</Typography>
+          <Typography
+            startDecorator={ <DetectionIndicator flag="<MRL" /> }
+            level="body-xs"
+          >{`<`}MRL</Typography>
+          <Typography
+            startDecorator={ <DetectionIndicator flag="Detect" /> }
+            level="body-xs"
+          >Detect</Typography>
+        </Stack>
+      </CardContent>
+
     </Card>
   )
 }

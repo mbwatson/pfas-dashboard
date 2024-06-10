@@ -3,13 +3,18 @@ import { Stack, Typography } from '@mui/joy'
 
 export const KeyValuePair = ({ property, startDecorator = null, value }) => {
   return (
-    <Stack direction="row" gap={ 1 }>
+    <Stack
+      direction="row"
+      alignItems="center"
+      gap={ 1 }
+    >
       { startDecorator }
       <Typography level="body-sm">
         { property ?? '...' }:
       </Typography>
       <Typography
         level="body-sm"
+        variant="soft"
         sx={{ fontFamily: 'monospace' }}
       >
         { value ? value : value === 0 ? 0 : 'NULL' }
