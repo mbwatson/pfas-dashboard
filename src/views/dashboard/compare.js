@@ -71,7 +71,7 @@ export const CompareView = () => {
     }
 
     return (
-      <Box ref={ containerRef }>
+      <Box>
         <Typography
           level="h4"
           justifyContent="space-between"
@@ -95,10 +95,12 @@ export const CompareView = () => {
           </li>          
         </ul>
         
-        <AnalyteCorrelationScatterplot
-          analytes={ analytes }
-          data={ correlationData }
-        />
+        <Box ref={ containerRef } sx={{ height: '500px' }}>
+          <AnalyteCorrelationScatterplot
+            analytes={ analytes }
+            data={ correlationData }
+          />
+        </Box>
       </Box>
     )
   }, [analytes[0], analytes[1]])
