@@ -31,7 +31,7 @@ const useDevelopmentAuth0 = () => {
 
   const loginWithRedirect = () => {
     setIsAuthenticated(true)
-    navigate('dashboard')
+    navigate('/')
   }
   
   const logout = () => {
@@ -60,7 +60,7 @@ export const AuthInterface = ({ children }) => {
   // allowing injection of custom app-related logic.
   const login = () => {
     loginWithRedirect({
-      appState: { targetUrl: '/dashboard' }
+      appState: { targetUrl: '/' }
     })
   }
   const logout = () => {
@@ -90,7 +90,7 @@ export const AuthProvider = ({ children }) => {
       domain="renci.auth0.com"
       clientId="wVibbe3STC4m6mh7EDL9Bk6aXLEljmFR"
       authorizationParams={{
-        redirect_uri: `${ window.location.origin }/#/dashboard`
+        redirect_uri: `${ window.location.origin }`
       }}
     >
       <AuthInterface>

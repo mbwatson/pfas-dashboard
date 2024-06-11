@@ -5,8 +5,7 @@ import {
   Typography,
 } from '@mui/joy'
 import { Link } from '@components/link'
-import { InlineMath } from 'react-katex'
-import 'katex/dist/katex.min.css'
+import { Latex } from '@components/latex'
 import { IndicatorBox } from './correlation-indicator-box'
 
 export const Instructions = () => {
@@ -17,11 +16,11 @@ export const Instructions = () => {
       <Divider />
 
       <Typography level="body-sm" my={ 2 }>
-        Choose a pair of analytes for comparison with the select boxes above
-        or by selecting a cell in the grid.
+        Choose a pair of analytes for comparison. Select analytes using the
+        select boxes above to by clicking a cell in the grid.
       </Typography>
       <Typography level="body-sm" my={ 2 }>
-        Each of the non-diagonal cells in the grid contains a square describing
+        Each non-diagonal cell in the grid contains a square describing
         the samples in which <em>both</em> selected analytes are detected.
         The <em>size</em> of the square indicates the number of such samples
         (as a part of the whole of currently filtered samples).
@@ -38,7 +37,7 @@ export const Instructions = () => {
         alignItems: 'center',
         gap: 0.5,
       }}>
-        <Typography level="body-xs" textAlign="right">No samples</Typography>
+        <Typography level="body-xs" textAlign="right" sx={{ pr: 0.5 }}>No samples</Typography>
         {
           [...Array(10).keys()].map(i => (
             <Box key={ `box-size-${ i }` } sx={{
@@ -54,8 +53,8 @@ export const Instructions = () => {
             </Box>
           ))
         }
-        <Typography level="body-xs" textAlign="left">All samples</Typography>
-        <Typography level="body-xs" textAlign="right"><InlineMath math="r = 1" /></Typography>
+        <Typography level="body-xs" textAlign="left" sx={{ pl: 0.5 }}>All samples</Typography>
+        <Typography level="body-xs" textAlign="right" sx={{ pr: 0.5 }}><Latex>r = 0</Latex></Typography>
         {
           [...Array(10).keys()].map(i => (
             <Box key={ `box-alpha-${ i }` } sx={{
@@ -71,12 +70,12 @@ export const Instructions = () => {
             </Box>
           ))
         }
-        <Typography level="body-xs" textAlign="left"><InlineMath math="r = 1" /></Typography>
+        <Typography level="body-xs" textAlign="left" sx={{ pl: 0.5 }}><Latex>r = 1</Latex></Typography>
       </Box>
 
       <Typography level="body-sm" my={ 2 }>
-        Selecting a cell presents a scatterplot illustrating the relationship
-        between the analytes defined by the selected cell.
+        Selecting a non-diagonal cell presents details about the respective analytes, including a scatterplot.
+        Selecting a diagonal cell presents a sense of the distribution for that analyte.
       </Typography>
 
       <Divider />
@@ -84,7 +83,7 @@ export const Instructions = () => {
       <Typography variant="caption" level="body-xs" my={ 2 }>
         * This is correlation in terms of
         the <Link to="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient">Pearson
-        correlation coefficient <InlineMath math="r" /></Link>.
+        correlation coefficient <Latex>r</Latex></Link>.
       </Typography>
     </Fragment>
   )

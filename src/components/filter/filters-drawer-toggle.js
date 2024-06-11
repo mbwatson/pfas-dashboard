@@ -1,4 +1,4 @@
-import { Badge, IconButton } from '@mui/joy'
+import { Badge, Button } from '@mui/joy'
 import PropTypes from 'prop-types'
 import {
   MenuOpen as DrawerIcon,
@@ -9,17 +9,12 @@ export const FiltersDrawerToggle = ({ active = false, onClick }) => {
   const { filterCount } = useData()
   
   return (
-    <IconButton
+    <Button
       size="lg"
       variant="soft"
       color="primary"
       onClick={ onClick }
-    >
-      <Badge
-        badgeContent={ filterCount }
-        size="sm"
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      >
+      startDecorator={
         <DrawerIcon
           fontSize="lg"
           sx={{
@@ -27,8 +22,14 @@ export const FiltersDrawerToggle = ({ active = false, onClick }) => {
             transition: 'transform 150ms',
           }}
         />
-      </Badge>
-    </IconButton>
+      }
+    >
+      <Badge
+        badgeContent={ filterCount }
+        size="sm"
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >Filters</Badge>
+    </Button>
   )
 }
 

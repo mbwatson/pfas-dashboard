@@ -56,7 +56,7 @@ export const Pagination = ({ table }) => {
             },
           }}
         /> {' '}
-        <Typography level="body-sm">of { table.getPageCount() }</Typography>
+        <Typography level="body-sm" sx={{ whiteSpace: 'nowrap' }}>of { table.getPageCount() }</Typography>
       </Stack>
 
       {/* page navigation buttons */}

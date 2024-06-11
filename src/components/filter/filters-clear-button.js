@@ -19,7 +19,7 @@ export const ClearFiltersButton = ({ sx = {}, ...props }) => {
       onClick={ () => table.resetColumnFilters() }
       startDecorator={ <ClearFiltersIcon fontSize="sm" /> }
       { ...props }
-      sx={{ ...sx }}
+      sx={{ whiteSpace: 'nowrap', ...sx }}
       disabled={ noActiveFilters }
     >Clear Filters</Button>
   )

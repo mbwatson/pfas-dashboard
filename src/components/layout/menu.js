@@ -13,8 +13,8 @@ import { usePreferences } from '@context'
 import { Link } from '@components/link'
 
 const menuItems = [
-  { id: 'table',   path: 'table',   label: 'Table',   Icon: TableIcon },
-  { id: 'chart',   path: 'chart',   label: 'Chart',   Icon: ChartIcon },
+  { id: 'table',   path: '/',       label: 'Table',   Icon: TableIcon },
+  { id: 'chart',   path: 'charts',  label: 'Charts',  Icon: ChartIcon },
   { id: 'compare', path: 'compare', label: 'Compare', Icon: CompareIcon },
 ]
 

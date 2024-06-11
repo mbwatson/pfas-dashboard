@@ -3,10 +3,13 @@ import {
   Button,
   CircularProgress,
   Divider,
+  Modal,
+  ModalClose,
   Stack,
   Typography,
 } from '@mui/joy'
 import {
+  MenuBook as BrowseIcon,
   FilterList as FilterIcon,
 } from '@mui/icons-material'
 import { useData } from '@context'
@@ -16,6 +19,7 @@ import {
   ExportButton,
   Pagination,
 } from '@components/table'
+import { SampleBrowser } from '@components/browse'
 import {
   ClearFiltersButton,
 } from '@components/filter'
@@ -35,6 +39,7 @@ export const TableView = () => {
       size="sm"
       onClick={ handleToggleFiltersVisibility }
       startDecorator={ <FilterIcon fontSize="sm" /> }
+      sx={{ whiteSpace: 'nowrap' }}
     >{ filtersVisibility ? 'Hide' : 'Show' } Filters</Button>,
     <ClearFiltersButton key="clear-selections" />,
   ], [columnFilters, filtersVisibility])
@@ -52,7 +57,9 @@ export const TableView = () => {
   }
 
   const SampleCount = useCallback(() => (
-    <Typography level="body-md">{ table.getPrePaginationRowModel().rows.length } samples</Typography>
+    <Typography level="body-md" sx={{ whiteSpace: 'nowrap' }}>
+      { table.getPrePaginationRowModel().rows.length } samples
+    </Typography>
   ), [table.getPrePaginationRowModel().rows.length])
 
   return (
@@ -75,6 +82,7 @@ export const TableView = () => {
         <ColumnSelect table={ table } />
         <FilterControls />
         <ExportButton table={ table } />
+        <TableBrowser />
       </Stack>
 
       <DataTable
@@ -97,6 +105,35 @@ export const TableView = () => {
         <SampleCount />
         <Pagination table={ table } />
       </Stack>
+    </Fragment>
+  )
+}
+
+const TableBrowser = () => {
+  const { podmTable: { table } } = useData()
+  const [open, setOpen] = useState(false)
+
+  return (
+    <Fragment>
+      <Button
+        size="sm"
+        variant="outlined"
+        color="neutral"
+        onClick={ () => setOpen(true) }
+        startDecorator={ <BrowseIcon />}
+      >Browse</Button>
+      <Modal
+        open={ open }
+        onClose={ () => setOpen(false) }
+        sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      >
+        <Fragment>
+          <ModalClose
+        variant="solid"
+          />
+          <SampleBrowser data={ table.getPaginationRowModel().rows } />
+        </Fragment>
+      </Modal>
     </Fragment>
   )
 }

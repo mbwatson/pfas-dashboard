@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useRef, useState } from 'react'
+import { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react'
 import {
   Box,
   Card,
@@ -14,11 +14,11 @@ import {
   AnalyteCorrelationGrid,
   AnalyteCorrelationScatterplot,
   AnalyteSelect,
+  CsvExportButton,
   Distribution,
   Instructions,
 } from '@components/compare'
-import { InlineMath } from 'react-katex'
-import 'katex/dist/katex.min.css'
+import { Latex } from '@components/latex'
 import { pearsonsR } from '@util'
 import { PngDownloadButton } from '@components/dashboard'
 
@@ -30,6 +30,7 @@ export const CompareView = () => {
   const { podmTable: { table } } = useData()
   const [analytes, setAnalytes] = useState([null, null])
   const max = useRef(0);
+
 
   const clearAnalytes = useCallback(() => {
     setAnalytes([null, null])
@@ -51,33 +52,52 @@ export const CompareView = () => {
       }, 0)
   }, [table.getPrePaginationRowModel().rows]);
 
+  const dataForCsv = useMemo(() => {
+    return table.getPrePaginationRowModel().rows
+      .reduce((acc, row) => {
+        const {
+          sample_id,
+          [`${ analytes[0] }_concentration`]: analyte1,
+          [`${ analytes[1] }_concentration`]: analyte2,
+        } = row.original;
+        acc.push({ sample_id, [analytes[0]]: analyte1, [analytes[1]]: analyte2 })
+        return acc
+      }, [])
+  }, [analytes[0], analytes[1], table.getPrePaginationRowModel().rows])
+
   const SelectionDetails = useCallback(() => {
     if (!analytes[0] || !analytes[1]) {
       return <Instructions />
     }
 
-    const correlationData = table.getPrePaginationRowModel().rows
+    const correlationData = useMemo(() => table.getPrePaginationRowModel().rows
       .filter(row => (
         Number(row.original[`${ analytes[0] }_concentration`]) > 0
         && Number(row.original[`${ analytes[1] }_concentration`]) > 0
-      ))
+      )), [table.getPrePaginationRowModel().rows])
+
+    const r = useMemo(() => pearsonsR(
+      table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ analytes[0] }_concentration`])),
+      table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ analytes[1] }_concentration`])),
+    ), [table.getPrePaginationRowModel().rows])
 
     if (analytes[0] === analytes[1]) {
       return <Distribution analyte={ analytes[0] } />
     }
 
     return (
-      <Box ref={ containerRef }>
+      <Box>
         <Typography
           level="h4"
           justifyContent="space-between"
           endDecorator={
             <Stack direction="row" gap={ 1 }>
+              <CsvExportButton data={ dataForCsv } />
               <PngDownloadButton containerRef={ containerRef } />
               <IconButton variant="soft" size="sm" onClick={ clearAnalytes }><CloseIcon /></IconButton>
             </Stack>
           }
-        ><span>{ analytes[0] } <InlineMath math="\times" /> { analytes[1] }</span></Typography>
+        ><span>{ analytes[0] } <Latex>\times</Latex> { analytes[1] }</span></Typography>
 
         <ul style={{ margin: '1rem 0 0 0' }}>
           <li>
@@ -87,19 +107,16 @@ export const CompareView = () => {
           </li>
 
           <li>
-            <InlineMath math={ `r = ${
-              pearsonsR(
-                table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ analytes[0] }_concentration`])),
-                table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ analytes[1] }_concentration`])),
-              )
-            }` } />
+            <Latex>{ `r = ${ r }` }</Latex>
           </li>          
         </ul>
         
-        <AnalyteCorrelationScatterplot
-          analytes={ analytes }
-          data={ correlationData }
-        />
+        <Box ref={ containerRef } sx={{ height: '500px' }}>
+          <AnalyteCorrelationScatterplot
+            analytes={ analytes }
+            data={ correlationData }
+          />
+        </Box>
       </Box>
     )
   }, [analytes[0], analytes[1]])
@@ -120,7 +137,9 @@ export const CompareView = () => {
           divider={ <Divider orientation="vertical" /> }
           sx={{ display: 'inline-flex' }}
         >
-          <Typography level="body-md">{ table.getPrePaginationRowModel().rows.length } samples</Typography>
+          <Typography level="body-md" sx={{ whiteSpace: 'nowrap' }}>
+            { table.getPrePaginationRowModel().rows.length } samples
+          </Typography>
           <AnalyteSelect />
         </Stack>
         <Card variant="soft">

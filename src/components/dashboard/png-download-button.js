@@ -14,6 +14,7 @@ export const PngDownloadButton = ({ containerRef }) => {
       format: 'png',
       quality: '0.5',
       download: true,
+      backgroundColor: '#ffffff',
     })
   }
   

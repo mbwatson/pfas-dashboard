@@ -24,12 +24,14 @@ export const ChartView = () => {
         divider={ <Divider orientation="vertical" /> }
         sx={{ mb: 2, display: 'inline-flex', height: '32px', }}
       >
-        <Typography level="body-md">{ table.getPrePaginationRowModel().rows.length } samples</Typography>
+        <Typography level="body-md" sx={{ whiteSpace: 'nowrap' }}>
+          { table.getPrePaginationRowModel().rows.length } samples
+        </Typography>
       </Stack>
 
       <Grid container spacing={ 2 } sx={{ pr: 2 }}>
         <Grid xs={ 12 } sm={ 12 } md={ 12 } lg={ 11 } xl={ 6 }>
-          <ChartCard title="Detection Frequencies">
+          <ChartCard title="Analyte Detection Frequencies">
             <ChemicalDetectionPieChart data={ table.getPrePaginationRowModel().rows } />
           </ChartCard>
         </Grid>

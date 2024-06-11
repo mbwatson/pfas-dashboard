@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useRef } from 'react'
+import { Fragment, useCallback, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { Box } from '@mui/joy'
 import { useData, usePreferences } from '@context'
@@ -11,6 +11,10 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
   const { chemicalIds } = useData();
   const { colorMode } = usePreferences();
   const max = useRef(0);
+
+  useEffect(() => {
+    max.current = 0;
+  }, [data])
 
   const correlationCount = useCallback((id1, id2) => {
     if (id1 === id2) {
@@ -32,7 +36,7 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
     if (id1 === id2) {
       return (
         <Box sx={{
-          background: colorMode.light ? '#ccc6' : '#3336',
+          background: colorMode.light ? '#cde6' : '#2346',
           height: '50%',
           width: '50%',
           borderRadius: '50%',
@@ -98,9 +102,7 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
         display: 'flex',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        pb: 1,
-        writingMode: 'sideways-lr',
-        textOrientation: 'sideways',
+        transform: 'rotate(-90deg)',
       },
       '.row-header.cell': {
         display: 'flex',
