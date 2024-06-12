@@ -38,10 +38,7 @@ jobs:
         run: echo "VERSION=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
       -
         name: Create .env file
-        run: |
-          touch .env
-          echo "API_HOST=${{ secrets.ENV_FILE }}"" > .env
-          cat .env
+        run: echo "API_HOST=${{ secrets.ENV_FILE }}" > .env
       -
         name: Build/Push the image to the registry
         uses: docker/build-push-action@v3
