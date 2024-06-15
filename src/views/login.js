@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom'
 import { Card, CardContent, Divider, Stack, Typography } from '@mui/joy'
 import { Warning as WarningIcon } from '@mui/icons-material'
 import { ContentPage } from '@components/layout'
@@ -7,7 +6,6 @@ import { useAuth } from '@context'
 
 export const LoginView = () => {
   const auth = useAuth()
-  const navigate = useNavigate()
 
   return (
     <ContentPage
