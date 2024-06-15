@@ -21,7 +21,7 @@ const ClosedApp = () => (
 export const App = () => {
   const auth = useAuth()
 
-  if (!auth.user) {
+  if (!auth?.user || !auth?.user?.email_verified) {
     return <ClosedApp />
   }
 

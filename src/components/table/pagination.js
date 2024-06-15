@@ -35,8 +35,13 @@ export const Pagination = ({ table }) => {
     >
       {/* current page & total pages */}
       <Stack direction="row" alignItems="center" gap={ 0.5 }>
-        <Typography level="body-sm">Page</Typography>
+        <Typography
+          component="label"
+          level="body-sm"
+          for="current-page"
+        >Page</Typography>
         <Input
+          id="current-page"
           size="sm"
           type="number"
           value={ table.getState().pagination.pageIndex + 1 }
@@ -64,18 +69,22 @@ export const Pagination = ({ table }) => {
         <Button
           onClick={ () => table.firstPage() }
           disabled={ !table.getCanPreviousPage() }
+          aria-label="Go to first page"
         ><FirstIcon /></Button>
         <Button
           onClick={ () => table.previousPage() }
           disabled={ !table.getCanPreviousPage() }
+          aria-label="Go to previous page"
         ><PreviousIcon /></Button>
         <Button
           onClick={ () => table.nextPage() }
           disabled={ !table.getCanNextPage() }
+          aria-label="Go to next page"
         ><NextIcon /></Button>
         <Button
           onClick={ () => table.lastPage() }
           disabled={ !table.getCanNextPage() }
+          aria-label="Go to last page"
         ><LastIcon /></Button>
       </ButtonGroup>
 
@@ -85,6 +94,7 @@ export const Pagination = ({ table }) => {
         onChange={ handleChangePageSize }
         variant="outlined"
         size="sm"
+        aria-label="Page size select"
       >
         {[10, 25, 50, 100].map(size => (
           <Option
