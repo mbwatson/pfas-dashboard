@@ -38,7 +38,7 @@ export const Pagination = ({ table }) => {
         <Typography
           component="label"
           level="body-sm"
-          for="current-page"
+          htmlFor="current-page"
         >Page</Typography>
         <Input
           id="current-page"
