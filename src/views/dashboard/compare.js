@@ -66,10 +66,6 @@ export const CompareView = () => {
   }, [analytes[0], analytes[1], table.getPrePaginationRowModel().rows])
 
   const SelectionDetails = useCallback(() => {
-    if (!analytes[0] || !analytes[1]) {
-      return <Instructions />
-    }
-
     const correlationData = useMemo(() => table.getPrePaginationRowModel().rows
       .filter(row => (
         Number(row.original[`${ analytes[0] }_concentration`]) > 0
@@ -122,7 +118,12 @@ export const CompareView = () => {
   }, [analytes[0], analytes[1]])
 
   return (
-    <CompareContext.Provider value={{ analytes, setAnalytes, clearAnalytes, correlationCount }}>
+    <CompareContext.Provider value={{
+      analytes,
+      setAnalytes,
+      clearAnalytes,
+      correlationCount,
+    }}>
       <Stack
         justifyContent="flex-start"
         alignItems="stretch"
@@ -163,7 +164,7 @@ export const CompareView = () => {
               borderBottomLeftRadius: '6px',
               borderTopLeftRadius: '6px',
             }}>
-              <SelectionDetails />
+            { !analytes[0] || !analytes[1] ? <Instructions /> : <SelectionDetails /> }
             </CardContent>
           </Stack>
         </Card>
