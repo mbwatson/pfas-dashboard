@@ -19,10 +19,6 @@ export const ColumnFilters = () => {
     <AccordionGroup>
       {
         table.getAllColumns()
-          // "order" filters.
-          // keep Sample and Location first,
-          // but then order analyte acronyms alphabetically.
-          .sort((c, d) => d.id !== 'sample' && c.id < d.id ? -1 : 1)
           .map(columnGroup => {
             const activeFilterInGroup = columnGroup.columns.some(col => col.getIsFiltered())
 
