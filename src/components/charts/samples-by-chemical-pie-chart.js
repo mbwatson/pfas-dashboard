@@ -27,7 +27,7 @@ Tooltip.propTypes = {
 //
 
 export const ChemicalDetectionPieChart = ({ data }) => {
-  const { analytes, analyteIds } = useData();
+  const { analytes } = useData();
   const preferences = usePreferences()
 
   const arcLinkLabel = d => analytes?.find(a => a.id === d.id)?.abbreviation
