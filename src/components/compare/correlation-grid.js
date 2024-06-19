@@ -8,13 +8,15 @@ import { IndicatorBox } from './correlation-indicator-box'
 //
 
 export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [null, null] }) => {
-  const { analyteIds } = useData();
+  const { analytes } = useData();
   const { colorMode } = usePreferences();
   const max = useRef(0);
 
   useEffect(() => {
     max.current = 0;
   }, [data])
+
+  const gridLabel = useCallback(id => analytes?.find(a => a.id === id)?.abbreviation, [analytes])
 
   const correlationCount = useCallback((id1, id2) => {
     if (id1 === id2) {
@@ -68,8 +70,8 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
       width: '500px',
       height: '500px',
       aspectRatio: '1 / 1',
-      gridTemplateColumns: `50px repeat(${ analyteIds.length }, 25px)`,
-      gridTemplateRows: `55px repeat(${ analyteIds.length }, 25px)`,
+      gridTemplateColumns: `50px repeat(${ analytes.length }, 25px)`,
+      gridTemplateRows: `55px repeat(${ analytes.length }, 25px)`,
       pr: 2, pt: 2,
       '.body.cell': {
         aspectRatio: '1 / 1',
@@ -92,7 +94,6 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
       },
       '.header.cell': {
         fontSize: '65%',
-        textTransform: 'uppercase',
         '&.selected': {
           color: 'var(--joy-palette-primary-main)',
           fontWeight: 'bold',
@@ -113,27 +114,29 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
     }}>
       <Box className="corner cell" />
       {
-        analyteIds.map(analyteIdOuter => (
+        analytes.map(({ id: outerId }) => (
           <Box
-            key={ `col-header-${ analyteIdOuter }` }
-            className={ `header col-header cell ${ analyteIdOuter } ${ selectedAnalytes[0] === analyteIdOuter ? 'selected' : '' }` }
-          >{ analyteIdOuter }</Box>
+            key={ `col-header-${ outerId }` }
+            className={ `header col-header cell ${ outerId } ${ selectedAnalytes[0] === outerId ? 'selected' : '' }` }
+          >{ gridLabel(outerId) }</Box>
         ))
       }
       {
-        analyteIds.map(analyteIdOuter => (
-          <Fragment key={ `row-${ analyteIdOuter }` }>
-            <Box className={ `header row-header cell ${ analyteIdOuter } ${ selectedAnalytes[1] === analyteIdOuter ? 'selected' : '' }` }>{ analyteIdOuter }</Box>
+        analytes.map(({ id: outerId }) => (
+          <Fragment key={ `row-${ outerId }` }>
+            <Box className={ `header row-header cell ${ outerId } ${ selectedAnalytes[1] === outerId ? 'selected' : '' }` }>
+              { gridLabel(outerId) }
+            </Box>
             {
-              analyteIds.map(analyteIdInner => {
-                const highlightClass = analyteIdInner === selectedAnalytes[0]
-                  || analyteIdOuter === selectedAnalytes[1] ? 'highlight' : ''
+              analytes.map(({ id: innerId }) => {
+                const highlightClass = innerId === selectedAnalytes[0]
+                  || outerId === selectedAnalytes[1] ? 'highlight' : ''
                 return (
                   <Box
-                    key={ `cell ${ analyteIdOuter }-${ analyteIdInner }` }
-                    className={ `body cell row-${ analyteIdOuter } col-${ analyteIdInner } ${ highlightClass }` }
-                    onClick={ handleClickCell(analyteIdInner, analyteIdOuter) }
-                  >{ CorrelationIndicator(analyteIdInner, analyteIdOuter) }</Box>
+                    key={ `cell ${ outerId }-${ innerId }` }
+                    className={ `body cell row-${ outerId } col-${ innerId } ${ highlightClass }` }
+                    onClick={ handleClickCell(innerId, outerId) }
+                  >{ CorrelationIndicator(innerId, outerId) }</Box>
                 )
               })
             }
