@@ -26,12 +26,12 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
       if (Number(row.original[`${ id1 }_concentration`]) > 0
           && Number(row.original[`${ id2 }_concentration`]) > 0
       ) { count += 1 }
-      return count
-    }, 0)
+      return count;
+    }, 0);
     
     if (count > max.current) { max.current = count; }
 
-    return count
+    return count;
   }, [data]);
 
   const CorrelationIndicator = useCallback((id1, id2) => {

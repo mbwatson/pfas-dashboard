@@ -9,13 +9,13 @@ import { Latex } from '@components/latex'
 
 export const AnalyteSelect = () => {
   const { analyteIds } = useData()
-  const { analytes, clearAnalytes, setAnalytes } = useCompare()
+  const { selectedAnalytes, clearAnalytes, setAnalytes } = useCompare()
 
   const handleChangeAnalyte = useCallback(index => (event, newAnalyte) => {
-    const newAnalytes = [...analytes]
+    const newAnalytes = [...selectedAnalytes]
     newAnalytes[index] = newAnalyte
     setAnalytes(newAnalytes)
-  }, [analytes[0], analytes[1]])
+  }, [selectedAnalytes[0], selectedAnalytes[1]])
 
   return (
     <Stack direction="row" gap={ 2 } alignItems="center">
@@ -23,9 +23,9 @@ export const AnalyteSelect = () => {
         <FormLabel><Latex>x</Latex>-axis:</FormLabel>
         <Select
           size="sm"
-          value={ analytes[0] ?? '' }
+          value={ selectedAnalytes[0] ?? '' }
           variant="outlined"
-          color={ analytes[0] ? 'primary' : 'neutral' }
+          color={ selectedAnalytes[0] ? 'primary' : 'neutral' }
           onChange={ handleChangeAnalyte(0) }
         >
           <Option key="select-null" value="">Select analyte</Option>
@@ -41,9 +41,9 @@ export const AnalyteSelect = () => {
         <FormLabel><Latex>y</Latex>-axis:</FormLabel>
         <Select
           size="sm"
-          value={ analytes[1] ?? '' }
+          value={ selectedAnalytes[1] ?? '' }
           variant="outlined"
-          color={ analytes[1] ? 'primary' : 'neutral' }
+          color={ selectedAnalytes[1] ? 'primary' : 'neutral' }
           onChange={ handleChangeAnalyte(1) }
         >
           <Option key="select-null" value="">Select analyte</Option>
@@ -61,7 +61,7 @@ export const AnalyteSelect = () => {
         color="neutral"
         onClick={ clearAnalytes }
         startDecorator={ <ClearIcon fontSize="sm" /> }
-        disabled={ analytes.every(a => !a) }
+        disabled={ selectedAnalytes.every(a => !a) }
       >Clear</Button>
     </Stack>
   )
