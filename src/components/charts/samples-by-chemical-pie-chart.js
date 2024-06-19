@@ -27,23 +27,23 @@ Tooltip.propTypes = {
 //
 
 export const ChemicalDetectionPieChart = ({ data }) => {
-  const { analyteIds } = useData();
+  const { analytes, analyteIds } = useData();
   const preferences = usePreferences()
 
-  const emptyChemicalBuckets = useMemo(() => analyteIds
-    .reduce((acc, id) => {
-      acc[id] = 0;
+  const emptyChemicalBuckets = useMemo(() => analytes
+    .reduce((acc, analyte) => {
+      acc[analyte.id] = 0;
       return acc;
-    }, {}), [analyteIds]);
+    }, {}), [analytes]);
 
   const detectedChemicals = useCallback(row => {
-    return analyteIds.reduce((acc, analyteId) => {
-      if (row.original[`${ analyteId }_concentration`] > 0) {
-        acc.push(analyteId)
+    return analytes.reduce((acc, analyte) => {
+      if (row.original[`${ analyte.id }_concentration`] > 0) {
+        acc.push(analyte.id)
       }
       return acc
     }, [])
-  }, [analyteIds])
+  }, [analytes])
 
   const chemicalBuckets = useMemo(() => data
     .reduce((acc, row) => {
