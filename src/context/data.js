@@ -203,7 +203,7 @@ export const DataWrangler = ({ accessToken, children }) => {
     queryFn: createMultiQuerier('pfas_sample_data', accessToken),
   })
 
-  const chemicalIds = useMemo(() => analytes.map(s => s.id).sort(), [])
+  const analyteIds = useMemo(() => analytes.map(s => s.id).sort(), [])
 
   const table = useReactTable({
     data: pfasDataQuery.data,
@@ -232,7 +232,7 @@ export const DataWrangler = ({ accessToken, children }) => {
     <DataContext.Provider value={{
       pfasData: pfasDataQuery,
       analytes,
-      chemicalIds,
+      analyteIds,
       podmTable: {
         table,
         columnFilters, setColumnFilters,
@@ -244,7 +244,7 @@ export const DataWrangler = ({ accessToken, children }) => {
         pfasDataQuery.isPending || pfasDataQuery.isLoading
           ? <ConnectionStatus message="Fetching data" />
           : children
-        }
+      }
     </DataContext.Provider>
   )
 }

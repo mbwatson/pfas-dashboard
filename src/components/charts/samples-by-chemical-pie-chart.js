@@ -27,28 +27,28 @@ Tooltip.propTypes = {
 //
 
 export const ChemicalDetectionPieChart = ({ data }) => {
-  const { chemicalIds } = useData();
+  const { analyteIds } = useData();
   const preferences = usePreferences()
 
-  const emptyChemicalBuckets = useMemo(() => chemicalIds
+  const emptyChemicalBuckets = useMemo(() => analyteIds
     .reduce((acc, id) => {
       acc[id] = 0;
       return acc;
-    }, {}), [chemicalIds]);
+    }, {}), [analyteIds]);
 
   const detectedChemicals = useCallback(row => {
-    return chemicalIds.reduce((acc, chemicalId) => {
-      if (row.original[`${ chemicalId }_concentration`] > 0) {
-        acc.push(chemicalId)
+    return analyteIds.reduce((acc, analyteId) => {
+      if (row.original[`${ analyteId }_concentration`] > 0) {
+        acc.push(analyteId)
       }
       return acc
     }, [])
-  }, [chemicalIds])
+  }, [analyteIds])
 
   const chemicalBuckets = useMemo(() => data
     .reduce((acc, row) => {
-      detectedChemicals(row).forEach(chemicalId => {
-        acc[chemicalId] += 1
+      detectedChemicals(row).forEach(analyteId => {
+        acc[analyteId] += 1
       })
       return acc
   }, { ...emptyChemicalBuckets }), [data])
@@ -59,9 +59,9 @@ export const ChemicalDetectionPieChart = ({ data }) => {
     }
     return Object.keys(chemicalBuckets)
       .sort()
-      .map(chemicalId => ({
-        id: chemicalId,
-        value: chemicalBuckets[chemicalId],
+      .map(analyteId => ({
+        id: analyteId,
+        value: chemicalBuckets[analyteId],
       }))
   }, [chemicalBuckets, data])
 

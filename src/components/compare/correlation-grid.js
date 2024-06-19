@@ -8,7 +8,7 @@ import { IndicatorBox } from './correlation-indicator-box'
 //
 
 export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [null, null] }) => {
-  const { chemicalIds } = useData();
+  const { analyteIds } = useData();
   const { colorMode } = usePreferences();
   const max = useRef(0);
 
@@ -68,8 +68,8 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
       width: '500px',
       height: '500px',
       aspectRatio: '1 / 1',
-      gridTemplateColumns: `50px repeat(${ chemicalIds.length }, 25px)`,
-      gridTemplateRows: `55px repeat(${ chemicalIds.length }, 25px)`,
+      gridTemplateColumns: `50px repeat(${ analyteIds.length }, 25px)`,
+      gridTemplateRows: `55px repeat(${ analyteIds.length }, 25px)`,
       pr: 2, pt: 2,
       '.body.cell': {
         aspectRatio: '1 / 1',
@@ -113,27 +113,27 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
     }}>
       <Box className="corner cell" />
       {
-        chemicalIds.map(chemicalIdOuter => (
+        analyteIds.map(analyteIdOuter => (
           <Box
-            key={ `col-header-${ chemicalIdOuter }` }
-            className={ `header col-header cell ${ chemicalIdOuter } ${ selectedAnalytes[0] === chemicalIdOuter ? 'selected' : '' }` }
-          >{ chemicalIdOuter }</Box>
+            key={ `col-header-${ analyteIdOuter }` }
+            className={ `header col-header cell ${ analyteIdOuter } ${ selectedAnalytes[0] === analyteIdOuter ? 'selected' : '' }` }
+          >{ analyteIdOuter }</Box>
         ))
       }
       {
-        chemicalIds.map(chemicalIdOuter => (
-          <Fragment key={ `row-${ chemicalIdOuter }` }>
-            <Box className={ `header row-header cell ${ chemicalIdOuter } ${ selectedAnalytes[1] === chemicalIdOuter ? 'selected' : '' }` }>{ chemicalIdOuter }</Box>
+        analyteIds.map(analyteIdOuter => (
+          <Fragment key={ `row-${ analyteIdOuter }` }>
+            <Box className={ `header row-header cell ${ analyteIdOuter } ${ selectedAnalytes[1] === analyteIdOuter ? 'selected' : '' }` }>{ analyteIdOuter }</Box>
             {
-              chemicalIds.map(chemicalIdInner => {
-                const highlightClass = chemicalIdInner === selectedAnalytes[0]
-                  || chemicalIdOuter === selectedAnalytes[1] ? 'highlight' : ''
+              analyteIds.map(analyteIdInner => {
+                const highlightClass = analyteIdInner === selectedAnalytes[0]
+                  || analyteIdOuter === selectedAnalytes[1] ? 'highlight' : ''
                 return (
                   <Box
-                    key={ `cell ${ chemicalIdOuter }-${ chemicalIdInner }` }
-                    className={ `body cell row-${ chemicalIdOuter } col-${ chemicalIdInner } ${ highlightClass }` }
-                    onClick={ handleClickCell(chemicalIdInner, chemicalIdOuter) }
-                  >{ CorrelationIndicator(chemicalIdInner, chemicalIdOuter) }</Box>
+                    key={ `cell ${ analyteIdOuter }-${ analyteIdInner }` }
+                    className={ `body cell row-${ analyteIdOuter } col-${ analyteIdInner } ${ highlightClass }` }
+                    onClick={ handleClickCell(analyteIdInner, analyteIdOuter) }
+                  >{ CorrelationIndicator(analyteIdInner, analyteIdOuter) }</Box>
                 )
               })
             }

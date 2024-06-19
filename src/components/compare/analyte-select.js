@@ -8,7 +8,7 @@ import { useCompare } from '@views/dashboard/compare'
 import { Latex } from '@components/latex'
 
 export const AnalyteSelect = () => {
-  const { chemicalIds } = useData()
+  const { analyteIds } = useData()
   const { analytes, clearAnalytes, setAnalytes } = useCompare()
 
   const handleChangeAnalyte = useCallback(index => (event, newAnalyte) => {
@@ -30,7 +30,7 @@ export const AnalyteSelect = () => {
         >
           <Option key="select-null" value="">Select analyte</Option>
           {
-            chemicalIds.map(id => (
+            analyteIds.map(id => (
               <Option key={ `select-0-${ id }` } value={ id }>{ id }</Option>
             ))
           }
@@ -48,7 +48,7 @@ export const AnalyteSelect = () => {
         >
           <Option key="select-null" value="">Select analyte</Option>
           {
-            chemicalIds.map(id => (
+            analyteIds.map(id => (
               <Option key={ `select-1-${ id }` } value={ id }>{ id }</Option>
             ))
           }

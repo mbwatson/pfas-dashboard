@@ -40,7 +40,7 @@ DetectionIndicator.propTypes = {
 }
 
 export const SampleCard = ({ sample }) => {
-  const { chemicalIds } = useData()
+  const { analyteIds } = useData()
 
   return (
     <Card
@@ -89,7 +89,7 @@ export const SampleCard = ({ sample }) => {
           gridTemplateRows: '24px',
         }}>
           {
-            chemicalIds.map(analyte => (
+            analyteIds.map(analyte => (
               <KeyValuePair
                 key={ `${ sample.id }-${ analyte }` }
                 property={ analyte }

@@ -33,7 +33,7 @@ GridLabel.propTypes = {
 
 export const ChemicalsByMediumRadarChart = ({ data }) => {
   const preferences = usePreferences()
-  const { chemicalIds } = useData();
+  const { analyteIds } = useData();
 
   // generate array of sampled media from data
   const sampledMedia = useMemo(() => {
@@ -56,18 +56,18 @@ export const ChemicalsByMediumRadarChart = ({ data }) => {
 
   // our goal is counting detections in media in an array like
   //   [
-  //      { chemicalId: 'pfod', dust: 20, water: 130, ... }
-  //      { chemicalId: 'pfna', dust: 120, water: 450, ... }
+  //      { analyteId: 'pfod', dust: 20, water: 130, ... }
+  //      { analyteId: 'pfna', dust: 120, water: 450, ... }
   //      ...
   //   ]
-  // for the chart's source data, which we'll index on chemicalId.
+  // for the chart's source data, which we'll index on analyteId.
   const chartData = useMemo(() => {
-    if (!chemicalIds) {
+    if (!analyteIds) {
       return []
     }
-    const chemicalBuckets = chemicalIds
-      .reduce((acc, chemicalId) => {
-        acc[chemicalId] = { chemicalId, ...mediaBuckets }
+    const chemicalBuckets = analyteIds
+      .reduce((acc, analyteId) => {
+        acc[analyteId] = { analyteId, ...mediaBuckets }
         return acc
       }, {})
     const buckets = data
@@ -76,19 +76,19 @@ export const ChemicalsByMediumRadarChart = ({ data }) => {
         // for each detected chemical
         Object.keys(chemicalBuckets).filter(
           // that is, where concentration > 0,
-          chemicalId => Number(row.original[`${ chemicalId }_concentration`]) > 0
+          analyteId => Number(row.original[`${ analyteId }_concentration`]) > 0
           // increase that chemical's count in that medium.
-        ).forEach(chemicalId => acc[chemicalId][medium] += 1)
+        ).forEach(analyteId => acc[analyteId][medium] += 1)
       return acc
       }, { ...chemicalBuckets })
     return Object.values(buckets)
-  }, [chemicalIds, data])
+  }, [analyteIds, data])
 
   return (
     <ResponsiveRadar
       data={ chartData }
       keys={ sampledMedia }
-      indexBy="chemicalId"
+      indexBy="analyteId"
       margin={{ top: 40, right: 60, bottom: 40, left: 60 }}
       colors={{ scheme: 'pastel1' }}
       gridLabelOffset={ 25 }
