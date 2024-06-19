@@ -9,7 +9,7 @@ export const PngDownloadButton = ({ containerRef }) => {
       return
     }
     const svg = containerRef.current.querySelector('svg')
-    saveSvgAsPng(svg, `pfas-samples-${ new Date().toLocaleString() }`, {
+    saveSvgAsPng(svg, new Date().toLocaleString(), {
       scale: 2,
       format: 'png',
       quality: '0.5',

@@ -5,7 +5,10 @@ import {
 } from '@mui/icons-material'
 import { mkConfig, generateCsv, download } from 'export-to-csv'
 
-const csvConfig = mkConfig({ useKeysAsHeaders: true })
+const csvConfig = mkConfig({
+  filename: new Date().toLocaleString(),
+  useKeysAsHeaders: true,
+})
 
 export const CsvExportButton = ({ data }) => {
   const handleClickDownload = () => {
