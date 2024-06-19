@@ -104,8 +104,8 @@ export const CompareView = () => {
           justifyContent="space-between"
           endDecorator={
             <Stack direction="row" gap={ 1 }>
-              <CsvExportButton data={ dataForCsv } />
-              <PngDownloadButton containerRef={ containerRef } />
+              <CsvExportButton data={ dataForCsv } tooltip="Download scatterplot data as CSV" />
+              <PngDownloadButton containerRef={ containerRef } tooltip="Download scatterplot as PNG" />
               <IconButton variant="soft" size="sm" onClick={ clearAnalytes }><CloseIcon /></IconButton>
             </Stack>
           }

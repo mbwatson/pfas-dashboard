@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { Button } from '@mui/joy'
+import { Button, Tooltip } from '@mui/joy'
 import {
   FileDownload as ExportIcon,
 } from '@mui/icons-material'
@@ -30,13 +30,15 @@ export const ExportButton = ({ table }) => {
   }
 
   return (
-    <Button
-      onClick={ handleClickDownload }
-      size="sm"
-      variant="outlined"
-      color="neutral"
-      startDecorator={ <ExportIcon fontSize="sm" /> }
-    >CSV</Button>
+    <Tooltip title="Download data as CSV">
+      <Button
+        onClick={ handleClickDownload }
+        size="sm"
+        variant="outlined"
+        color="neutral"
+        startDecorator={ <ExportIcon fontSize="sm" /> }
+      >CSV</Button>
+    </Tooltip>
   )
 }
 

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { Button } from '@mui/joy'
+import { Button, Tooltip } from '@mui/joy'
 import {
   FileDownload as ExportIcon,
 } from '@mui/icons-material'
@@ -10,20 +10,22 @@ const csvConfig = mkConfig({
   useKeysAsHeaders: true,
 })
 
-export const CsvExportButton = ({ data }) => {
+export const CsvExportButton = ({ data, tooltip = 'Download' }) => {
   const handleClickDownload = () => {
     const csv = generateCsv(csvConfig)(data)
     download(csvConfig)(csv)
   }
 
   return (
-    <Button
-      onClick={ handleClickDownload }
-      size="sm"
-      variant="outlined"
-      color="neutral"
-      startDecorator={ <ExportIcon fontSize="sm" /> }
-    >CSV</Button>
+    <Tooltip title={ tooltip }>
+      <Button
+        onClick={ handleClickDownload }
+        size="sm"
+        variant="outlined"
+        color="neutral"
+        startDecorator={ <ExportIcon fontSize="sm" /> }
+      >CSV</Button>
+    </Tooltip>
   )
 }
 
@@ -31,4 +33,5 @@ CsvExportButton.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.object
   ).isRequired,
+  tooltip: PropTypes.string,
 }
