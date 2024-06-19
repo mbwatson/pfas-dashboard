@@ -40,7 +40,7 @@ DetectionIndicator.propTypes = {
 }
 
 export const SampleCard = ({ sample }) => {
-  const { analyteIds } = useData()
+  const { analytes } = useData()
 
   return (
     <Card
@@ -89,13 +89,13 @@ export const SampleCard = ({ sample }) => {
           gridTemplateRows: '24px',
         }}>
           {
-            analyteIds.map(analyte => (
+            analytes.map(analyte => (
               <KeyValuePair
-                key={ `${ sample.id }-${ analyte }` }
-                property={ analyte }
-                value={ sample[`${ analyte }_concentration`] }
+                key={ `${ sample.id }-${ analyte.id }` }
+                property={ analyte.abbreviation }
+                value={ sample[`${ analyte.id }_concentration`] }
                 startDecorator={
-                  <DetectionIndicator flag={ sample[`${ analyte }_flags`] } />
+                  <DetectionIndicator flag={ sample[`${ analyte.id }_flags`] } />
                 }
               />
             ))
