@@ -33,7 +33,7 @@ GridLabel.propTypes = {
 
 export const ChemicalsByMediumRadarChart = ({ data }) => {
   const preferences = usePreferences()
-  const { analyteIds } = useData();
+  const { analytes } = useData();
 
   // generate array of sampled media from data
   const sampledMedia = useMemo(() => {
@@ -62,27 +62,30 @@ export const ChemicalsByMediumRadarChart = ({ data }) => {
   //   ]
   // for the chart's source data, which we'll index on analyteId.
   const chartData = useMemo(() => {
-    if (!analyteIds) {
+    if (!analytes) {
       return []
     }
-    const chemicalBuckets = analyteIds
-      .reduce((acc, analyteId) => {
-        acc[analyteId] = { analyteId, ...mediaBuckets }
+    const analyteBuckets = analytes
+      .reduce((acc, analyte) => {
+        acc[analyte.id] = {
+          analyteId: analyte.id,
+          ...mediaBuckets,
+        }
         return acc
       }, {})
     const buckets = data
       .reduce((acc, row) => {
         const medium = row.original.medium
         // for each detected chemical
-        Object.keys(chemicalBuckets).filter(
+        Object.keys(analyteBuckets).filter(
           // that is, where concentration > 0,
           analyteId => Number(row.original[`${ analyteId }_concentration`]) > 0
           // increase that chemical's count in that medium.
         ).forEach(analyteId => acc[analyteId][medium] += 1)
       return acc
-      }, { ...chemicalBuckets })
+      }, { ...analyteBuckets })
     return Object.values(buckets)
-  }, [analyteIds, data])
+  }, [analytes, data])
 
   return (
     <ResponsiveRadar
