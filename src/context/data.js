@@ -39,7 +39,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { podmColumns } from '@components/table'
-import { fetchSampleData, useToken } from '@util'
+import { fetchAnalytes, fetchSampleData, useToken } from '@util'
 
 //
 
@@ -100,6 +100,11 @@ export const DataWrangler = ({ accessToken, children }) => {
     queryFn: fetchSampleData(accessToken),
   })
 
+  const analytesQuery = useQuery({
+    queryKey: ['pfas_name_classification_info'],
+    queryFn: fetchAnalytes(accessToken)
+  });
+
   const table = useReactTable({
     data: pfasDataQuery.data,
     columns: podmColumns,
@@ -128,6 +133,7 @@ export const DataWrangler = ({ accessToken, children }) => {
   return (
     <DataContext.Provider value={{
       pfasData: pfasDataQuery,
+      analytesData: analytesQuery,
       analytes,
       abbreviate,
       podmTable: {
