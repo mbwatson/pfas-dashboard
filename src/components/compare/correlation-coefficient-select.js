@@ -12,7 +12,7 @@ export const CorrelationCoefficientSelect = () => {
   return (
     <Stack direction="row" gap={ 2 } alignItems="center">
       <FormControl orientation="horizontal" size="sm">
-        <FormLabel>Correlation Coefficient</FormLabel>
+        <FormLabel>Correlation coefficient:</FormLabel>
         <Select
           size="sm"
           value={ correlationCoefficient.current }
