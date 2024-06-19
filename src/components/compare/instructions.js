@@ -23,12 +23,12 @@ export const Instructions = () => {
         select boxes above or by clicking a cell in the grid.
       </Typography>
       <Typography level="body-sm" my={ 1 }>
-        Each non-diagonal cell in the grid contains a square describing
-        the samples in which <em>both</em> selected analytes are detected.
-        The <em>size</em> of the square indicates the number of such samples
-        (as a part of the whole of currently filtered samples).
-        The <em>opacity</em> of the square indicates the strength of the
-        correlation<sup>*</sup> between those two analytes.
+        Each cell corresponds to a pair of analytes.
+        The non-diagonal cells contains a square describing the samples
+        in which the corresponding analytes are detected.
+        The number of such samples determines the <em>size</em> of the square.
+        The strength of the correlation<sup>*</sup> between those two analytes
+        determines the square&apos;s <em>opacity</em>.
       </Typography>
 
       <Box sx={{
