@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useData, usePreferences } from '@context'
 import { ResponsiveRadar } from '@nivo/radar'
@@ -6,8 +6,11 @@ import { chartTheme } from '../../theme'
 
 //
 
-const GridLabel = ({ id, x, y }) => {
+const GridLabel = memo(function GridLabel({ id, x, y }) {
   const preferences = usePreferences()
+  const { analytes } = useData()
+
+  const label = useCallback(d => analytes.find(a => a.id === id).abbreviation, [analytes])
 
   return (
     <g transform={ `translate(${ x }, ${ y })` }>
@@ -18,12 +21,12 @@ const GridLabel = ({ id, x, y }) => {
           fontFamily: 'Inter',
           fill: preferences.colorMode.light ? '#333' : '#ddd',
         }}>
-          { id }
+          { label(id) || id }
         </text>
       </g>
     </g>
   )
-}
+})
 
 GridLabel.propTypes = {
   id: PropTypes.string.isRequired,

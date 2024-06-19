@@ -30,6 +30,8 @@ export const ChemicalDetectionPieChart = ({ data }) => {
   const { analytes, analyteIds } = useData();
   const preferences = usePreferences()
 
+  const arcLinkLabel = useCallback(d => analytes.find(a => a.id === d.id).abbreviation, [analytes])
+
   const emptyChemicalBuckets = useMemo(() => analytes
     .reduce((acc, analyte) => {
       acc[analyte.id] = 0;
@@ -78,6 +80,7 @@ export const ChemicalDetectionPieChart = ({ data }) => {
       innerRadius={ 0.5 }
       padAngle={ 1 }
       arcLabelsSkipAngle={ 10 }
+      arcLinkLabel={ arcLinkLabel }
       arcLinkLabelsTextColor={ preferences.colorMode.light ? '#333' : '#ddd' }
       colors={{ scheme: 'pastel1' }}
       legends={[
