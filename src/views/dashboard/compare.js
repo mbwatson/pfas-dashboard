@@ -14,12 +14,13 @@ import {
   AnalyteCorrelationGrid,
   AnalyteCorrelationScatterplot,
   AnalyteSelect,
+  CorrelationCoefficientSelect,
   CsvExportButton,
   Distribution,
   Instructions,
 } from '@components/compare'
 import { Latex } from '@components/latex'
-import { pearsonsR } from '@util'
+import { pearsonsR, spearmanRankCorrelation } from '@util'
 import { PngDownloadButton } from '@components/dashboard'
 
 const CompareContext = createContext({ })
@@ -27,13 +28,23 @@ export const useCompare = () => useContext(CompareContext)
 
 export const CompareView = () => {
   const containerRef = useRef(null)
-  const { podmTable: { table } } = useData()
-  const [analytes, setAnalytes] = useState([null, null])
+  const { abbreviate, podmTable: { table } } = useData()
+  const [selectedAnalytes, setSelectedAnalytes] = useState([null, null])
+  const abbreviations = useMemo(() => [
+    abbreviate(selectedAnalytes[0]),
+    abbreviate(selectedAnalytes[1]),
+  ], [selectedAnalytes[0], selectedAnalytes[1]])
   const max = useRef(0);
-
+  const [correlationCoefficient, setCorrelationCoefficient] = useState('pearson')
+  const correlationFunction = useMemo(() => {
+    if (correlationCoefficient === 'spearman') {
+      return spearmanRankCorrelation;
+    }
+    return pearsonsR;
+  }, [correlationCoefficient])
 
   const clearAnalytes = useCallback(() => {
-    setAnalytes([null, null])
+    setSelectedAnalytes([null, null])
   }, [])
 
   const correlationCount = useCallback((id1, id2) => {
@@ -57,28 +68,33 @@ export const CompareView = () => {
       .reduce((acc, row) => {
         const {
           sample_id,
-          [`${ analytes[0] }_concentration`]: analyte1,
-          [`${ analytes[1] }_concentration`]: analyte2,
+          [`${ selectedAnalytes[0] }_concentration`]: analyte1,
+          [`${ selectedAnalytes[1] }_concentration`]: analyte2,
         } = row.original;
-        acc.push({ sample_id, [analytes[0]]: analyte1, [analytes[1]]: analyte2 })
+        acc.push({ sample_id, [selectedAnalytes[0]]: analyte1, [selectedAnalytes[1]]: analyte2 })
         return acc
       }, [])
-  }, [analytes[0], analytes[1], table.getPrePaginationRowModel().rows])
+  }, [selectedAnalytes[0], selectedAnalytes[1], table.getPrePaginationRowModel().rows])
 
   const SelectionDetails = useCallback(() => {
     const correlationData = useMemo(() => table.getPrePaginationRowModel().rows
       .filter(row => (
-        Number(row.original[`${ analytes[0] }_concentration`]) > 0
-        && Number(row.original[`${ analytes[1] }_concentration`]) > 0
+        Number(row.original[`${ selectedAnalytes[0] }_concentration`]) > 0
+        && Number(row.original[`${ selectedAnalytes[1] }_concentration`]) > 0
       )), [table.getPrePaginationRowModel().rows])
 
     const r = useMemo(() => pearsonsR(
-      table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ analytes[0] }_concentration`])),
-      table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ analytes[1] }_concentration`])),
+      table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ selectedAnalytes[0] }_concentration`])),
+      table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ selectedAnalytes[1] }_concentration`])),
     ), [table.getPrePaginationRowModel().rows])
 
-    if (analytes[0] === analytes[1]) {
-      return <Distribution analyte={ analytes[0] } />
+    const rho = useMemo(() => spearmanRankCorrelation(
+      table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ selectedAnalytes[0] }_concentration`])),
+      table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ selectedAnalytes[1] }_concentration`])),
+    ), [table.getPrePaginationRowModel().rows])
+
+    if (selectedAnalytes[0] === selectedAnalytes[1]) {
+      return <Distribution analyte={ selectedAnalytes[0] } />
     }
 
     return (
@@ -93,36 +109,43 @@ export const CompareView = () => {
               <IconButton variant="soft" size="sm" onClick={ clearAnalytes }><CloseIcon /></IconButton>
             </Stack>
           }
-        ><span>{ analytes[0] } <Latex>\times</Latex> { analytes[1] }</span></Typography>
+        ><span>{ abbreviations[0] } <Latex>\times</Latex> { abbreviations[1] }</span></Typography>
 
         <ul style={{ margin: '1rem 0 0 0' }}>
           <li>
             <Typography>
-              { correlationCount(...analytes) } samples contain both { analytes[0] } and { analytes[1] }.
+              { correlationCount(...selectedAnalytes) } samples contain both { abbreviations[0] } and { abbreviations[1] }.
             </Typography>
           </li>
-
           <li>
-            <Latex>{ `r = ${ r }` }</Latex>
-          </li>          
+            <Latex>{ `r = ${ r.toFixed(4) }` }</Latex>
+          </li>
+          <li>
+            <Latex>{ `\\rho = ${ rho.toFixed(4) }` }</Latex>
+          </li>
         </ul>
         
         <Box ref={ containerRef } sx={{ height: '500px' }}>
           <AnalyteCorrelationScatterplot
-            analytes={ analytes }
+            analytes={ selectedAnalytes }
             data={ correlationData }
           />
         </Box>
       </Box>
     )
-  }, [analytes[0], analytes[1]])
+  }, [correlationCoefficient.current, selectedAnalytes[0], selectedAnalytes[1]])
 
   return (
     <CompareContext.Provider value={{
-      analytes,
-      setAnalytes,
+      selectedAnalytes,
+      setSelectedAnalytes,
       clearAnalytes,
       correlationCount,
+      correlationCoefficient: {
+        current: correlationCoefficient,
+        set: setCorrelationCoefficient,
+        func: correlationFunction,
+      },
     }}>
       <Stack
         justifyContent="flex-start"
@@ -142,6 +165,7 @@ export const CompareView = () => {
             { table.getPrePaginationRowModel().rows.length } samples
           </Typography>
           <AnalyteSelect />
+          <CorrelationCoefficientSelect />
         </Stack>
         <Card variant="soft">
           <Typography level="h3">Correlation Matrix</Typography>
@@ -152,8 +176,8 @@ export const CompareView = () => {
             <CardContent sx={{ flex: '0 1 400px' }}>
               <AnalyteCorrelationGrid
                 data={ table.getPrePaginationRowModel().rows }
-                selectedAnalytes={ analytes }
-                onClickCell={ setAnalytes }
+                selectedAnalytes={ selectedAnalytes }
+                onClickCell={ setSelectedAnalytes }
               />
             </CardContent>
             <CardContent sx={{
@@ -164,7 +188,7 @@ export const CompareView = () => {
               borderBottomLeftRadius: '6px',
               borderTopLeftRadius: '6px',
             }}>
-            { !analytes[0] || !analytes[1] ? <Instructions /> : <SelectionDetails /> }
+            { !selectedAnalytes[0] || !selectedAnalytes[1] ? <Instructions /> : <SelectionDetails /> }
             </CardContent>
           </Stack>
         </Card>

@@ -1,14 +1,15 @@
-import { Fragment, useCallback, useEffect, useRef } from 'react'
-import PropTypes from 'prop-types'
-import { Box } from '@mui/joy'
-import { useData, usePreferences } from '@context'
-import { pearsonsR } from '@util'
-import { IndicatorBox } from './correlation-indicator-box'
+import { Fragment, useCallback, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { Box } from '@mui/joy';
+import { useData, usePreferences } from '@context';
+import { IndicatorBox } from './correlation-indicator-box';
+import { useCompare } from '@views/dashboard/compare';
 
 //
 
 export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [null, null] }) => {
-  const { chemicalIds } = useData();
+  const { correlationCoefficient } = useCompare();
+  const { analytes, abbreviate } = useData();
   const { colorMode } = usePreferences();
   const max = useRef(0);
 
@@ -24,12 +25,12 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
       if (Number(row.original[`${ id1 }_concentration`]) > 0
           && Number(row.original[`${ id2 }_concentration`]) > 0
       ) { count += 1 }
-      return count
-    }, 0)
+      return count;
+    }, 0);
     
     if (count > max.current) { max.current = count; }
 
-    return count
+    return count;
   }, [data]);
 
   const CorrelationIndicator = useCallback((id1, id2) => {
@@ -45,7 +46,7 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
     }
 
     const count = correlationCount(id1, id2)
-    const r = pearsonsR(
+    const r = correlationCoefficient.func(
       data.map(row => Number(row.original[`${ id1 }_concentration`])),
       data.map(row => Number(row.original[`${ id2 }_concentration`])),
     )
@@ -56,7 +57,7 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
         size={ count / max.current }
       />
     );
-  }, [data]);
+  }, [correlationCoefficient.func, data]);
 
   const handleClickCell = (id1, id2) => () => {
     onClickCell([id1, id2]);
@@ -68,8 +69,8 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
       width: '500px',
       height: '500px',
       aspectRatio: '1 / 1',
-      gridTemplateColumns: `50px repeat(${ chemicalIds.length }, 25px)`,
-      gridTemplateRows: `55px repeat(${ chemicalIds.length }, 25px)`,
+      gridTemplateColumns: `50px repeat(${ analytes.length }, 25px)`,
+      gridTemplateRows: `55px repeat(${ analytes.length }, 25px)`,
       pr: 2, pt: 2,
       '.body.cell': {
         aspectRatio: '1 / 1',
@@ -92,7 +93,6 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
       },
       '.header.cell': {
         fontSize: '65%',
-        textTransform: 'uppercase',
         '&.selected': {
           color: 'var(--joy-palette-primary-main)',
           fontWeight: 'bold',
@@ -113,27 +113,29 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
     }}>
       <Box className="corner cell" />
       {
-        chemicalIds.map(chemicalIdOuter => (
+        analytes.map(({ id: outerId }) => (
           <Box
-            key={ `col-header-${ chemicalIdOuter }` }
-            className={ `header col-header cell ${ chemicalIdOuter } ${ selectedAnalytes[0] === chemicalIdOuter ? 'selected' : '' }` }
-          >{ chemicalIdOuter }</Box>
+            key={ `col-header-${ outerId }` }
+            className={ `header col-header cell ${ outerId } ${ selectedAnalytes[0] === outerId ? 'selected' : '' }` }
+          >{ abbreviate(outerId) }</Box>
         ))
       }
       {
-        chemicalIds.map(chemicalIdOuter => (
-          <Fragment key={ `row-${ chemicalIdOuter }` }>
-            <Box className={ `header row-header cell ${ chemicalIdOuter } ${ selectedAnalytes[1] === chemicalIdOuter ? 'selected' : '' }` }>{ chemicalIdOuter }</Box>
+        analytes.map(({ id: outerId }) => (
+          <Fragment key={ `row-${ outerId }` }>
+            <Box className={ `header row-header cell ${ outerId } ${ selectedAnalytes[1] === outerId ? 'selected' : '' }` }>
+              { abbreviate(outerId) }
+            </Box>
             {
-              chemicalIds.map(chemicalIdInner => {
-                const highlightClass = chemicalIdInner === selectedAnalytes[0]
-                  || chemicalIdOuter === selectedAnalytes[1] ? 'highlight' : ''
+              analytes.map(({ id: innerId }) => {
+                const highlightClass = innerId === selectedAnalytes[0]
+                  || outerId === selectedAnalytes[1] ? 'highlight' : ''
                 return (
                   <Box
-                    key={ `cell ${ chemicalIdOuter }-${ chemicalIdInner }` }
-                    className={ `body cell row-${ chemicalIdOuter } col-${ chemicalIdInner } ${ highlightClass }` }
-                    onClick={ handleClickCell(chemicalIdInner, chemicalIdOuter) }
-                  >{ CorrelationIndicator(chemicalIdInner, chemicalIdOuter) }</Box>
+                    key={ `cell ${ outerId }-${ innerId }` }
+                    className={ `body cell row-${ outerId } col-${ innerId } ${ highlightClass }` }
+                    onClick={ handleClickCell(innerId, outerId) }
+                  >{ CorrelationIndicator(innerId, outerId) }</Box>
                 )
               })
             }

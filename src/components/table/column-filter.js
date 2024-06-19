@@ -57,7 +57,7 @@ export const ColumnFilter = ({ column }) => {
         sortedUniqueValues.map(value => (
           <option
             value={ value }
-            key={ value }
+            key={ `select-data-list-${ value }` }
             style={{ width: '100%' }}
           >{ value }</option>
         ))
@@ -67,7 +67,7 @@ export const ColumnFilter = ({ column }) => {
     <Fragment>
       {/* autocomplete suggestions from faceted selections */}
       <datalist id={ column.id + 'list' }>
-        { sortedUniqueValues.map(value => <option value={ value } key={ value } />) }
+        { sortedUniqueValues.map(value => <option value={ value } key={ `text-data-list-${ value }` } />) }
       </datalist>
       <DebouncedInput
         aria-label={ `${ column.id } text filter` }

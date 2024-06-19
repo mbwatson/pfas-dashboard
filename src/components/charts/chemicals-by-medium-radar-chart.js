@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useData, usePreferences } from '@context'
 import { ResponsiveRadar } from '@nivo/radar'
@@ -6,24 +6,26 @@ import { chartTheme } from '../../theme'
 
 //
 
-const GridLabel = ({ id, x, y }) => {
+const GridLabel = memo(function GridLabel({ id, x, y }) {
   const preferences = usePreferences()
 
   return (
     <g transform={ `translate(${ x }, ${ y })` }>
       <g transform={ `translate(0, 0)` }>
-        <text style={{
-          textAlign: 'center',
-          fontSize: 10,
-          fontFamily: 'Inter',
-          fill: preferences.colorMode.light ? '#333' : '#ddd',
-        }}>
+        <text
+          textAnchor="middle"
+          style={{
+            fontSize: 10,
+            fontFamily: 'Inter',
+            fill: preferences.colorMode.light ? '#333' : '#ddd',
+          }}
+        >
           { id }
         </text>
       </g>
     </g>
   )
-}
+})
 
 GridLabel.propTypes = {
   id: PropTypes.string.isRequired,
@@ -31,16 +33,18 @@ GridLabel.propTypes = {
   y: PropTypes.number.isRequired,
 }
 
+const capitalize = str => str[0].toUpperCase() + str.slice(1)
+
 export const ChemicalsByMediumRadarChart = ({ data }) => {
   const preferences = usePreferences()
-  const { chemicalIds } = useData();
+  const { abbreviate, analytes } = useData();
 
   // generate array of sampled media from data
   const sampledMedia = useMemo(() => {
     return data
       .reduce((acc, row) => {
-        if (!acc.includes(row.original.medium)) {
-          acc.push(row.original.medium)
+        if (!acc.includes(capitalize(row.original.medium))) {
+          acc.push(capitalize(row.original.medium))
         }
         return acc
       }, [])
@@ -56,41 +60,46 @@ export const ChemicalsByMediumRadarChart = ({ data }) => {
 
   // our goal is counting detections in media in an array like
   //   [
-  //      { chemicalId: 'pfod', dust: 20, water: 130, ... }
-  //      { chemicalId: 'pfna', dust: 120, water: 450, ... }
+  //      { analyteId: 'pfod', dust: 20, water: 130, ... }
+  //      { analyteId: 'pfna', dust: 120, water: 450, ... }
   //      ...
   //   ]
-  // for the chart's source data, which we'll index on chemicalId.
+  // for the chart's source data, which we'll index on analyteId.
   const chartData = useMemo(() => {
-    if (!chemicalIds) {
+    if (!analytes) {
       return []
     }
-    const chemicalBuckets = chemicalIds
-      .reduce((acc, chemicalId) => {
-        acc[chemicalId] = { chemicalId, ...mediaBuckets }
+    const analyteBuckets = analytes
+      .reduce((acc, analyte) => {
+        acc[analyte.id] = {
+          analyteId: abbreviate(analyte.id),
+          label: abbreviate(analyte.id),
+          ...mediaBuckets,
+        }
         return acc
       }, {})
     const buckets = data
       .reduce((acc, row) => {
-        const medium = row.original.medium
+        const medium = capitalize(row.original.medium)
         // for each detected chemical
-        Object.keys(chemicalBuckets).filter(
+        Object.keys(analyteBuckets).filter(
           // that is, where concentration > 0,
-          chemicalId => Number(row.original[`${ chemicalId }_concentration`]) > 0
+          analyteId => Number(row.original[`${ analyteId.toLowerCase() }_concentration`]) > 0
           // increase that chemical's count in that medium.
-        ).forEach(chemicalId => acc[chemicalId][medium] += 1)
+        ).forEach(analyteId => acc[analyteId][medium] += 1)
       return acc
-      }, { ...chemicalBuckets })
+      }, { ...analyteBuckets })
     return Object.values(buckets)
-  }, [chemicalIds, data])
+  }, [analytes, data])
 
   return (
     <ResponsiveRadar
       data={ chartData }
       keys={ sampledMedia }
-      indexBy="chemicalId"
+      indexBy="analyteId"
       margin={{ top: 40, right: 60, bottom: 40, left: 60 }}
-      colors={{ scheme: 'pastel1' }}
+      colors={{ scheme: 'tableau10' }}
+      fillOpacity={ 0.1 }
       gridLabelOffset={ 25 }
       gridLevels={ 10 }
       gridLabel={ GridLabel }

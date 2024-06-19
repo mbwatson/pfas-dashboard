@@ -59,7 +59,7 @@ export const ColumnFilters = () => {
                       .filter(column => column.getCanFilter())
                       .map(column => (
                         <Stack
-                          key={ `column-filter-${ column.id }` }
+                          key={ `col-filter-${ column.id }` }
                           className="column-row"
                           direction="row"
                           justifyContent="space-between"
