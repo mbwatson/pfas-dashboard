@@ -152,7 +152,7 @@ export const CompareView = () => {
             <CardContent sx={{ flex: '0 1 400px' }}>
               <AnalyteCorrelationGrid
                 data={ table.getPrePaginationRowModel().rows }
-                selectedAnalytes={ analytes }
+                selectedAnalytes={ selectedAnalytes }
                 onClickCell={ setSelectedAnalytes }
               />
             </CardContent>
