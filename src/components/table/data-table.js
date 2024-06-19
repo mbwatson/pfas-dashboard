@@ -110,12 +110,6 @@ export const DataTable = ({ table, sx = {} }) => {
 }
 
 DataTable.propTypes = {
-  sx: PropTypes.object.isRequired,
+  sx: PropTypes.object,
   table: PropTypes.object.isRequired,
 }
-
-//
-
-
-//
-
