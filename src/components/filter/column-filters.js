@@ -13,7 +13,7 @@ import { ColumnFilter } from '@components/table'
 import { useData } from '@context'
 
 export const ColumnFilters = () => {
-  const { podmTable: { table } } = useData()
+  const { abbreviate, podmTable: { table } } = useData()
 
   return (
     <AccordionGroup>
@@ -33,7 +33,11 @@ export const ColumnFilters = () => {
                     }}
                   />
                   <ListItemContent>
-                    { columnGroup.id.toUpperCase() }
+                    {
+                      ['sample', 'location'].includes(columnGroup.id)
+                        ? columnGroup.id[0].toUpperCase() + columnGroup.id.slice(1)
+                        : abbreviate(columnGroup.id)
+                    }
                   </ListItemContent>
                 </AccordionSummary>
                 <AccordionDetails sx={{
