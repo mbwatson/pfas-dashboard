@@ -106,7 +106,7 @@ export const CompareView = () => {
           </li>
 
           <li>
-            <Latex>{ `r = ${ r }` }</Latex>
+            <Latex>{ `r = ${ r.toFixed(4) }` }</Latex>
           </li>          
         </ul>
         
