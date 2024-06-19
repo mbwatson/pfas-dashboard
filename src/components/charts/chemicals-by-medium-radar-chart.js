@@ -34,6 +34,8 @@ GridLabel.propTypes = {
   y: PropTypes.number.isRequired,
 }
 
+const capitalize = str => str[0].toUpperCase() + str.slice(1)
+
 export const ChemicalsByMediumRadarChart = ({ data }) => {
   const preferences = usePreferences()
   const { analytes } = useData();
@@ -42,8 +44,8 @@ export const ChemicalsByMediumRadarChart = ({ data }) => {
   const sampledMedia = useMemo(() => {
     return data
       .reduce((acc, row) => {
-        if (!acc.includes(row.original.medium)) {
-          acc.push(row.original.medium)
+        if (!acc.includes(capitalize(row.original.medium))) {
+          acc.push(capitalize(row.original.medium))
         }
         return acc
       }, [])
@@ -78,7 +80,7 @@ export const ChemicalsByMediumRadarChart = ({ data }) => {
       }, {})
     const buckets = data
       .reduce((acc, row) => {
-        const medium = row.original.medium
+        const medium = capitalize(row.original.medium)
         // for each detected chemical
         Object.keys(analyteBuckets).filter(
           // that is, where concentration > 0,

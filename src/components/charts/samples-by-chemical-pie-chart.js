@@ -30,7 +30,7 @@ export const ChemicalDetectionPieChart = ({ data }) => {
   const { analytes, analyteIds } = useData();
   const preferences = usePreferences()
 
-  const arcLinkLabel = useCallback(d => analytes.find(a => a.id === d.id).abbreviation, [analytes])
+  const arcLinkLabel = d => analytes?.find(a => a.id === d.id)?.abbreviation
 
   const emptyChemicalBuckets = useMemo(() => analytes
     .reduce((acc, analyte) => {
@@ -63,6 +63,7 @@ export const ChemicalDetectionPieChart = ({ data }) => {
       .sort()
       .map(analyteId => ({
         id: analyteId,
+        label: arcLinkLabel({ id: analyteId }),
         value: chemicalBuckets[analyteId],
       }))
   }, [chemicalBuckets, data])
