@@ -20,6 +20,12 @@ const DetectionIndicator = memo(
       case '<MRL':
         color = '#EBC49F'
         break;
+      case 'J':
+        color = '#9FEBC4'
+        break;
+      case 'U':
+        color = '#C49FEB'
+        break;
       case 'Detect':
         color = '#D37676'
         break;
@@ -36,11 +42,11 @@ const DetectionIndicator = memo(
 )
 
 DetectionIndicator.propTypes = {
-  flag: PropTypes.oneOf(['ND', 'Detect', '<MRL']),
+  flag: PropTypes.oneOf(['Detect', 'J', '<MRL', 'ND', 'U']),
 }
 
 export const SampleCard = ({ sample }) => {
-  const { analytes } = useData()
+  const { abbreviate, analytes } = useData()
 
   return (
     <Card
@@ -89,13 +95,13 @@ export const SampleCard = ({ sample }) => {
           gridTemplateRows: '24px',
         }}>
           {
-            analytes.map(analyte => (
+            analytes.map(({ id }) => (
               <KeyValuePair
-                key={ `${ sample.id }-${ analyte.id }` }
-                property={ analyte.abbreviation }
-                value={ sample[`${ analyte.id }_concentration`] }
+                key={ `${ sample.id }-${ id }` }
+                property={ abbreviate(id) }
+                value={ sample[`${ id.toLowerCase() }_concentration`] }
                 startDecorator={
-                  <DetectionIndicator flag={ sample[`${ analyte.id }_flags`] } />
+                  <DetectionIndicator flag={ sample[`${ id }_flags`] } />
                 }
               />
             ))
@@ -111,6 +117,14 @@ export const SampleCard = ({ sample }) => {
           justifyContent="center"
           gap={ 2 }
         >
+          <Typography
+            startDecorator={ <DetectionIndicator flag="U" /> }
+            level="body-xs"
+          >U</Typography>
+          <Typography
+            startDecorator={ <DetectionIndicator flag="J" /> }
+            level="body-xs"
+          >J</Typography>
           <Typography
             startDecorator={ <DetectionIndicator flag="ND" /> }
             level="body-xs"
