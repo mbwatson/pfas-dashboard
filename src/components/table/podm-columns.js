@@ -186,17 +186,6 @@ export const podmColumns = [
     ],
   }),
   columnHelper.group({
-    id: 'pfuda',
-    header: 'PFUDA',
-    footer: 'PFUDA',
-    columns: [
-      columnHelper.accessor('pfuda_concentration', {  cell: info => info.getValue(), header: 'Concentration',  footer: 'Concentration',  meta: { filterVariant: 'none' } }), //,   si1e: 100 bug
-      columnHelper.accessor('pfuda_mrl', {            cell: info => info.getValue(), header: 'MRL',            footer: 'MRL',            meta: { filterVariant: 'none' } }), //,   si1e: 100 bug
-      columnHelper.accessor('pfuda_dl', {             cell: info => info.getValue(), header: 'DL',             footer: 'DL',             meta: { filterVariant: 'none' } }), //,   si1e: 100 bug
-      columnHelper.accessor('pfuda_flags', {          cell: info => info.getValue(), header: 'Flags',          footer: 'Flags',          meta: { filterVariant: 'select' } ,  size: 90}),
-    ],
-  }),
-  columnHelper.group({
     id: 'pfunda',
     header: 'PFUnDA',
     footer: 'PFUnDA',
