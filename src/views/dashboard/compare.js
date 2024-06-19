@@ -139,6 +139,7 @@ export const CompareView = () => {
     <CompareContext.Provider value={{
       selectedAnalytes,
       setSelectedAnalytes,
+      abbreviations,
       clearAnalytes,
       correlationCount,
       correlationCoefficient: {
@@ -164,8 +165,8 @@ export const CompareView = () => {
           <Typography level="body-md" sx={{ whiteSpace: 'nowrap' }}>
             { table.getPrePaginationRowModel().rows.length } samples
           </Typography>
-          <AnalyteSelect />
           <CorrelationCoefficientSelect />
+          <AnalyteSelect />
         </Stack>
         <Card variant="soft">
           <Typography level="h3">Correlation Matrix</Typography>

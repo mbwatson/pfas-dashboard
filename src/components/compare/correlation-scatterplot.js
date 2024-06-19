@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Box, Typography } from '@mui/joy'
 import { ResponsiveScatterPlot } from '@nivo/scatterplot'
 import { chartTheme } from '../../theme'
+import { useCompare } from '@views/dashboard/compare'
 
 //
 
@@ -10,6 +11,8 @@ export const AnalyteCorrelationScatterplot = ({
   data = [],
   analytes = [],
 }) => {
+  const { abbreviations } = useCompare()
+  
   const Tooltip = useCallback(({ node }) => (
     <Box sx={{
       color: 'var(--joy-palette-primary-softColor)',
@@ -18,8 +21,8 @@ export const AnalyteCorrelationScatterplot = ({
       '.MuiTypography-root': { m: 0 }
     }}>
       <Typography level="title-xs">Sample: { node.data.sample_id }</Typography>
-      <Typography level="body-xs">{ analytes[0] }: { node.formattedX }</Typography>
-      <Typography level="body-xs">{ analytes[1] }: { node.formattedY }</Typography>
+      <Typography level="body-xs">{ abbreviations[0] }: { node.formattedX }</Typography>
+      <Typography level="body-xs">{ abbreviations[1] }: { node.formattedY }</Typography>
     </Box>
   ), [analytes[0], analytes[1]])
 
