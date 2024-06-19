@@ -14,12 +14,13 @@ import {
   AnalyteCorrelationGrid,
   AnalyteCorrelationScatterplot,
   AnalyteSelect,
+  CorrelationCoefficientSelect,
   CsvExportButton,
   Distribution,
   Instructions,
 } from '@components/compare'
 import { Latex } from '@components/latex'
-import { pearsonsR } from '@util'
+import { pearsonsR, spearmanRankCorrelation } from '@util'
 import { PngDownloadButton } from '@components/dashboard'
 
 const CompareContext = createContext({ })
@@ -34,6 +35,13 @@ export const CompareView = () => {
     abbreviate(selectedAnalytes[1]),
   ], [selectedAnalytes[0], selectedAnalytes[1]])
   const max = useRef(0);
+  const [correlationCoefficient, setCorrelationCoefficient] = useState('pearson')
+  const correlationFunction = useMemo(() => {
+    if (correlationCoefficient === 'spearman') {
+      return spearmanRankCorrelation;
+    }
+    return pearsonsR;
+  }, [correlationCoefficient])
 
   const clearAnalytes = useCallback(() => {
     setSelectedAnalytes([null, null])
@@ -80,6 +88,11 @@ export const CompareView = () => {
       table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ selectedAnalytes[1] }_concentration`])),
     ), [table.getPrePaginationRowModel().rows])
 
+    const rho = useMemo(() => spearmanRankCorrelation(
+      table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ selectedAnalytes[0] }_concentration`])),
+      table.getPrePaginationRowModel().rows.map(row => Number(row.original[`${ selectedAnalytes[1] }_concentration`])),
+    ), [table.getPrePaginationRowModel().rows])
+
     if (selectedAnalytes[0] === selectedAnalytes[1]) {
       return <Distribution analyte={ selectedAnalytes[0] } />
     }
@@ -104,10 +117,12 @@ export const CompareView = () => {
               { correlationCount(...selectedAnalytes) } samples contain both { abbreviations[0] } and { abbreviations[1] }.
             </Typography>
           </li>
-
           <li>
             <Latex>{ `r = ${ r.toFixed(4) }` }</Latex>
-          </li>          
+          </li>
+          <li>
+            <Latex>{ `\\rho = ${ rho.toFixed(4) }` }</Latex>
+          </li>
         </ul>
         
         <Box ref={ containerRef } sx={{ height: '500px' }}>
@@ -118,7 +133,7 @@ export const CompareView = () => {
         </Box>
       </Box>
     )
-  }, [selectedAnalytes[0], selectedAnalytes[1]])
+  }, [correlationCoefficient.current, selectedAnalytes[0], selectedAnalytes[1]])
 
   return (
     <CompareContext.Provider value={{
@@ -126,6 +141,11 @@ export const CompareView = () => {
       setSelectedAnalytes,
       clearAnalytes,
       correlationCount,
+      correlationCoefficient: {
+        current: correlationCoefficient,
+        set: setCorrelationCoefficient,
+        func: correlationFunction,
+      },
     }}>
       <Stack
         justifyContent="flex-start"
@@ -145,6 +165,7 @@ export const CompareView = () => {
             { table.getPrePaginationRowModel().rows.length } samples
           </Typography>
           <AnalyteSelect />
+          <CorrelationCoefficientSelect />
         </Stack>
         <Card variant="soft">
           <Typography level="h3">Correlation Matrix</Typography>

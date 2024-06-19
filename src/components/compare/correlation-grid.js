@@ -1,13 +1,14 @@
-import { Fragment, useCallback, useEffect, useRef } from 'react'
-import PropTypes from 'prop-types'
-import { Box } from '@mui/joy'
-import { useData, usePreferences } from '@context'
-import { pearsonsR } from '@util'
-import { IndicatorBox } from './correlation-indicator-box'
+import { Fragment, useCallback, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { Box } from '@mui/joy';
+import { useData, usePreferences } from '@context';
+import { IndicatorBox } from './correlation-indicator-box';
+import { useCompare } from '@views/dashboard/compare';
 
 //
 
 export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [null, null] }) => {
+  const { correlationCoefficient } = useCompare();
   const { analytes, abbreviate } = useData();
   const { colorMode } = usePreferences();
   const max = useRef(0);
@@ -45,7 +46,7 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
     }
 
     const count = correlationCount(id1, id2)
-    const r = pearsonsR(
+    const r = correlationCoefficient.func(
       data.map(row => Number(row.original[`${ id1 }_concentration`])),
       data.map(row => Number(row.original[`${ id2 }_concentration`])),
     )
@@ -56,7 +57,7 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
         size={ count / max.current }
       />
     );
-  }, [data]);
+  }, [correlationCoefficient.func, data]);
 
   const handleClickCell = (id1, id2) => () => {
     onClickCell([id1, id2]);
