@@ -27,10 +27,13 @@ export const useCompare = () => useContext(CompareContext)
 
 export const CompareView = () => {
   const containerRef = useRef(null)
-  const { podmTable: { table } } = useData()
+  const { abbreviate, podmTable: { table } } = useData()
   const [selectedAnalytes, setSelectedAnalytes] = useState([null, null])
+  const abbreviations = useMemo(() => [
+    abbreviate(selectedAnalytes[0]),
+    abbreviate(selectedAnalytes[1]),
+  ], [selectedAnalytes[0], selectedAnalytes[1]])
   const max = useRef(0);
-
 
   const clearAnalytes = useCallback(() => {
     setSelectedAnalytes([null, null])
@@ -93,12 +96,12 @@ export const CompareView = () => {
               <IconButton variant="soft" size="sm" onClick={ clearAnalytes }><CloseIcon /></IconButton>
             </Stack>
           }
-        ><span>{ selectedAnalytes[0] } <Latex>\times</Latex> { selectedAnalytes[1] }</span></Typography>
+        ><span>{ abbreviations[0] } <Latex>\times</Latex> { abbreviations[1] }</span></Typography>
 
         <ul style={{ margin: '1rem 0 0 0' }}>
           <li>
             <Typography>
-              { correlationCount(...selectedAnalytes) } samples contain both { selectedAnalytes[0] } and { selectedAnalytes[1] }.
+              { correlationCount(...selectedAnalytes) } samples contain both { abbreviations[0] } and { abbreviations[1] }.
             </Typography>
           </li>
 

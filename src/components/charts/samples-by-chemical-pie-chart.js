@@ -8,14 +8,14 @@ import { chartTheme } from '../../theme'
 const Tooltip = ({ datum }) => {
   return (
     <Box sx={{
-      backgroundColor: datum.color,
-      color: 'var(--joy-palette-grey-800)',
-      border: `1px solid var(--joy-palette-common-black)`,
+      backgroundColor: 'var(--joy-palette-background-surface)',
+      color: 'var(--joy-palette-info-contrastText)',
+      border: `1px solid var(--joy-palette-neutral-outlinedColor)`,
       filter: 'brightness(1.1)',
     }}>
       <Typography level="title-sm" sx={{ p: 1 }}>{ datum.label }</Typography>
       <Divider />
-      <Typography level="body-sm" sx={{ p: 1 }}>{ datum.value }</Typography>
+      <Typography level="body-sm" sx={{ p: 1, fontWeight: 'bold' }}>{ datum.value }</Typography>
     </Box>
   )
 }
@@ -27,10 +27,8 @@ Tooltip.propTypes = {
 //
 
 export const ChemicalDetectionPieChart = ({ data }) => {
-  const { analytes } = useData();
+  const { abbreviate, analytes } = useData();
   const preferences = usePreferences()
-
-  const arcLinkLabel = d => analytes?.find(a => a.id === d.id)?.abbreviation
 
   const emptyChemicalBuckets = useMemo(() => analytes
     .reduce((acc, analyte) => {
@@ -63,7 +61,7 @@ export const ChemicalDetectionPieChart = ({ data }) => {
       .sort()
       .map(analyteId => ({
         id: analyteId,
-        label: arcLinkLabel({ id: analyteId }),
+        label: abbreviate(analyteId),
         value: chemicalBuckets[analyteId],
       }))
   }, [chemicalBuckets, data])
@@ -81,9 +79,9 @@ export const ChemicalDetectionPieChart = ({ data }) => {
       innerRadius={ 0.5 }
       padAngle={ 1 }
       arcLabelsSkipAngle={ 10 }
-      arcLinkLabel={ arcLinkLabel }
+      arcLinkLabel={ d => abbreviate(d.id) }
       arcLinkLabelsTextColor={ preferences.colorMode.light ? '#333' : '#ddd' }
-      colors={{ scheme: 'pastel1' }}
+      colors={{ scheme: 'tableau10' }}
       legends={[
         {
           anchor: 'top-left',
@@ -109,6 +107,7 @@ export const ChemicalDetectionPieChart = ({ data }) => {
         }
       ]}
       theme={ chartTheme }
+      tooltip={ Tooltip }
     />
   )
 }

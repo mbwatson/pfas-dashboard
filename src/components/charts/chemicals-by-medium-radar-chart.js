@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import PropTypes from 'prop-types'
 import { useData, usePreferences } from '@context'
 import { ResponsiveRadar } from '@nivo/radar'
@@ -8,20 +8,19 @@ import { chartTheme } from '../../theme'
 
 const GridLabel = memo(function GridLabel({ id, x, y }) {
   const preferences = usePreferences()
-  const { analytes } = useData()
-
-  const label = useCallback(d => analytes.find(a => a.id === id).abbreviation, [analytes])
 
   return (
     <g transform={ `translate(${ x }, ${ y })` }>
       <g transform={ `translate(0, 0)` }>
-        <text style={{
-          textAlign: 'center',
-          fontSize: 10,
-          fontFamily: 'Inter',
-          fill: preferences.colorMode.light ? '#333' : '#ddd',
-        }}>
-          { label(id) || id }
+        <text
+          textAnchor="middle"
+          style={{
+            fontSize: 10,
+            fontFamily: 'Inter',
+            fill: preferences.colorMode.light ? '#333' : '#ddd',
+          }}
+        >
+          { id }
         </text>
       </g>
     </g>
@@ -38,7 +37,7 @@ const capitalize = str => str[0].toUpperCase() + str.slice(1)
 
 export const ChemicalsByMediumRadarChart = ({ data }) => {
   const preferences = usePreferences()
-  const { analytes } = useData();
+  const { abbreviate, analytes } = useData();
 
   // generate array of sampled media from data
   const sampledMedia = useMemo(() => {
@@ -73,7 +72,8 @@ export const ChemicalsByMediumRadarChart = ({ data }) => {
     const analyteBuckets = analytes
       .reduce((acc, analyte) => {
         acc[analyte.id] = {
-          analyteId: analyte.id,
+          analyteId: abbreviate(analyte.id),
+          label: abbreviate(analyte.id),
           ...mediaBuckets,
         }
         return acc
@@ -84,7 +84,7 @@ export const ChemicalsByMediumRadarChart = ({ data }) => {
         // for each detected chemical
         Object.keys(analyteBuckets).filter(
           // that is, where concentration > 0,
-          analyteId => Number(row.original[`${ analyteId }_concentration`]) > 0
+          analyteId => Number(row.original[`${ analyteId.toLowerCase() }_concentration`]) > 0
           // increase that chemical's count in that medium.
         ).forEach(analyteId => acc[analyteId][medium] += 1)
       return acc
@@ -98,7 +98,8 @@ export const ChemicalsByMediumRadarChart = ({ data }) => {
       keys={ sampledMedia }
       indexBy="analyteId"
       margin={{ top: 40, right: 60, bottom: 40, left: 60 }}
-      colors={{ scheme: 'pastel1' }}
+      colors={{ scheme: 'tableau10' }}
+      fillOpacity={ 0.1 }
       gridLabelOffset={ 25 }
       gridLevels={ 10 }
       gridLabel={ GridLabel }

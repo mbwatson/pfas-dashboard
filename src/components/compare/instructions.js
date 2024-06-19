@@ -17,7 +17,7 @@ export const Instructions = () => {
 
       <Typography level="body-sm" my={ 2 }>
         Choose a pair of analytes for comparison. Select analytes using the
-        select boxes above to by clicking a cell in the grid.
+        select boxes above or by clicking a cell in the grid.
       </Typography>
       <Typography level="body-sm" my={ 2 }>
         Each non-diagonal cell in the grid contains a square describing
@@ -76,6 +76,12 @@ export const Instructions = () => {
       <Typography level="body-sm" my={ 2 }>
         Selecting a non-diagonal cell presents details about the respective analytes, including a scatterplot.
         Selecting a diagonal cell presents a sense of the distribution for that analyte.
+      </Typography>
+
+      <Typography level="body-sm" my={ 2 }>
+        The visualizations here make use of all the currently filtered data,
+        and some of that data may have different units, rendering this visualization essentially useless.
+        Therefore the user is urged to use caution when making conclusions based on these graphics alone.
       </Typography>
 
       <Divider />

@@ -8,15 +8,13 @@ import { IndicatorBox } from './correlation-indicator-box'
 //
 
 export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [null, null] }) => {
-  const { analytes } = useData();
+  const { analytes, abbreviate } = useData();
   const { colorMode } = usePreferences();
   const max = useRef(0);
 
   useEffect(() => {
     max.current = 0;
   }, [data])
-
-  const gridLabel = useCallback(id => analytes?.find(a => a.id === id)?.abbreviation, [analytes])
 
   const correlationCount = useCallback((id1, id2) => {
     if (id1 === id2) {
@@ -118,14 +116,14 @@ export const AnalyteCorrelationGrid = ({ data, onClickCell, selectedAnalytes = [
           <Box
             key={ `col-header-${ outerId }` }
             className={ `header col-header cell ${ outerId } ${ selectedAnalytes[0] === outerId ? 'selected' : '' }` }
-          >{ gridLabel(outerId) }</Box>
+          >{ abbreviate(outerId) }</Box>
         ))
       }
       {
         analytes.map(({ id: outerId }) => (
           <Fragment key={ `row-${ outerId }` }>
             <Box className={ `header row-header cell ${ outerId } ${ selectedAnalytes[1] === outerId ? 'selected' : '' }` }>
-              { gridLabel(outerId) }
+              { abbreviate(outerId) }
             </Box>
             {
               analytes.map(({ id: innerId }) => {

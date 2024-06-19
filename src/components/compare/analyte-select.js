@@ -8,13 +8,13 @@ import { useCompare } from '@views/dashboard/compare'
 import { Latex } from '@components/latex'
 
 export const AnalyteSelect = () => {
-  const { analyteIds } = useData()
-  const { selectedAnalytes, clearAnalytes, setAnalytes } = useCompare()
+  const { analytes, abbreviate } = useData()
+  const { clearAnalytes, selectedAnalytes, setSelectedAnalytes } = useCompare()
 
   const handleChangeAnalyte = useCallback(index => (event, newAnalyte) => {
     const newAnalytes = [...selectedAnalytes]
     newAnalytes[index] = newAnalyte
-    setAnalytes(newAnalytes)
+    setSelectedAnalytes(newAnalytes)
   }, [selectedAnalytes[0], selectedAnalytes[1]])
 
   return (
@@ -30,8 +30,8 @@ export const AnalyteSelect = () => {
         >
           <Option key="select-null" value="">Select analyte</Option>
           {
-            analyteIds.map(id => (
-              <Option key={ `select-0-${ id }` } value={ id }>{ id }</Option>
+            analytes.map(({ id }) => (
+              <Option key={ `select-0-${ id }` } value={ id }>{ abbreviate(id) }</Option>
             ))
           }
         </Select>
@@ -48,8 +48,8 @@ export const AnalyteSelect = () => {
         >
           <Option key="select-null" value="">Select analyte</Option>
           {
-            analyteIds.map(id => (
-              <Option key={ `select-1-${ id }` } value={ id }>{ id }</Option>
+            analytes.map(({ id }) => (
+              <Option key={ `select-1-${ id }` } value={ id }>{ abbreviate(id) }</Option>
             ))
           }
         </Select>

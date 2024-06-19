@@ -6,8 +6,6 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
-  useMemo,
   useState,
 } from 'react'
 import PropTypes from 'prop-types'
@@ -20,7 +18,6 @@ import {
 import {
   ErrorOutline as ErrorIcon
 } from '@mui/icons-material'
-import axios from 'axios'
 
 import { QueryClient, useQuery } from '@tanstack/react-query'
 import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client'
@@ -46,7 +43,6 @@ import { fetchSampleData, useToken } from '@util'
 
 //
 
-const API_URL = `${ process.env.API_HOST }/podm/api`
 const CACHE_KEY = 'PFAS_DATA_CACHE'
 
 const CONNECTION_STATE_ICONS = {
@@ -104,8 +100,6 @@ export const DataWrangler = ({ accessToken, children }) => {
     queryFn: fetchSampleData(accessToken),
   })
 
-  const analyteIds = useMemo(() => analytes.map(s => s.id).sort(), [])
-
   const table = useReactTable({
     data: pfasDataQuery.data,
     columns: podmColumns,
@@ -129,11 +123,13 @@ export const DataWrangler = ({ accessToken, children }) => {
 
   const filterCount = table.getAllLeafColumns().filter(col => col.getIsFiltered()).length
 
+  const abbreviate = useCallback(id => analytes?.find(a => a.id === id)?.abbreviation || 'Unknown', [])
+
   return (
     <DataContext.Provider value={{
       pfasData: pfasDataQuery,
       analytes,
-      analyteIds,
+      abbreviate,
       podmTable: {
         table,
         columnFilters, setColumnFilters,
