@@ -44,6 +44,12 @@ export const TableView = () => {
     <ClearFiltersButton key="clear-selections" />,
   ], [columnFilters, filtersVisibility])
 
+  const SampleCount = useCallback(() => (
+    <Typography level="body-md" sx={{ whiteSpace: 'nowrap' }}>
+      { table.getPrePaginationRowModel().rows.length } samples
+    </Typography>
+  ), [table.getPrePaginationRowModel().rows.length])
+
   if (pfasData.isLoading) {
     return (
       <Stack
@@ -55,12 +61,6 @@ export const TableView = () => {
       </Stack>
     )
   }
-
-  const SampleCount = useCallback(() => (
-    <Typography level="body-md" sx={{ whiteSpace: 'nowrap' }}>
-      { table.getPrePaginationRowModel().rows.length } samples
-    </Typography>
-  ), [table.getPrePaginationRowModel().rows.length])
 
   return (
     <Fragment>      
@@ -128,9 +128,7 @@ const TableBrowser = () => {
         sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
       >
         <Fragment>
-          <ModalClose
-        variant="solid"
-          />
+          <ModalClose variant="solid" />
           <SampleBrowser data={ table.getPaginationRowModel().rows } />
         </Fragment>
       </Modal>
