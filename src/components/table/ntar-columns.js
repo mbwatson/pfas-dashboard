@@ -10,7 +10,6 @@ export const nonTargetedColumns = [
     header: 'Sample',
     footer: 'Sample',
     columns: [
-      columnHelper.accessor('id', {                   cell: info => info.getValue(), header: 'ID',            footer: 'ID',        enableColumnFilter: false }),
       columnHelper.accessor('sample_id', {            cell: info => info.getValue(), header: 'Sample',        footer: 'Sample',    meta: { filterVariant: 'text' } }),
       columnHelper.accessor('study', {                cell: info => info.getValue(), header: 'Study',         footer: 'Study',     meta: { filterVariant: 'select' } }),
       columnHelper.accessor('pi', {                   cell: info => info.getValue(), header: 'PI',            footer: 'PI',        meta: { filterVariant: 'select' } }),

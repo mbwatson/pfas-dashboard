@@ -13,7 +13,9 @@ export const fetchNonTargetedSampleData = accessToken => async () => {
   const getFirstPage = async () => {
     try {
       const { data } = await axios.get(
-        `${ API_URL }/ntar_sample_data?page=1&psize=1`,
+        `${ API_URL }/ntar_sample_data?`
+          + `fields=sample_id,study,pi,units,medium,city,state,zipcode,pfas_short_name,pfas_long_name,flags,measurement`
+          + `&page=1&psize=1`,
         {
           timeout: 1000 * 5, // 5 seconds
           headers: {
@@ -41,7 +43,9 @@ export const fetchNonTargetedSampleData = accessToken => async () => {
   const PER_PAGE = 1000
   const promises = [...Array(Math.ceil(data.count / PER_PAGE)).keys()]
     .map(p => axios.get(
-      `${ API_URL }/ntar_sample_data?page=${ p + 1 }&psize=${ PER_PAGE }`,
+      `${ API_URL }/ntar_sample_data?`
+        + `fields=sample_id,study,pi,units,medium,city,state,zipcode,pfas_short_name,pfas_long_name,flags,measurement`
+        + `&page=${ p + 1 }&psize=${ PER_PAGE }`,
       {
         timeout: 1000 * 5, // 5 seconds
         headers: {

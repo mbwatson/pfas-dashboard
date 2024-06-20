@@ -24,15 +24,8 @@ import {
 } from '@components/table'
 
 const relevantFilterKeys = [
-  'id',
-  'sample_id',
-  'study',
-  'pi',
-  'units',
-  'medium',
-  'city',
-  'state',
-  'zipcode',
+  'sample_id', 'study', 'pi', 'units', 'medium',
+  'city', 'state', 'zipcode',
 ]
 
 export const NonTargetedView = () => {
@@ -70,18 +63,6 @@ export const NonTargetedView = () => {
     </Typography>
   )
 
-  if (ntarData.isPending || ntarData.isLoading) {
-    return (
-      <Stack
-        justifyContent="center"
-        alignItems="center"
-        sx={{ mt: 'calc(100px + 5rem)' }}
-      >
-        <CircularProgress size="lg" />
-      </Stack>
-    )
-  }
-
   const Toolbar = useCallback(() => (
     <Stack
       direction="row"
@@ -101,6 +82,18 @@ export const NonTargetedView = () => {
       <ExportButton table={ table } />
     </Stack>
   ))
+
+  if (ntarData.isPending || ntarData.isLoading) {
+    return (
+      <Stack
+        justifyContent="center"
+        alignItems="center"
+        sx={{ mt: 'calc(100px + 5rem)' }}
+      >
+        <CircularProgress size="lg" />
+      </Stack>
+    )
+  }
 
   return (
     <Stack direction="column" gap={ 2 }>
