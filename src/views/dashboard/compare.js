@@ -115,7 +115,7 @@ export const CompareView = () => {
 
         <Divider />
 
-        <Box ref={ containerRef } sx={{ height: '500px' }}>
+        <Box ref={ containerRef } sx={{ height: '500px', my: 1 }}>
           <AnalyteCorrelationScatterplot
             analytes={ selectedAnalytes }
             data={ correlationData }

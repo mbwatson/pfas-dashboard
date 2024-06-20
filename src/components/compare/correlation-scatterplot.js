@@ -36,11 +36,27 @@ export const AnalyteCorrelationScatterplot = ({
       acc.push({
         x: d.original[`${ analytes[0] }_concentration`],
         y: d.original[`${ analytes[1] }_concentration`],
+        units: d.original.units,
         sample_id: d.original.sample_id,
       })
       return acc
     }, [])
   }], [analytes, data])
+
+  const units = useMemo(() => {
+    const units = chartData[0].data
+      .reduce((acc, row) => {
+        if (row.units in acc) {
+          acc[row.units] += 1
+          return acc
+        }
+        acc[row.units] = 1
+        return acc
+      }, {})
+    // we really only care about the units, not the
+    // counts, but we have that available here, too.
+    return Object.keys(units)
+  }, [chartData])
 
   return (
     <ResponsiveScatterPlot
@@ -58,7 +74,7 @@ export const AnalyteCorrelationScatterplot = ({
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: abbreviations[0],
+        legend: `${ abbreviations[0] } [${ units.join(', ') }]`,
         legendPosition: 'middle',
         legendOffset: 46,
         truncateTickAt: 0
@@ -68,7 +84,7 @@ export const AnalyteCorrelationScatterplot = ({
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: abbreviations[1],
+        legend: `${ abbreviations[1] } [${ units.join(', ') }]`,
         legendPosition: 'middle',
         legendOffset: -60,
         truncateTickAt: 0
