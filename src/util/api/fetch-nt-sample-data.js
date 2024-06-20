@@ -3,7 +3,7 @@ import axios from 'axios'
 const API_URL = `${ process.env.API_HOST }/podm/api`
 
 export const fetchNonTargetedSampleData = accessToken => async () => {
-  console.info(`fetching data from ${ API_URL }/ntar_sample_data...`)
+  console.log(`fetching data from ${ API_URL }/ntar_sample_data...`)
 
   if (!accessToken) {
     console.error('missing access token')
@@ -13,7 +13,9 @@ export const fetchNonTargetedSampleData = accessToken => async () => {
   const getFirstPage = async () => {
     try {
       const { data } = await axios.get(
-        `${ API_URL }/ntar_sample_data?page=1&psize=1`,
+        `${ API_URL }/ntar_sample_data?`
+          + `fields=sample_id,study,pi,units,medium,city,state,zipcode,pfas_short_name,pfas_long_name,flags,measurement`
+          + `&page=1&psize=1`,
         {
           timeout: 1000 * 5, // 5 seconds
           headers: {
@@ -38,10 +40,12 @@ export const fetchNonTargetedSampleData = accessToken => async () => {
 
   // if we're here, we have a non-zero number of pages,
   // so we make the neccssary number of requests.
-  const PER_PAGE = 100
+  const PER_PAGE = 1000
   const promises = [...Array(Math.ceil(data.count / PER_PAGE)).keys()]
-    .map(p => axios(
-      `${ API_URL }/ntar_sample_data?page=${ p + 1 }&psize=${ PER_PAGE }`,
+    .map(p => axios.get(
+      `${ API_URL }/ntar_sample_data?`
+        + `fields=sample_id,study,pi,units,medium,city,state,zipcode,pfas_short_name,pfas_long_name,flags,measurement`
+        + `&page=${ p + 1 }&psize=${ PER_PAGE }`,
       {
         timeout: 1000 * 5, // 5 seconds
         headers: {
