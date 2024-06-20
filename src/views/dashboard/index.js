@@ -9,7 +9,9 @@ import {
 } from '@components/layout'
 import { useToggleState } from '@hooks'
 import { ChartView } from './chart'
+import { AnalytesView } from './analytes'
 import { CompareView } from './compare'
+import { NonTargetedView } from './non-targeted'
 import { NotFoundView } from '../'
 import { TableView } from './table'
 import { 
@@ -52,8 +54,10 @@ export const DashboardView = () => {
         }}>
           <Routes>
             <Route index element={ <TableView /> } />
+            <Route path="analytes" element={ <AnalytesView /> } />
             <Route path="charts" element={ <ChartView /> } />
             <Route path="compare" element={ <CompareView /> } />
+            <Route path="non-targeted" element={ <NonTargetedView /> } />
             <Route path="*" element={ <NotFoundView /> } />
           </Routes>
           <FiltersDrawer

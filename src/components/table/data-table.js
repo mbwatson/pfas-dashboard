@@ -20,7 +20,7 @@ export const DataTable = ({ table, sx = {} }) => {
           },
         },
         tbody: {
-          borderBqottom: '1px solid #333',
+          borderBottom: '1px solid #333',
         },
         th: {
           borderBottom: '1px solid #333',
@@ -110,12 +110,6 @@ export const DataTable = ({ table, sx = {} }) => {
 }
 
 DataTable.propTypes = {
-  sx: PropTypes.object.isRequired,
+  sx: PropTypes.object,
   table: PropTypes.object.isRequired,
 }
-
-//
-
-
-//
-

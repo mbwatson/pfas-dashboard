@@ -18,6 +18,7 @@ export const ColumnFilter = ({ column }) => {
     <Fragment>
       <DebouncedInput
         type="number"
+        aria-label={ `${ column.id } minimum filter` }
         min={ Number(column.getFacetedMinMaxValues()?.[0] ?? '') }
         max={ Number(column.getFacetedMinMaxValues()?.[1] ?? '') }
         value={ columnFilterValue?.[0] ?? '' }
@@ -31,6 +32,7 @@ export const ColumnFilter = ({ column }) => {
       />
       <DebouncedInput
         type="number"
+        aria-label={ `${ column.id } maximum filter` }
         min={ Number(column.getFacetedMinMaxValues()?.[0] ?? '') }
         max={ Number(column.getFacetedMinMaxValues()?.[1] ?? '') }
         value={ columnFilterValue?.[1] ?? '' }
@@ -48,13 +50,14 @@ export const ColumnFilter = ({ column }) => {
       onChange={ e => column.setFilterValue(e.target.value) }
       value={ columnFilterValue }
       style={{ backgroundColor: 'inherit', color: 'inherit' }}
+      aria-label={ `${ column.id } select filter` }
     >
       <option value="">All</option>
       {
         sortedUniqueValues.map(value => (
           <option
             value={ value }
-            key={ value }
+            key={ `select-data-list-${ value }` }
             style={{ width: '100%' }}
           >{ value }</option>
         ))
@@ -64,9 +67,10 @@ export const ColumnFilter = ({ column }) => {
     <Fragment>
       {/* autocomplete suggestions from faceted selections */}
       <datalist id={ column.id + 'list' }>
-        { sortedUniqueValues.map(value => <option value={ value } key={ value } />) }
+        { sortedUniqueValues.map(value => <option value={ value } key={ `text-data-list-${ value }` } />) }
       </datalist>
       <DebouncedInput
+        aria-label={ `${ column.id } text filter` }
         type="text"
         value={ columnFilterValue ?? '' }
         onChange={ value => column.setFilterValue(value) }

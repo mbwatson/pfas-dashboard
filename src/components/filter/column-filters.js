@@ -13,16 +13,12 @@ import { ColumnFilter } from '@components/table'
 import { useData } from '@context'
 
 export const ColumnFilters = () => {
-  const { podmTable: { table } } = useData()
+  const { abbreviate, podmTable: { table } } = useData()
 
   return (
     <AccordionGroup>
       {
         table.getAllColumns()
-          // "order" filters.
-          // keep Sample and Location first,
-          // but then order analyte acronyms alphabetically.
-          .sort((c, d) => d.id !== 'sample' && c.id < d.id ? -1 : 1)
           .map(columnGroup => {
             const activeFilterInGroup = columnGroup.columns.some(col => col.getIsFiltered())
 
@@ -37,7 +33,11 @@ export const ColumnFilters = () => {
                     }}
                   />
                   <ListItemContent>
-                    { columnGroup.id.toUpperCase() }
+                    {
+                      ['sample', 'location'].includes(columnGroup.id)
+                        ? columnGroup.id[0].toUpperCase() + columnGroup.id.slice(1)
+                        : abbreviate(columnGroup.id)
+                    }
                   </ListItemContent>
                 </AccordionSummary>
                 <AccordionDetails sx={{
@@ -63,7 +63,7 @@ export const ColumnFilters = () => {
                       .filter(column => column.getCanFilter())
                       .map(column => (
                         <Stack
-                          key={ `column-filter-${ column.id }` }
+                          key={ `col-filter-${ column.id }` }
                           className="column-row"
                           direction="row"
                           justifyContent="space-between"
