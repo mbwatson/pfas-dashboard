@@ -5,7 +5,8 @@ import {
   ListItemDecorator,
 } from '@mui/joy'
 import {
-  Science as AnalytesIcon,
+  Biotech as AnalytesIcon,
+  Science as NonTargetedIcon,
   DonutSmall as ChartIcon,
   Difference as CompareIcon,
   TableRows as TableIcon,
@@ -14,10 +15,11 @@ import { usePreferences } from '@context'
 import { Link } from '@components/link'
 
 const menuItems = [
-  { id: 'table',    path: '/',        label: 'Table',    Icon: TableIcon },
-  { id: 'chart',    path: 'charts',   label: 'Charts',   Icon: ChartIcon },
-  { id: 'compare',  path: 'compare',  label: 'Compare',  Icon: CompareIcon },
-  { id: 'analytes', path: 'analytes', label: 'Analytes', Icon: AnalytesIcon },
+  { id: 'table',        path: '/',            label: 'Table',    Icon: TableIcon },
+  { id: 'chart',        path: 'charts',       label: 'Charts',   Icon: ChartIcon },
+  { id: 'compare',      path: 'compare',      label: 'Compare',  Icon: CompareIcon },
+  { id: 'analytes',     path: 'analytes',     label: 'Analytes', Icon: AnalytesIcon },
+  { id: 'non-targeted', path: 'non-targeted', label: 'NT Data',  Icon: NonTargetedIcon },
 ]
 
 export const DashboardMenu = () => {
