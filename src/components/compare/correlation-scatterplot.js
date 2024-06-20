@@ -58,7 +58,7 @@ export const AnalyteCorrelationScatterplot = ({
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: analytes[0],
+        legend: abbreviations[0],
         legendPosition: 'middle',
         legendOffset: 46,
         truncateTickAt: 0
@@ -68,7 +68,7 @@ export const AnalyteCorrelationScatterplot = ({
         tickSize: 5,
         tickPadding: 5,
         tickRotation: 0,
-        legend: analytes[1],
+        legend: abbreviations[1],
         legendPosition: 'middle',
         legendOffset: -60,
         truncateTickAt: 0
