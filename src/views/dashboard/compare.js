@@ -102,6 +102,7 @@ export const CompareView = () => {
         <Typography
           level="h4"
           justifyContent="space-between"
+          alignItems="center"
           endDecorator={
             <Stack direction="row" gap={ 1 }>
               <CsvExportButton data={ dataForCsv } tooltip="Download scatterplot data as CSV" />
@@ -109,28 +110,31 @@ export const CompareView = () => {
               <IconButton variant="soft" size="sm" onClick={ clearAnalytes }><CloseIcon /></IconButton>
             </Stack>
           }
+          sx={{ mb: 1 }}
         ><span>{ abbreviations[0] } <Latex>\times</Latex> { abbreviations[1] }</span></Typography>
 
-        <ul style={{ margin: '1rem 0 0 0' }}>
-          <li>
-            <Typography>
-              { correlationCount(...selectedAnalytes) } samples contain both { abbreviations[0] } and { abbreviations[1] }.
-            </Typography>
-          </li>
-          <li>
-            <Latex>{ `r = ${ r.toFixed(4) }` }</Latex>
-          </li>
-          <li>
-            <Latex>{ `\\rho = ${ rho.toFixed(4) }` }</Latex>
-          </li>
-        </ul>
-        
+        <Divider />
+
         <Box ref={ containerRef } sx={{ height: '500px' }}>
           <AnalyteCorrelationScatterplot
             analytes={ selectedAnalytes }
             data={ correlationData }
           />
         </Box>
+
+        <Divider />
+
+        <Stack gap={ 1 } my={ 2 }>
+          <Typography level="body-md" textAlign="center">
+            { correlationCount(...selectedAnalytes) } samples contain both { abbreviations[0] } and { abbreviations[1] }.
+          </Typography>
+
+          <Stack direction="row" justifyContent="space-around">
+            <Latex>{ `r = ${ r.toFixed(4) }` }</Latex>
+            <Latex>{ `\\rho = ${ rho.toFixed(4) }` }</Latex>
+          </Stack>
+        </Stack>
+
       </Box>
     )
   }, [correlationCoefficient.current, selectedAnalytes[0], selectedAnalytes[1]])
