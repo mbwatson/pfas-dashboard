@@ -15,6 +15,7 @@ export const ChartCard = ({ children, title }) => {
   return (
     <Card variant="soft">
       <Typography
+        component="h1"
         level="h3"
         color="primary"
       >{ title }</Typography>

@@ -173,7 +173,7 @@ export const CompareView = () => {
           <AnalyteSelect />
         </Stack>
         <Card variant="soft">
-          <Typography level="h3">Correlation Matrix</Typography>
+          <Typography level="h3" component="h1">Correlation Matrix</Typography>
 
           <Divider />
 

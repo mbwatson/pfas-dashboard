@@ -48,6 +48,7 @@ export const analyteColumns = [
             href={ `https://comptox.epa.gov/dashboard/chemical/details/${ row.original.dtxsid }` }
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="View analyte details in the CompTox Dashboard"
           ><ExternalLinkIcon /></a>
         </span>,
         header: 'DTXSID',

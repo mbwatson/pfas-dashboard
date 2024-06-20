@@ -14,7 +14,7 @@ export const Instructions = () => {
 
   return (
     <Fragment>
-      <Typography level="h4">Instructions</Typography>
+      <Typography component="h2" level="h4">Instructions</Typography>
 
       <Divider />
 
